@@ -285,11 +285,11 @@ header::after {
 
 /* LITE MODE LOGO */
 body.lite-mode .logo-circle {
-    background-color: #fdf7ee;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-    border: 0.5px solid rgba(0,0,0,0.08);
+  background-color: #fdf7ee;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  border: none; /* <-- qui */
 }
 
 .nav-pill-wrapper {
