@@ -321,28 +321,29 @@ body.lite-mode .nav-pill-wrapper {
     60% { transform: translateX(0); }
 }
 
+/* style.css - Modifica questa sezione */
+
 .nav-scroll-area {
     display: flex;
     align-items: center;
     overflow-x: auto;
     height: 100%;
     width: 100%;
-    padding: 0;
+    padding: 0; /* Importante: padding 0, usiamo i pseudo-elementi */
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    /* Opzionale: aiuta lo snap a non "mangiarsi" lo spazio */
+    scroll-padding-left: 15px;
+    scroll-padding-right: 15px; 
 }
 
-/* MODIFICA: Spacer iniziale solo a sinistra */
-.nav-scroll-area::before {
+/* CREA L'ARIA AI LATI */
+.nav-scroll-area::before,
+.nav-scroll-area::after {
     content: '';
     display: block;
-    width: 20px;
-    flex-shrink: 0;
-}
-
-/* Rimosso spacer finale per evitare spazio vuoto dopo l'ultimo elemento */
-.nav-scroll-area::after {
-    display: none;
+    width: 15px; /* Questo è il "pelo d'aria" (puoi fare 10px o 20px) */
+    flex-shrink: 0; /* Impedisce che si rimpiccioliscano */
 }
 
 @media (max-width: 699px) {
@@ -360,8 +361,8 @@ body.lite-mode .nav-pill-wrapper {
     border: none;
     height: 100%;
     /* MODIFICA: 3 tab su mobile (33.333% ciascuno) invece di 2 */
-    flex: 0 0 33.333%; 
-    width: 33.333%;
+    flex: 0 0 29%; 
+    width: 29%;
     margin: 0;
     padding: 0;
     cursor: pointer;
