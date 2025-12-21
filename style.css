@@ -333,6 +333,8 @@ body.lite-mode .nav-pill-wrapper {
     box-sizing: border-box;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    scroll-padding-left: 13px;
+    scroll-padding-right: 13px;
 }
 
 @media (max-width: 699px) {
@@ -345,22 +347,22 @@ body.lite-mode .nav-pill-wrapper {
     display: none;
 }
 
-/* 3 TAB ESATTE CON ARIA AI LATI */
+/* 3 tab SEMPRE intere (niente quarta che spunta) */
 .tab-btn {
-    background: transparent;
-    border: none;
-    height: 100%;
-    /* 3 colonne nel contenitore meno 26px di padding totale */
-    flex: 0 0 calc((100% - 26px) / 3);
-    width: calc((100% - 26px) / 3);
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    scroll-snap-align: start;
+  background: transparent;
+  border: none;
+  height: 100%;
+  flex: 0 0 33.34%;   /* 33.34% evita problemi di rounding e impedisce lo “spuntere” */
+  width: 33.34%;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: start;
 }
+
 
 .tab-btn-inner {
     width: 90%;          /* piccolo margine dentro il bottone */
