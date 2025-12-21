@@ -219,24 +219,48 @@ header::after {
     position: relative;
 }
 
-.logo-circle{
-  overflow: visible; /* fondamentale: niente tagli */
+/* --- LOGO CIRCLE (base) --- */
+.logo-circle {
+    z-index: 20;
+    position: relative;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    border: 0.5px solid rgba(255,255,255,0.12);
+    transition: all 0.4s ease;
+
+    /* fondamentale per evitare tagli sulla ghirlanda */
+    overflow: visible;
+    isolation: isolate; /* gestisce bene gli z-index interni */
 }
 
-.logo-circle::after{
-  content: "";
-  position: absolute;
-  inset: -12px; /* regola qui: -10 / -12 / -14 */
-  background: url("images/wreath.svg") center / contain no-repeat;
-  pointer-events: none;
-  z-index: 30;
-  transform: none; /* niente rotazione = più centrata */
+/* GHIRLANDA attorno al logo */
+.logo-circle::after {
+    content: "";
+    position: absolute;
+    inset: -12px; /* regola qui: -10 / -12 / -14 */
+    background: url("images/wreath.svg") center / contain no-repeat;
+    pointer-events: none;
+    z-index: 1;      /* sotto il logo */
+    transform: none; /* niente rotazione = più centrata */
 }
 
-/* Assicura che il logo resti leggibile sotto */
-.nav-mini-logo{
-  position: relative;
-  z-index: 20;
+/* Logo immagine (unificato: dimensioni + z-index) */
+.nav-mini-logo {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    z-index: 2; /* sopra la ghirlanda */
 }
 
 /* LITE MODE LOGO */
@@ -246,13 +270,6 @@ body.lite-mode .logo-circle {
     -webkit-backdrop-filter: none;
     box-shadow: 0 2px 4px rgba(0,0,0,0.08);
     border: 0.5px solid rgba(0,0,0,0.08);
-}
-
-.nav-mini-logo {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    object-fit: cover;
 }
 
 .nav-pill-wrapper {
