@@ -329,7 +329,7 @@ body.lite-mode .nav-pill-wrapper {
   overflow-x: auto;
   height: 100%;
   width: 100%;
-  padding: 0 13px;          /* aria ai lati */
+  padding: 0 10px;          /* aria ai lati */
   box-sizing: border-box;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
