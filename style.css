@@ -961,46 +961,38 @@ body.lite-mode .nav-cluster {
   opacity:.95;
 }
 
-/* Disattiva eventuali vecchie luci a pseudo-elemento */
-.xmas-garland::before,
-.xmas-garland::after{
-  content:none !important;
-  display:none !important;
-}
-
-.xmas-garland .garland-svg{
+.garland-svg{
   width:100%;
   height:100%;
   display:block;
+  overflow:visible; /* evita clipping del glow */
 }
 
 /* Fili */
-.xmas-garland .wire{
+.garland-svg .wire{
   fill:none;
   stroke: rgba(255,255,255,0.28);
   stroke-width: 2.2;
   stroke-linecap: round;
 }
 
-/* Lampadine: “puntini” sullo stesso path */
-.xmas-garland .bulb{
+/* Lampadine come “puntini” sul path (dasharray + linecap round) */
+.garland-svg .bulb{
   fill:none;
   stroke: rgba(255,255,255,0.98);
   stroke-width: 8;
   stroke-linecap: round;
-
-  /* Pattern: dash quasi zero + gap => puntini rotondi */
   stroke-dasharray: 0.001 34;
-
   filter: drop-shadow(0 0 6px rgba(255,255,255,0.75));
   opacity: 0.95;
 }
 
-.xmas-garland .bulb-2{
+.garland-svg .bulb-2{
   stroke-width: 7;
   opacity: 0.85;
   stroke-dasharray: 0.001 38;
 }
+
 
 
 /* NEVE: SOLO NEL BLOCCO HEADER (non full-page) */
