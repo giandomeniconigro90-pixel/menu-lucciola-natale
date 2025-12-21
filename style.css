@@ -219,20 +219,18 @@ header::after {
     position: relative;
 }
 
-/* Ghirlanda attorno al logo */
-.logo-circle {
-  position: relative; /* già presente, lo ribadiamo */
+.logo-circle{
+  overflow: visible; /* fondamentale: niente tagli */
 }
 
 .logo-circle::after{
   content: "";
   position: absolute;
-  inset: -10px;                 /* quanto “sporge” fuori dal logo */
+  inset: -12px; /* regola qui: -10 / -12 / -14 */
   background: url("images/wreath.svg") center / contain no-repeat;
   pointer-events: none;
   z-index: 30;
-  transform: rotate(-8deg);
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
+  transform: none; /* niente rotazione = più centrata */
 }
 
 /* Assicura che il logo resti leggibile sotto */
