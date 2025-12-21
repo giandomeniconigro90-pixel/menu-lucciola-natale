@@ -954,7 +954,9 @@ body.lite-mode .nav-cluster {
    ========================================= */
 .xmas-garland{
   position:absolute;
-  top:0; left:0; right:0;
+  top:-14px;   /* prima era 0: alza di ~14px (prova -10 / -14 / -18) */
+  left:0;
+  right:0;
   height:90px;
   z-index:2;
   pointer-events:none;
