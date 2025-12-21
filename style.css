@@ -345,13 +345,14 @@ body.lite-mode .nav-pill-wrapper {
     display: none;
 }
 
+/* 3 TAB ESATTE CON ARIA AI LATI */
 .tab-btn {
     background: transparent;
     border: none;
     height: 100%;
-    /* MODIFICA: 3 tab su mobile (33.333% ciascuno) invece di 2 */
-    flex: 0 0 31.5%; 
-    width: 31.5%;
+    /* 3 colonne nel contenitore meno 26px di padding totale */
+    flex: 0 0 calc((100% - 26px) / 3);
+    width: calc((100% - 26px) / 3);
     margin: 0;
     padding: 0;
     cursor: pointer;
@@ -362,22 +363,17 @@ body.lite-mode .nav-pill-wrapper {
 }
 
 .tab-btn-inner {
-    width: 92%; /* Leggermente meno del 100% per dare aria tra i bottoni */
+    width: 90%;          /* piccolo margine dentro il bottone */
     height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px; /* Gap minimo */
+    gap: 4px;
     border-radius: 30px;
-    /* MODIFICA: Font più piccolo per farci stare tutto */
-    font-size: 13px; 
-    color: #333333;
-    font-weight: 600;
+    font-size: 13px;
     white-space: nowrap;
-    transition: all 0.2s ease;
     border: 2px solid transparent;
 }
-
 
 /* --- MEDIA QUERIES --- */
 @media (min-width: 700px) {
