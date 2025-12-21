@@ -243,15 +243,17 @@ header::after {
 }
 
 /* GHIRLANDA attorno al logo */
-.logo-circle::after {
-    content: "";
-    position: absolute;
-    inset: -12px; /* regola qui: -10 / -12 / -14 */
-    background: url("images/wreath.svg") center / contain no-repeat;
-    pointer-events: none;
-    z-index: 1;      /* sotto il logo */
-    transform: none; /* niente rotazione = più centrata */
+/* GHIRLANDA attorno al logo */
+.logo-circle::after{
+  content: "";
+  position: absolute;
+  /* prima: inset: -12px; */
+  inset: -18px;          /* prova -16 / -18 / -20 finché non è perfetta */
+  background: url("images/wreath.svg") center / contain no-repeat;
+  pointer-events: none;
+  z-index: 1;
 }
+
 
 /* Logo immagine (unificato: dimensioni + z-index) */
 .nav-mini-logo {
