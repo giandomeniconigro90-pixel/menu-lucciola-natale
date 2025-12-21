@@ -231,9 +231,12 @@ header::after {
 .logo-circle {
     z-index: 20;
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: 65px;
+    height: 65px;
     border-radius: 50px;
+    overflow: hidden; /* Importante per tagliare gli angoli del jpeg */
+    border: 2px solid white; /* Opzionale: aggiunge un bordino pulito */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Opzionale: dà profondità */
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -252,6 +255,7 @@ header::after {
 
 /* GHIRLANDA dietro al logo */
 .logo-circle::after{
+  display: none;
   content:"";
   position:absolute;
   inset:-14px;  /* regola se vuoi più/meno grande */
@@ -278,7 +282,7 @@ header::after {
 }
 
 @media (max-width: 420px){
-  .logo-circle{ width: 40px; height: 40px; }
+  .logo-circle{ width: 55px; height: 55px; }
   .nav-mini-logo{position: relative;z-index: 2; /* sopra la ghirlanda */ }
   .logo-circle::after{ inset: -12px; }
 }
