@@ -335,7 +335,7 @@ body.lite-mode .nav-pill-wrapper {
   scrollbar-width: none;
   /* aiuta lo snap a rispettare l’aria laterale */
   scroll-padding-left: 13px;
-  scroll-padding-right: 13px;
+  scroll-padding-right: 10px;
 }
 /* se in passato avevi messo spacer, ammazzali definitivamente */
 .nav-scroll-area::before,
