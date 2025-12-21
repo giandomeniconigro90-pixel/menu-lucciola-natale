@@ -324,18 +324,26 @@ body.lite-mode .nav-pill-wrapper {
 /* style.css - Modifica questa sezione */
 
 .nav-scroll-area {
-    display: flex;
-    align-items: center;
-    overflow-x: auto;
-    height: 100%;
-    width: 100%;
-    padding: 0 13px;
-    box-sizing: border-box;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    scroll-padding-left: 5px;
-    scroll-padding-right: 5px;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  height: 100%;
+  width: 100%;
+  padding: 0 13px;          /* aria ai lati */
+  box-sizing: border-box;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  /* aiuta lo snap a rispettare l’aria laterale */
+  scroll-padding-left: 13px;
+  scroll-padding-right: 13px;
 }
+/* se in passato avevi messo spacer, ammazzali definitivamente */
+.nav-scroll-area::before,
+.nav-scroll-area::after {
+  content: none !important;
+  display: none !important;
+}
+
 
 @media (max-width: 699px) {
     .nav-scroll-area {
@@ -362,6 +370,7 @@ body.lite-mode .nav-pill-wrapper {
   justify-content: center;
   scroll-snap-align: start;
 }
+
 
 
 .tab-btn-inner {
