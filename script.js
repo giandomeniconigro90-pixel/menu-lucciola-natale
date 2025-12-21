@@ -447,6 +447,23 @@ function initSnow() {
     start();
 }
 
+function initGarlandBulbs() {
+  const addBulbs = (selector, count) => {
+    const host = document.querySelector(selector);
+    if (!host) return;
+    host.innerHTML = "";
+
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement("i");
+      b.style.offsetDistance = `${(i * 100) / (count - 1)}%`;
+      host.appendChild(b);
+    }
+  };
+
+  addBulbs(".bulbs-1", 28);
+  addBulbs(".bulbs-2", 24);
+}
+
 // Avvio
 document.addEventListener('DOMContentLoaded', () => {
     checkOpenStatus();
@@ -454,5 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initDataFetch();
     toggleLiteMode();  // imposta stato iniziale (lite attiva)
     toggleLiteMode();  // subito dopo torna a normale → fulmine + "Lite"
+    initGarlandBulbs();
     initSnow();
 });
