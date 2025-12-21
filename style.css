@@ -981,7 +981,7 @@ body.lite-mode header {
        Canvas SVG 25x25 (distanza media)
        Raggio 1.8 (visibile ma piccolo)
     */
-    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='12.5' cy='12.5' r='0.1' fill='%23ffffff' fill-opacity='0.6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='20' height='20'%3E%3Ccircle cx='12.5' cy='12.5' r='0.3' fill='%23ffffff' fill-opacity='0.6'/%3E%3C/svg%3E");
     background-repeat: repeat;
     animation: snowFall linear infinite;
 }
