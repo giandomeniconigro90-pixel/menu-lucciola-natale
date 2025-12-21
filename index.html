@@ -23,7 +23,12 @@
 
     <!-- BANNER AVVISI -->
     <div id="alert-banner"></div>
-    <canvas id="snow-canvas" aria-hidden="true"></canvas>
+    <!-- EFFETTO NEVE CSS (Sostituisce il Canvas) -->
+<div class="snow-container" aria-hidden="true">
+    <div class="snow-layer layer-1"></div>
+    <div class="snow-layer layer-2"></div>
+    <div class="snow-layer layer-3"></div>
+</div>
 
     <!-- LITE SWITCH (Destra) -->
     <button id="lite-switch" onclick="toggleLiteMode()" 
