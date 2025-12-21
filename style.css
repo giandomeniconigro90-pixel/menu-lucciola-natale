@@ -329,21 +329,10 @@ body.lite-mode .nav-pill-wrapper {
     overflow-x: auto;
     height: 100%;
     width: 100%;
-    padding: 0; /* Importante: padding 0, usiamo i pseudo-elementi */
+    padding: 0 10;
+    box-sizing: border-box; /* Importante per non sforare */
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    /* Opzionale: aiuta lo snap a non "mangiarsi" lo spazio */
-    scroll-padding-left: 15px;
-    scroll-padding-right: 15px; 
-}
-
-/* CREA L'ARIA AI LATI */
-.nav-scroll-area::before,
-.nav-scroll-area::after {
-    content: '';
-    display: block;
-    width: 15px; /* Questo è il "pelo d'aria" (puoi fare 10px o 20px) */
-    flex-shrink: 0; /* Impedisce che si rimpiccioliscano */
 }
 
 @media (max-width: 699px) {
@@ -361,8 +350,8 @@ body.lite-mode .nav-pill-wrapper {
     border: none;
     height: 100%;
     /* MODIFICA: 3 tab su mobile (33.333% ciascuno) invece di 2 */
-    flex: 0 0 29%; 
-    width: 29%;
+    flex: 0 0 33.333%; 
+    width: 33.333%;
     margin: 0;
     padding: 0;
     cursor: pointer;
@@ -373,21 +362,22 @@ body.lite-mode .nav-pill-wrapper {
 }
 
 .tab-btn-inner {
-    /* MODIFICA: Ottimizzato per 3 tab */
-    width: 96%;
+    width: 94%; /* Leggermente meno del 100% per dare aria tra i bottoni */
     height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px; /* Gap ridotto */
+    gap: 4px; /* Gap minimo */
     border-radius: 30px;
-    font-size: 13px; /* Font ridotto */
+    /* MODIFICA: Font più piccolo per farci stare tutto */
+    font-size: 13px; 
     color: #333333;
     font-weight: 600;
     white-space: nowrap;
     transition: all 0.2s ease;
     border: 2px solid transparent;
 }
+
 
 /* --- MEDIA QUERIES --- */
 @media (min-width: 700px) {
