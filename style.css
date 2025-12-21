@@ -388,6 +388,9 @@ body.lite-mode .nav-pill-wrapper {
     border: 2px solid transparent;
 }
 
+.nav-scroll-area .tab-btn:first-child { margin-left: 0 !important; }
+.nav-scroll-area .tab-btn:last-child  { margin-right: 0 !important; }
+
 /* --- MEDIA QUERIES --- */
 @media (min-width: 700px) {
     .nav-scroll-area {
