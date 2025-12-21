@@ -1055,3 +1055,7 @@ body.lite-mode header .snow-container {
     0% { transform: translateY(0); }
     100% { transform: translateY(50%); }
 }
+.logo-circle,
+body.lite-mode .logo-circle{
+  border: none !important;
+}
