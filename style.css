@@ -332,7 +332,7 @@ body.lite-mode .nav-pill-wrapper {
     scrollbar-width: none;
 }
 
-/* Spacer Sinistro (Identico a Destra) */
+/* MODIFICA: Spacer iniziale solo a sinistra */
 .nav-scroll-area::before {
     content: '';
     display: block;
@@ -340,13 +340,11 @@ body.lite-mode .nav-pill-wrapper {
     flex-shrink: 0;
 }
 
-/* Spacer Destro (Identico a Sinistra) */
+/* Rimosso spacer finale per evitare spazio vuoto dopo l'ultimo elemento */
 .nav-scroll-area::after {
-    content: '';
-    display: block;
-    width: 20px; /* Ora è simmetrico */
-    flex-shrink: 0;
+    display: none;
 }
+
 @media (max-width: 699px) {
     .nav-scroll-area {
         animation: scrollHintAnimation 1.5s ease-in-out 1.5s 1 forwards;
@@ -1063,4 +1061,3 @@ body.lite-mode footer::before {
 }
 
 /* FINE STYLE */
-
