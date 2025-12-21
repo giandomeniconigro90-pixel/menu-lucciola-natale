@@ -233,7 +233,7 @@ header::after {
     position: relative;
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: 20%;
     flex-shrink: 0;
     display: flex;
     align-items: center;
