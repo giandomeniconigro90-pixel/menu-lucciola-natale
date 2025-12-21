@@ -329,13 +329,13 @@ body.lite-mode .nav-pill-wrapper {
   overflow-x: auto;
   height: 100%;
   width: 100%;
-  padding: 0 6px;          /* aria ai lati */
+  padding: 0 5px;          /* aria ai lati */
   box-sizing: border-box;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   /* aiuta lo snap a rispettare l’aria laterale */
-  scroll-padding-left: 6px;
-  scroll-padding-right: 6px;
+  scroll-padding-left: 5px;
+  scroll-padding-right: 5px;
 }
 /* se in passato avevi messo spacer, ammazzali definitivamente */
 .nav-scroll-area::before,
