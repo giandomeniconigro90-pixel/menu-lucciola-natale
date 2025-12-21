@@ -233,10 +233,12 @@ header::after {
     position: relative;
     width: 65px;
     height: 65px;
-    border-radius: 50px;
-    overflow: hidden; /* Importante per tagliare gli angoli del jpeg */
-    border: 2px solid white; /* Opzionale: aggiunge un bordino pulito */
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Opzionale: dà profondità */
+    border-radius: 50%; /* Meglio 50% per cerchi perfetti */
+    overflow: hidden;   /* Importante per tagliare gli angoli del jpeg */
+    
+    border: 2px solid white; 
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Ombra più bella delle due */
+    
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -244,13 +246,7 @@ header::after {
     background-color: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    border: 0;
     transition: all 0.4s ease;
-
-    /* fondamentale per evitare tagli sulla ghirlanda */
-    overflow: visible;
-    isolation: isolate; /* gestisce bene gli z-index interni */
 }
 
 /* GHIRLANDA dietro al logo */
