@@ -949,73 +949,59 @@ body.lite-mode .nav-cluster {
    NATALE: LUCI + NEVE (solo header)
    ========================================= */
 
-/* LUCI: fili SVG + lampadine su percorso (attaccate) */
+/* =========================================
+   NATALE: LUCI (SVG, super compatibile)
+   ========================================= */
 .xmas-garland{
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 90px;
-    z-index: 2; /* sotto titolo/badge (z=3), sopra overlay (z=1) */
-    pointer-events: none;
-    opacity: 0.95;
+  position:absolute;
+  top:0; left:0; right:0;
+  height:90px;
+  z-index:2;
+  pointer-events:none;
+  opacity:.95;
 }
 
-/* Disattiva eventuali vecchie luci a pseudo-elemento (garland.svg) */
+/* Disattiva eventuali vecchie luci a pseudo-elemento */
 .xmas-garland::before,
 .xmas-garland::after{
-    content: none !important;
-    display: none !important;
+  content:none !important;
+  display:none !important;
+}
+
+.xmas-garland .garland-svg{
+  width:100%;
+  height:100%;
+  display:block;
 }
 
 /* Fili */
-.garland-wires{
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+.xmas-garland .wire{
+  fill:none;
+  stroke: rgba(255,255,255,0.28);
+  stroke-width: 2.2;
+  stroke-linecap: round;
 }
 
-.garland-wires path{
-    fill: none;
-    stroke: rgba(255,255,255,0.28);
-    stroke-width: 2.2;
-    stroke-linecap: round;
+/* Lampadine: “puntini” sullo stesso path */
+.xmas-garland .bulb{
+  fill:none;
+  stroke: rgba(255,255,255,0.98);
+  stroke-width: 8;
+  stroke-linecap: round;
+
+  /* Pattern: dash quasi zero + gap => puntini rotondi */
+  stroke-dasharray: 0.001 34;
+
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.75));
+  opacity: 0.95;
 }
 
-/* Contenitori lampadine */
-.bulbs{
-    position: absolute;
-    inset: 0;
+.xmas-garland .bulb-2{
+  stroke-width: 7;
+  opacity: 0.85;
+  stroke-dasharray: 0.001 38;
 }
 
-/* Stile lampadina */
-.bulbs i{
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.98);
-    box-shadow: 0 0 10px rgba(255,255,255,0.75);
-    transform: translate(-50%, -50%);
-}
-
-/* Lampadine ancorate ai due fili */
-.bulbs-1 i{
-    -webkit-offset-path: path("M0,25 C250,85 750,85 1000,25");
-    offset-path: path("M0,25 C250,85 750,85 1000,25");
-    offset-rotate: 0deg;
-}
-.bulbs-2 i{
-    -webkit-offset-path: path("M0,55 C260,115 740,115 1000,55");
-    offset-path: path("M0,55 C260,115 740,115 1000,55");
-    offset-rotate: 0deg;
-}
-
-/* Fallback: se offset-path non è supportato, nascondi le lampadine (evita “blob” in alto a sinistra) */
-@supports not (offset-path: path("M0,0 L1,1")) {
-    .bulbs { display: none; }
-}
 
 /* NEVE: SOLO NEL BLOCCO HEADER (non full-page) */
 header .snow-container {
