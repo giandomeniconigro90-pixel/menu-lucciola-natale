@@ -43,10 +43,19 @@ body {
     100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
 }
 
-/* --- ALERT BANNER (Avvisi da CSV) ---
-   Ora è un badge nell'header: layout gestito da .status-badge + .festive-badge */
+/* --- ALERT BANNER (Avvisi da CSV)
+   Stile “badge”: se il JS lo mostra, resta leggero e coerente con l’header */
 #alert-banner {
     display: none;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(212, 175, 55, 0.22);
+    border: 1px solid rgba(212, 175, 55, 0.40);
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
 }
 
 /* --- HEADER --- */
@@ -62,7 +71,7 @@ header::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('images/la-lucciola-neve.jpg'); 
+    background-image: url('images/la-lucciola-neve.jpg');
     background-size: cover;
     background-position: center;
     z-index: 0;
@@ -73,7 +82,10 @@ header::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%);
+    background: linear-gradient(to bottom,
+        rgba(0,0,0,0.1) 0%,
+        rgba(0,0,0,0.3) 50%,
+        rgba(0,0,0,0.8) 100%);
     z-index: 1;
 }
 
@@ -169,7 +181,7 @@ header::after {
 
 /* Badge avviso integrato nell'header */
 .festive-badge {
-    background: rgba(212, 175, 55, 0.22);   /* oro soft */
+    background: rgba(212, 175, 55, 0.22);
     border-color: rgba(212, 175, 55, 0.40);
     color: #fff;
 }
@@ -255,14 +267,14 @@ body.lite-mode .logo-circle {
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     border: 1px solid rgba(255,255,255,0.4);
-    transition: all 0.4s.ease;
+    transition: all 0.4s ease; /* FIX */
 }
 
 /* LITE MODE NAV PILL */
 body.lite-mode .nav-pill-wrapper {
     background-color: #fdf7ee !important;
     border: 1px solid rgba(0,0,0,0.08);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     backdrop-filter: none !important;
 }
 
@@ -314,33 +326,30 @@ body.lite-mode .nav-pill-wrapper {
 }
 
 /* --- LOGICA SCROLL --- */
-
 @keyframes scrollHintAnimation {
-  0%, 100% { transform: translateX(0); }
-  30%      { transform: translateX(-15px); } /* dx -> sx */
-  60%      { transform: translateX(0); }
+    0%, 100% { transform: translateX(0); }
+    30% { transform: translateX(-15px); }
+    60% { transform: translateX(0); }
 }
 
-/* style.css - Modifica questa sezione */
-
 .nav-scroll-area {
-  display: flex;
-  align-items: center;
-  overflow-x: auto;
-  height: 100%;
-  width: 100%;
-  padding: 0 5px;
-  box-sizing: border-box;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  scroll-padding-left: 5px;
-  scroll-padding-right: 5px;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    height: 100%;
+    width: 100%;
+    padding: 0 5px;
+    box-sizing: border-box;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-padding-left: 5px;
+    scroll-padding-right: 5px;
 }
 
 .nav-scroll-area::before,
 .nav-scroll-area::after {
-  content: none !important;
-  display: none !important;
+    content: none !important;
+    display: none !important;
 }
 
 @media (max-width: 699px) {
@@ -355,18 +364,18 @@ body.lite-mode .nav-pill-wrapper {
 
 /* 3 tab SEMPRE intere (niente quarta che spunta) */
 .tab-btn {
-  background: transparent;
-  border: none;
-  height: 100%;
-  flex: 0 0 33.34%;
-  width: 33.34%;
-  margin: 0;
-  padding: 0;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  scroll-snap-align: start;
+    background: transparent;
+    border: none;
+    height: 100%;
+    flex: 0 0 33.34%;
+    width: 33.34%;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
 }
 
 .tab-btn-inner {
@@ -390,31 +399,33 @@ body.lite-mode .nav-pill-wrapper {
     .nav-scroll-area {
         padding: 0;
         scroll-snap-type: none;
-        justify-content: center; 
+        justify-content: center;
         width: 100%;
         overflow-x: hidden;
         gap: 10px;
     }
-    
+
     .nav-scroll-area::before,
     .nav-scroll-area::after {
         display: none;
     }
 
     .tab-btn {
-        flex: 0 1 auto; 
+        flex: 0 1 auto;
         width: auto;
         margin: 0;
         min-width: 80px;
     }
+
     .tab-btn-inner {
         width: 100%;
         padding: 0 15px;
         justify-content: center;
     }
+
     .nav-pill-wrapper {
         display: inline-flex;
-        width: max-content; 
+        width: max-content;
         min-width: 0;
         flex-grow: 0;
         padding: 0 5px;
@@ -507,24 +518,27 @@ h3::after {
     padding: 16px;
     margin-bottom: 15px;
     border-radius: 16px;
-    background-image: linear-gradient(white, white), 
+
+    /* Bordo simulato con background */
+    background-image: linear-gradient(white, white),
                       repeating-linear-gradient(-45deg, #e53935 0, #e53935 10px, #ffffff 10px, #ffffff 20px);
     background-origin: border-box;
     background-clip: padding-box, border-box;
     border: 4px solid transparent;
+
     box-shadow: var(--shadow-soft);
     opacity: 0;
     animation: fadeInUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 /* LITE MODE CARD MENU */
-body.lite-mode .menu-item { 
-    animation: none !important; 
-    opacity: 1 !important; 
-    box-shadow: none; 
-    border: 1px solid #e0dec0; 
+body.lite-mode .menu-item {
+    animation: none !important;
+    opacity: 1 !important;
+    box-shadow: none;
+    border: 1px solid #e0dec0;
     background: #fdf7ee;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 .item-info h4 {
@@ -577,11 +591,13 @@ body.lite-mode .item-price {
     pointer-events: none;
     filter: grayscale(100%);
 }
+
 .menu-item.sold-out .item-price {
     text-decoration: line-through;
     color: #999;
     background: transparent;
 }
+
 .menu-item.sold-out .item-info h4::after {
     content: ' (Terminato)';
     color: #ff5252;
@@ -692,6 +708,7 @@ body.lite-mode .item-price {
 
 .review-btn:active { transform: scale(0.95); }
 
+/* --- FOOTER --- */
 footer {
     background-color: white;
     padding: 30px 20px;
@@ -791,56 +808,76 @@ body.lite-mode {
     background-color: #f9f7f2;
 }
 
+/* Header Lite: compatto e pulito, senza foto */
 body.lite-mode header {
-    height: 130px;
+    height: 230px !important;
+    padding-top: 30px !important;
     background: linear-gradient(135deg, #5D4037 0%, #8D6E63 100%);
     border-bottom: 4px solid #d4af37;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    text-align: center !important;
 }
 
 body.lite-mode header::before { display: none; animation: none; }
 
 body.lite-mode .header-content {
-    position: absolute;
-    bottom: 70px;
-    left: 20px;
-    color: white;
-    z-index: 2;
-    width: auto;
-    max-width: 90%;
-    transition: all 0.3s ease;
-    pointer-events: none;
+    position: static !important;
+    transform: none !important;
+    margin: 25px auto 0 auto !important;
+    text-align: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    left: auto !important;
+    bottom: auto !important;
+    display: block !important;
 }
 
-body.lite-mode .info-cluster { justify-content: center; }
+body.lite-mode .header-content h1,
+body.lite-mode .header-content .subtitle {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
 
-body.lite-mode .status-badge, 
+body.lite-mode .info-cluster {
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+body.lite-mode .status-badge,
 body.lite-mode .weather-badge {
     background: rgba(0,0,0,0.1);
     border: none;
     color: white;
 }
 
-body.lite-mode .header-content h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    margin-bottom: 2px;
-    font-weight: 700;
-    font-style: italic;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+body.lite-mode #lite-switch {
+    background: #d4af37 !important;
+    color: #000 !important;
+    border: 2px solid white !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
-body.lite-mode .subtitle {
-    font-family: 'Inter', sans-serif;
-    font-size: 10px;
-    font-weight: 400;
-    opacity: 0.9;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    text-shadow: 0 1px 5px rgba(0,0,0,0.5);
-    margin-bottom: 10px;
+body.lite-mode .search-container {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+body.lite-mode .search-input {
+    background: #fff;
+    border: none;
+    box-shadow: none;
+}
+
+body.lite-mode .search-input-wrapper {
+    background: transparent;
+    box-shadow: none;
+    border: none;
 }
 
 /* --- REGOLA SPECIALE PER LITE MODE (Fix Barra) --- */
@@ -848,7 +885,7 @@ body.lite-mode .sticky-nav-container {
     position: sticky !important;
     top: 0 !important;
     transform: none !important;
-    opacity: 1 !important; 
+    opacity: 1 !important;
     background: transparent !important;
     z-index: 999;
     box-shadow: none !important;
@@ -866,105 +903,47 @@ body.lite-mode .nav-cluster {
     position: relative;
 }
 
-body.lite-mode #lite-switch {
-    background: #d4af37 !important;
-    color: #000 !important;
-    border: 2px solid white !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-body.lite-mode .search-input {
-    background: #fff;
-    border: none;
-    box-shadow: none;
-}
-
-/* --- LITE MODE HEADER FIXES --- */
-body.lite-mode header {
-    height: 170px !important;
-    padding-top: 30px !important;
-    display: flex !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    align-items: center !important;
-    text-align: center !important;
-}
-
-body.lite-mode .header-content {
-    position: static !important;
-    transform: none !important;
-    margin: 25px auto 0 auto !important;
-    text-align: center !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    left: auto !important;
-    bottom: auto !important;
-    display: block !important;
-}
-
-body.lite-mode .header-content h1, 
-body.lite-mode .header-content .subtitle {
-    text-align: center !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-body.lite-mode .info-cluster {
-    display: flex !important;
-    justify-content: center !important;
-    width: 100% !important;
-}
-
-body.lite-mode .search-container {
-    margin-top: 4px;
-    margin-bottom: 8px;
-}
-
-body.lite-mode .search-input-wrapper {
-    background: transparent;
-    box-shadow: none;
-    border: none;
-}
-
-body.lite-mode header {
-    height: 230px;
-}
-
 /* =========================================
-   NATALE: NUOVA GESTIONE (Neve + Footer)
+   NATALE: GHIRLANDA + NEVE (solo header) + FOOTER
    ========================================= */
 
 /* 1. GHIRLANDA DI LUCI */
 .xmas-garland {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.95;
-}
-.xmas-garland::before { display: none; }
-.xmas-garland::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201000%2070%27%3E%3Cdefs%3E%3Cfilter%20id%3D%27glow%27%20x%3D%27-40%25%27%20y%3D%27-40%25%27%20width%3D%27180%25%27%20height%3D%27180%25%27%3E%3CfeGaussianBlur%20stdDeviation%3D%272%27%20result%3D%27b%27%2F%3E%3CfeMerge%3E%3CfeMergeNode%20in%3D%27b%27%2F%3E%3CfeMergeNode%20in%3D%27SourceGraphic%27%2F%3E%3C%2FfeMerge%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cpath%20d%3D%27M0%2018%20C250%2048%20750%2048%201000%2018%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.35)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%2F%3E%3Cline%20x1%3D%2760%27%20y1%3D%2724.22%27%20x2%3D%2760%27%20y2%3D%2731.22%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%2760%27%20cy%3D%2724.22%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%2760%27%20cy%3D%2735.22%27%20r%3D%275.6%27%20fill%3D%27%23ff4d4d%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%2758%27%20cy%3D%2733.22%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3Cline%20x1%3D%27140%27%20y1%3D%2730.28%27%20x2%3D%27140%27%20y2%3D%2737.28%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%27140%27%20cy%3D%2730.28%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%27140%27%20cy%3D%2741.28%27%20r%3D%275.6%27%20fill%3D%27%23ffd166%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%27138%27%20cy%3D%2739.28%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3Cline%20x1%3D%27220%27%20y1%3D%2734.58%27%20x2%3D%27220%27%20y2%3D%2741.58%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%27220%27%20cy%3D%2734.58%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%27220%27%20cy%3D%2745.58%27%20r%3D%275.6%27%20fill%3D%27%234caf50%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%27218%27%20cy%3D%2743.58%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3Cline%20x1%3D%27300%27%20y1%3D%2737.57%27%20x2%3D%27300%27%20y2%3D%2744.57%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%27300%27%20cy%3D%2737.57%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%27300%27%20cy%3D%2748.57%27%20r%3D%275.6%27%20fill%3D%27%234a90e2%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%27298%27%20cy%3D%2746.57%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3C...%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 120% 70px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0.95;
 }
 
-/* 2. UPGRADE NEVE (CSS Puro - Sostituisce Canvas) */
-/* Neve solo nel blocco header */
-header .snow-container{
-  position: absolute;
-  inset: 0;              /* top:0 right:0 bottom:0 left:0 */
-  pointer-events: none;
-  z-index: 2;            /* sopra foto+overlay, sotto contenuti */
-  overflow: hidden;
+.xmas-garland::before { display: none; }
+
+.xmas-garland::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%201000%2070%27%3E%3Cdefs%3E%3Cfilter%20id%3D%27glow%27%20x%3D%27-40%25%27%20y%3D%27-40%25%27%20width%3D%27180%25%27%20height%3D%27180%25%27%3E%3CfeGaussianBlur%20stdDeviation%3D%272%27%20result%3D%27b%27%2F%3E%3CfeMerge%3E%3CfeMergeNode%20in%3D%27b%27%2F%3E%3CfeMergeNode%20in%3D%27SourceGraphic%27%2F%3E%3C%2FfeMerge%3E%3C%2Ffilter%3E%3C%2Fdefs%3E%3Cpath%20d%3D%27M0%2018%20C250%2048%20750%2048%201000%2018%27%20fill%3D%27none%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.35)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%2F%3E%3Cline%20x1%3D%2760%27%20y1%3D%2724.22%27%20x2%3D%2760%27%20y2%3D%2731.22%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%2760%27%20cy%3D%2724.22%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%2760%27%20cy%3D%2735.22%27%20r%3D%275.6%27%20fill%3D%27%23ff4d4d%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%2758%27%20cy%3D%2733.22%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3Cline%20x1%3D%27140%27%20y1%3D%2730.28%27%20x2%3D%27140%27%20y2%3D%2737.28%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%27140%27%20cy%3D%2730.28%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%27140%27%20cy%3D%2741.28%27%20r%3D%275.6%27%20fill%3D%27%23ffd166%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%27138%27%20cy%3D%2739.28%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3Cline%20x1%3D%27220%27%20y1%3D%2734.58%27%20x2%3D%27220%27%20y2%3D%2741.58%27%20stroke%3D%27rgba(255%2C255%2C255%2C0.40)%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20%2F%3E%3Ccircle%20cx%3D%27220%27%20cy%3D%2734.58%27%20r%3D%272.3%27%20fill%3D%27rgba(40%2C40%2C40%2C0.75)%27%2F%3E%3Ccircle%20cx%3D%27220%27%20cy%3D%2745.58%27%20r%3D%275.6%27%20fill%3D%27%234caf50%27%20filter%3D%27url(%23glow)%27%2F%3E%3Ccircle%20cx%3D%27218%27%20cy%3D%2743.58%27%20r%3D%272.2%27%20fill%3D%27rgba(255%2C255%2C255%2C0.35)%27%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 120% 70px;
+}
+
+/* 2. NEVE: SOLO NEL BLOCCO HEADER (non full-page) */
+header .snow-container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;     /* sopra foto+overlay, sotto testo/badge */
+    overflow: hidden;
+}
+
+/* In Lite mode spegniamo la neve (header senza foto) */
+body.lite-mode header .snow-container {
+    display: none;
 }
 
 .snow-layer {
@@ -973,13 +952,18 @@ header .snow-container{
     left: 0;
     width: 100%;
     height: 200%;
-    background-image: url("data:image/svg+xml,%3Csvg%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20width='80'%20height='80'%3E%3Ccircle%20cx='40'%20cy='40'%20r='2.5'%20fill='%23ffffff'%20fill-opacity='0.65'/%3E%3C/svg%3E");    background-repeat: repeat;
+
+    /* Tile grande, fiocco piccolo (dimensione reale) */
+    background-image: url("data:image/svg+xml,%3Csvg%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20width='80'%20height='80'%3E%3Ccircle%20cx='40'%20cy='40'%20r='1.2'%20fill='%23ffffff'%20fill-opacity='0.65'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+
     animation: snowFall linear infinite;
 }
 
-.layer-1 { background-size: 80px 80px;  opacity: 0.55; animation-duration: 45s; }
-.layer-2 { background-size: 110px 110px; opacity: 0.60; animation-duration: 35s; animation-delay: -6s; }
-.layer-3 { background-size: 150px 150px; opacity: 0.65; animation-duration: 28s; animation-delay: -12s; }
+/* Più leggero (meno “nebbia bianca”) */
+.layer-1 { background-size: 80px 80px;   opacity: 0.22; animation-duration: 45s; }
+.layer-2 { background-size: 110px 110px; opacity: 0.26; animation-duration: 35s; animation-delay: -6s; }
+.layer-3 { background-size: 150px 150px; opacity: 0.30; animation-duration: 28s; animation-delay: -12s; }
 
 @keyframes snowFall {
     0% { transform: translateY(0); }
@@ -989,12 +973,11 @@ header .snow-container{
 /* 3. FOOTER INNEVATO ("Snow Cap") */
 footer {
     position: relative;
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
     margin-top: 60px !important;
     overflow: visible !important;
 }
 
+/* Il cumulo di neve sopra il footer */
 footer::before {
     content: "";
     position: absolute;
@@ -1003,6 +986,7 @@ footer::before {
     width: 100%;
     height: 40px;
     background-color: white;
+
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 V40 Q250,0 500,40 T1000,40 V100 Z' fill='black'/%3E%3C/svg%3E");
     mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 V40 Q250,0 500,40 T1000,40 V100 Z' fill='black'/%3E%3C/svg%3E");
     -webkit-mask-size: 100% 100%;
@@ -1012,6 +996,7 @@ footer::before {
     pointer-events: none;
 }
 
+/* Adattamento automatico per LITE MODE */
 body.lite-mode footer::before {
     background-color: #fdf7ee;
 }
