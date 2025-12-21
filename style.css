@@ -271,9 +271,9 @@ header::after {
 }
 
 @media (max-width: 420px){
-  .logo-circle{ width: 46px; height: 46px; }
-  .nav-mini-logo{ width: 40px; height: 40px; }
-  .logo-circle::after{ inset: -13px; }
+  .logo-circle{ width: 40px; height: 40px; }
+  .nav-mini-logo{ width: 34px; height: 34px; }
+  .logo-circle::after{ inset: -12px; }
 }
 
 /* LITE MODE LOGO */
