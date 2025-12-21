@@ -328,17 +328,22 @@ body.lite-mode .nav-pill-wrapper {
     height: 100%;
     width: 100%;
     padding: 0;
+    padding-right: 20px; /* Aggiunto padding finale */
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
 }
 
-/* MODIFICA: Spacer aumentati a 20px */
-.nav-scroll-area::before,
-.nav-scroll-area::after {
+/* MODIFICA: Spacer iniziale solo a sinistra */
+.nav-scroll-area::before {
     content: '';
     display: block;
-    width: 20px; /* Spazio aumentato per più aria */
+    width: 20px;
     flex-shrink: 0;
+}
+
+/* Rimosso spacer finale per evitare spazio vuoto dopo l'ultimo elemento */
+.nav-scroll-area::after {
+    display: none;
 }
 
 @media (max-width: 699px) {
