@@ -926,30 +926,51 @@ body.lite-mode .nav-cluster {
    NATALE: GHIRLANDA + NEVE (solo header) + FOOTER
    ========================================= */
 
-/* 1. GHIRLANDA DI LUCI */
+/* NATALE - LUCI BIANCHE (NO SVG, NO STRETCH) */
 .xmas-garland {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    z-index: 3;
-    pointer-events: none;
-    opacity: 0.95;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0.95;
 }
 
-.xmas-garland::before { display: none; }
+/* “filo” */
+.xmas-garland::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 18px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.28);
+}
 
+/* lampadine bianche, ripetute con dimensione fissa */
 .xmas-garland::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: url("images/garland.svg");
-    background-repeat: no-repeat;
-    background-position: center top;
-    background-size: 120% 70px;
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  background-repeat: repeat-x;
+  background-position: center top;
+  background-size: 90px 70px;
+
+  background-image:
+    radial-gradient(circle at 22px 34px,
+      rgba(255,255,255,0.95) 0 6px,
+      rgba(255,255,255,0) 7px),
+    radial-gradient(circle at 67px 34px,
+      rgba(255,255,255,0.95) 0 6px,
+      rgba(255,255,255,0) 7px);
+
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.55));
 }
+
 
 /* 2. NEVE: SOLO NEL BLOCCO HEADER (non full-page) */
 header .snow-container {
