@@ -1,4 +1,4 @@
-/* script.js */
+/* script.js - Bar La Lucciola */
 
 const allergenMap = {
     'latte': { icon: '🥛', label: 'Latte' },
@@ -25,10 +25,12 @@ function initDataFetch() {
         complete: function(results) {
             transformCsvToMenu(results.data);
             const firstBtn = document.querySelector('.tab-btn');
+            // Seleziona la prima categoria (Calde) all'avvio
             if (firstBtn) showCategory('calde', firstBtn);
         },
         error: function(err) {
-            alert("Impossibile caricare il menù. Controlla la connessione.");
+            console.error("Errore nel caricamento del menu:", err);
+            // Fallback silenzioso, l'utente vedrà la UI vuota o potrà ricaricare
         }
     });
 }
@@ -36,7 +38,7 @@ function initDataFetch() {
 function transformCsvToMenu(csvData) {
     menuData = {};
 
-    // Reset Banner (ora è un badge nell'header)
+    // Reset Badge Avvisi (ora integrato nell'header)
     const banner = document.getElementById('alert-banner');
     if (banner) {
         banner.style.display = 'none';
@@ -63,12 +65,10 @@ function transformCsvToMenu(csvData) {
 
             const text = row.descrizione ? `${row.nome} - ${row.descrizione}` : row.nome;
 
-            // ULTIMA MODIFICA: avviso come badge coerente (non banner)
             if (banner) {
                 banner.textContent = text;
-                banner.style.display = 'inline-flex'; // <- prima era 'block'
+                banner.style.display = 'inline-flex'; 
             }
-
             return;
         }
 
@@ -94,7 +94,7 @@ function transformCsvToMenu(csvData) {
             description: row.descrizione || '',
             allergens: allergenesList,
             tag: row.tag || '',
-            subcategory: row.categoria, // Mantiene la capitalizzazione originale (es. "Bibite")
+            subcategory: row.categoria, // Mantiene la capitalizzazione originale
             soldOut: (row.disponibile || '').toLowerCase() === 'soldout'
         });
     });
@@ -121,29 +121,32 @@ function normalizeCategory(catString) {
 
 function openWifi() {
     const m = document.getElementById('wifi-modal');
-    m.style.display = 'flex';
-    setTimeout(() => m.classList.add('active'), 10);
-}
-
-function closeWifi(e) {
-    if (e.target === document.getElementById('wifi-modal') || e.target.classList.contains('close-modal')) {
-        document.getElementById('wifi-modal').classList.remove('active');
-        setTimeout(() => document.getElementById('wifi-modal').style.display = 'none', 300);
+    if (m) {
+        m.style.display = 'flex';
+        setTimeout(() => m.classList.add('active'), 10);
     }
 }
 
+function closeWifi(e) {
+    const m = document.getElementById('wifi-modal');
+    if (m && (e.target === m || e.target.classList.contains('close-modal'))) {
+        m.classList.remove('active');
+        setTimeout(() => m.style.display = 'none', 300);
+    }
+}
+
+/* --- LOGICA SCROLL --- */
 let lastScrollTop = 0;
 const navContainer = document.querySelector('.sticky-nav-container');
 const backToTopBtn = document.getElementById('back-to-top');
-
-// --- NUOVA LOGICA SCROLL (barra riappare solo in alto) ---
 const scrollDelta = 10;
+
 window.addEventListener('scroll', function() {
     let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 
     // 1. LITE MODE: barra sempre fissa
     if (document.body.classList.contains('lite-mode')) {
-        navContainer.classList.remove('nav-hidden');
+        if (navContainer) navContainer.classList.remove('nav-hidden');
         if (backToTopBtn) backToTopBtn.style.display = currentScroll > 300 ? 'flex' : 'none';
         return;
     }
@@ -153,11 +156,11 @@ window.addEventListener('scroll', function() {
 
     if (currentScroll > lastScrollTop && currentScroll > 100) {
         // Scorri in BASSO oltre 100px → NASCONDI
-        navContainer.classList.add('nav-hidden');
+        if (navContainer) navContainer.classList.add('nav-hidden');
     } else {
         // Scorri in ALTO: la barra riappare SOLO se sei quasi in cima
-        if (currentScroll < 180) {   // prima era 80
-            navContainer.classList.remove('nav-hidden');
+        if (currentScroll < 180) {   
+            if (navContainer) navContainer.classList.remove('nav-hidden');
         }
         // altrimenti resta nascosta per non coprire il menù
     }
@@ -178,8 +181,9 @@ function checkOpenStatus() {
     const now = new Date();
     const hour = now.getHours();
     const el = document.getElementById('status-indicator');
+    if (!el) return;
 
-    // Modifica qui gli orari se necessario
+    // Modifica qui gli orari se necessario (es. 07:00 - 23:59)
     const isOpen = hour >= 7 && hour < 24;
 
     if (isOpen) {
@@ -195,7 +199,9 @@ function checkOpenStatus() {
 
 async function fetchWeather() {
     const weatherEl = document.getElementById('weather-indicator');
-    const lat = 40.8106;
+    if (!weatherEl) return;
+
+    const lat = 40.8106; // Coordinate Laceno
     const lon = 15.1127;
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
 
@@ -207,24 +213,18 @@ async function fetchWeather() {
 
         // Mappatura icone meteo semplificata
         let iconSvg;
-        if (code <= 1) {
-            // Sole
+        if (code <= 1) { // Sole
             iconSvg = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
-        } else if (code <= 3) {
-            // Nuvoloso
+        } else if (code <= 3) { // Nuvoloso
             iconSvg = `<svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>`;
-        } else if (code === 45 || code === 48) {
-            // Nebbia
+        } else if (code === 45 || code === 48) { // Nebbia
             iconSvg = `<svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M5 16h14"></path><path d="M5 20h14"></path><path d="M5 8h14"></path></svg>`;
-        } else if (code >= 71 && code <= 77) {
-            // Neve
+        } else if (code >= 71 && code <= 77) { // Neve
             iconSvg = `<svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line><path d="m20 16-4-4 4-4"></path><path d="m4 8 4 4-4 4"></path><path d="m16 4-4 4-4-4"></path><path d="m8 20 4-4 4 4"></path></svg>`;
             weatherEl.classList.add('snow');
-        } else if (code >= 95) {
-            // Temporale
+        } else if (code >= 95) { // Temporale
             iconSvg = `<svg viewBox="0 0 24 24"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"></path><polyline points="13 11 9 17 15 17 11 23"></polyline></svg>`;
-        } else {
-            // Pioggia
+        } else { // Pioggia
             iconSvg = `<svg viewBox="0 0 24 24"><line x1="16" y1="13" x2="16" y2="21"></line><line x1="8" y1="13" x2="8" y2="21"></line><line x1="12" y1="15" x2="12" y2="23"></line><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path></svg>`;
         }
 
@@ -236,15 +236,21 @@ async function fetchWeather() {
     }
 }
 
+/* GESTIONE LITE MODE (Icona + Stato) */
 function toggleLiteMode() {
     const body = document.body;
     const btn = document.getElementById('lite-switch');
+    if (!btn) return;
 
     body.classList.toggle('lite-mode');
     const isLite = body.classList.contains('lite-mode');
 
+    updateLiteButton(btn, isLite);
+}
+
+function updateLiteButton(btn, isLite) {
     if (!isLite) {
-        // MODALITÀ NORMALE → FULMINE + "Lite"
+        // MODALITÀ NORMALE (Offri tasto per passare a Lite)
         btn.innerHTML = `
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;">
                 <path d="M13 2L3 14h7l-1 8L21 10h-7l-1-8z"></path>
@@ -252,7 +258,7 @@ function toggleLiteMode() {
             <span>Lite</span>
         `;
     } else {
-        // MODALITÀ LITE → TAZZINA (icona stile Calde) + "Normal"
+        // MODALITÀ LITE (Offri tasto per tornare Normal)
         btn.innerHTML = `
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;">
                 <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
@@ -268,7 +274,8 @@ function toggleLiteMode() {
 
 function showCategory(catId, btnElement) {
     const isLite = document.body.classList.contains('lite-mode');
-    document.getElementById('menu-search').value = '';
+    const searchInput = document.getElementById('menu-search');
+    if (searchInput) searchInput.value = '';
 
     if (!isLite && btnElement) window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -278,7 +285,7 @@ function showCategory(catId, btnElement) {
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     if (btnElement) btnElement.classList.add('active');
 
-    if (data) {
+    if (data && container) {
         container.innerHTML = `<h3>${data.title}</h3>`;
 
         /* LOGICA SOTTOCATEGORIE */
@@ -316,7 +323,10 @@ function showCategory(catId, btnElement) {
 }
 
 function searchMenu() {
-    const filter = document.getElementById('menu-search').value.toLowerCase();
+    const searchInput = document.getElementById('menu-search');
+    if (!searchInput) return;
+
+    const filter = searchInput.value.toLowerCase();
     const container = document.getElementById('menu-container');
 
     if (filter.length === 0) {
@@ -366,111 +376,13 @@ function renderItems(items, container, isLite) {
     });
 }
 
-function initSnow() {
-    const canvas = document.getElementById('snow-canvas');
-    if (!canvas) return;
-
-    // Se l’utente preferisce meno animazioni, non partire
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const ctx = canvas.getContext('2d');
-    let w = 0, h = 0, dpr = 1;
-    let flakes = [];
-    let rafId = null;
-
-    function resize() {
-        dpr = window.devicePixelRatio || 1;
-        w = Math.max(1, window.innerWidth);
-        h = Math.max(1, window.innerHeight);
-        canvas.width = Math.floor(w * dpr);
-        canvas.height = Math.floor(h * dpr);
-        canvas.style.width = w + 'px';
-        canvas.style.height = h + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-        // densità proporzionale allo schermo (limite per performance)
-        const count = Math.min(220, Math.floor((w * h) / 14000));
-        flakes = Array.from({ length: count }, () => spawnFlake(true));
-    }
-
-    function spawnFlake(initial = false) {
-        const size = 1 + Math.random() * 3.2;
-        return {
-            x: Math.random() * w,
-            y: initial ? Math.random() * h : -10 - Math.random() * 60,
-            r: size,
-            vy: 0.7 + Math.random() * 1.8,
-            vx: -0.4 + Math.random() * 0.8,
-            a: 0.35 + Math.random() * 0.5
-        };
-    }
-
-    function step() {
-        ctx.clearRect(0, 0, w, h);
-
-        for (let i = 0; i < flakes.length; i++) {
-            const f = flakes[i];
-            f.y += f.vy;
-            f.x += f.vx + Math.sin((f.y / 60)) * 0.25;
-
-            if (f.y > h + 12) flakes[i] = spawnFlake(false);
-            if (f.x < -20) f.x = w + 20;
-            if (f.x > w + 20) f.x = -20;
-
-            ctx.beginPath();
-            ctx.fillStyle = `rgba(255,255,255,${f.a})`;
-            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-            ctx.fill();
-        }
-
-        rafId = requestAnimationFrame(step);
-    }
-
-    function start() {
-        if (rafId) return;
-        step();
-    }
-
-    function stop() {
-        if (!rafId) return;
-        cancelAnimationFrame(rafId);
-        rafId = null;
-    }
-
-    window.addEventListener('resize', resize, { passive: true });
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden) stop();
-        else start();
-    });
-
-    resize();
-    start();
-}
-
-function initGarlandBulbs() {
-  const addBulbs = (selector, count) => {
-    const host = document.querySelector(selector);
-    if (!host) return;
-    host.innerHTML = "";
-
-    for (let i = 0; i < count; i++) {
-      const b = document.createElement("i");
-      b.style.offsetDistance = `${(i * 100) / (count - 1)}%`;
-      host.appendChild(b);
-    }
-  };
-
-  addBulbs(".bulbs-1", 28);
-  addBulbs(".bulbs-2", 24);
-}
-
-// Avvio
+// --- AVVIO DELL'APPLICAZIONE ---
 document.addEventListener('DOMContentLoaded', () => {
     checkOpenStatus();
     fetchWeather();
     initDataFetch();
-    toggleLiteMode();  // imposta stato iniziale (lite attiva)
-    toggleLiteMode();  // subito dopo torna a normale → fulmine + "Lite"
-    initGarlandBulbs();
-    initSnow();
+    
+    // Inizializza correttamente il bottone Lite Mode senza flash
+    const btn = document.getElementById('lite-switch');
+    if(btn) updateLiteButton(btn, false); // false = modalità normale di default
 });
