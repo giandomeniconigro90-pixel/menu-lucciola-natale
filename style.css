@@ -252,12 +252,16 @@ header::after {
 
 /* GHIRLANDA attorno al logo */
 .logo-circle::after{
-    content: "";
-    position: absolute;
-    inset: -16px; /* prova -16 / -18 / -20 finché non è perfetta */
-    background: url("images/wreath.svg") center / contain no-repeat;
-    pointer-events: none;
-    z-index: 1;
+  content:"";
+  position:absolute;
+  inset:-14px;
+  background: url("images/9776748.jpg") center/contain no-repeat;
+  pointer-events:none;
+  z-index:1;
+
+  /* mostra solo l’anello (taglia il centro e l’esterno) */
+  -webkit-mask: radial-gradient(circle, transparent 46%, #000 47% 98%, transparent 99%);
+          mask: radial-gradient(circle, transparent 46%, #000 47% 98%, transparent 99%);
 }
 
 /* Logo immagine (unificato: dimensioni + z-index) */
