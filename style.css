@@ -236,7 +236,7 @@ header::after {
     border-radius: 50%; /* Meglio 50% per cerchi perfetti */
     overflow: hidden;   /* Importante per tagliare gli angoli del jpeg */
     
-    border: 2px solid white; 
+    border: none; 
     box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Ombra più bella delle due */
     
     flex-shrink: 0;
