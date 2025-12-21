@@ -243,17 +243,14 @@ header::after {
 }
 
 /* GHIRLANDA attorno al logo */
-/* GHIRLANDA attorno al logo */
 .logo-circle::after{
-  content: "";
-  position: absolute;
-  /* prima: inset: -12px; */
-  inset: -18px;          /* prova -16 / -18 / -20 finché non è perfetta */
-  background: url("images/wreath.svg") center / contain no-repeat;
-  pointer-events: none;
-  z-index: 1;
+    content: "";
+    position: absolute;
+    inset: -18px; /* prova -16 / -18 / -20 finché non è perfetta */
+    background: url("images/wreath.svg") center / contain no-repeat;
+    pointer-events: none;
+    z-index: 1;
 }
-
 
 /* Logo immagine (unificato: dimensioni + z-index) */
 .nav-mini-logo {
@@ -288,7 +285,7 @@ body.lite-mode .logo-circle {
     -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     border: 1px solid rgba(255,255,255,0.4);
-    transition: all 0.4s ease; /* FIX */
+    transition: all 0.4s ease;
 }
 
 /* LITE MODE NAV PILL */
@@ -731,9 +728,12 @@ body.lite-mode .item-price {
 
 /* --- FOOTER --- */
 footer {
+    --footer-snow: #ffffff;
+
+    position: relative;
     background-color: white;
     padding: 30px 20px;
-    margin-top: 20px;
+    margin-top: 60px;
     border-top-left-radius: 30px;
     border-top-right-radius: 30px;
     box-shadow: 0 -10px 40px rgba(0,0,0,0.03);
@@ -742,10 +742,31 @@ footer {
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
+    overflow: visible;
+}
+
+/* “Snow cap” sopra al footer */
+footer::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -18px;
+    height: 24px;
+    pointer-events: none;
+    background:
+        radial-gradient(22px 14px at 10% 100%, var(--footer-snow) 60%, transparent 61%),
+        radial-gradient(30px 16px at 30% 100%, var(--footer-snow) 60%, transparent 61%),
+        radial-gradient(24px 15px at 55% 100%, var(--footer-snow) 60%, transparent 61%),
+        radial-gradient(32px 16px at 80% 100%, var(--footer-snow) 60%, transparent 61%),
+        linear-gradient(var(--footer-snow), var(--footer-snow));
+    background-repeat: no-repeat;
 }
 
 /* LITE MODE FOOTER */
 body.lite-mode footer {
+    --footer-snow: #fdf7ee;
+
     background-color: #fdf7ee;
     box-shadow: none;
     border-top-left-radius: 30px;
@@ -925,67 +946,78 @@ body.lite-mode .nav-cluster {
 }
 
 /* =========================================
-   NATALE: GHIRLANDA + NEVE (solo header) + FOOTER
+   NATALE: LUCI + NEVE (solo header)
    ========================================= */
 
 /* LUCI: fili SVG + lampadine su percorso (attaccate) */
 .xmas-garland{
-  position:absolute;
-  top:0; left:0; right:0;
-  height:90px;
-  z-index:3;
-  pointer-events:none;
-  opacity:.95;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    z-index: 2; /* sotto titolo/badge (z=3), sopra overlay (z=1) */
+    pointer-events: none;
+    opacity: 0.95;
+}
+
+/* Disattiva eventuali vecchie luci a pseudo-elemento (garland.svg) */
+.xmas-garland::before,
+.xmas-garland::after{
+    content: none !important;
+    display: none !important;
 }
 
 /* Fili */
 .garland-wires{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .garland-wires path{
-  fill:none;
-  stroke: rgba(255,255,255,0.28);
-  stroke-width: 2.2;
-  stroke-linecap: round;
+    fill: none;
+    stroke: rgba(255,255,255,0.28);
+    stroke-width: 2.2;
+    stroke-linecap: round;
 }
 
 /* Contenitori lampadine */
 .bulbs{
-  position:absolute;
-  inset:0;
+    position: absolute;
+    inset: 0;
 }
 
 /* Stile lampadina */
 .bulbs i{
-  position:absolute;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background: rgba(255,255,255,0.98);
-  box-shadow: 0 0 10px rgba(255,255,255,0.75);
-  transform: translate(-50%, -50%);
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.98);
+    box-shadow: 0 0 10px rgba(255,255,255,0.75);
+    transform: translate(-50%, -50%);
 }
 
 /* Lampadine ancorate ai due fili */
 .bulbs-1 i{
-  offset-path: path("M0,25 C250,85 750,85 1000,25");
-  offset-rotate: 0deg;
+    -webkit-offset-path: path("M0,25 C250,85 750,85 1000,25");
+    offset-path: path("M0,25 C250,85 750,85 1000,25");
+    offset-rotate: 0deg;
 }
 .bulbs-2 i{
-  offset-path: path("M0,55 C260,115 740,115 1000,55");
-  offset-rotate: 0deg;
+    -webkit-offset-path: path("M0,55 C260,115 740,115 1000,55");
+    offset-path: path("M0,55 C260,115 740,115 1000,55");
+    offset-rotate: 0deg;
 }
 
-/* Se vuoi che “seguano” la curva (ruotino), metti  auto  */
-@supports (offset-path: path("M0,0 L1,1")){
-  /* ok */
+/* Fallback: se offset-path non è supportato, nascondi le lampadine (evita “blob” in alto a sinistra) */
+@supports not (offset-path: path("M0,0 L1,1")) {
+    .bulbs { display: none; }
 }
 
-/* 2. NEVE: SOLO NEL BLOCCO HEADER (non full-page) */
+/* NEVE: SOLO NEL BLOCCO HEADER (non full-page) */
 header .snow-container {
     position: absolute;
     inset: 0;
@@ -1022,18 +1054,3 @@ body.lite-mode header .snow-container {
     0% { transform: translateY(0); }
     100% { transform: translateY(50%); }
 }
-
-/* 3. FOOTER INNEVATO ("Snow Cap") */
-footer {
-    position: relative;
-    margin-top: 60px !important;
-    overflow: visible !important;
-}
-
-
-/* Adattamento automatico per LITE MODE */
-body.lite-mode footer::before {
-    background-color: #fdf7ee;
-}
-
-/* FINE STYLE */
