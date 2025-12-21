@@ -25,7 +25,7 @@ function initDataFetch() {
         complete: function(results) {
             transformCsvToMenu(results.data);
             const firstBtn = document.querySelector('.tab-btn');
-            if(firstBtn) showCategory('calde', firstBtn);
+            if (firstBtn) showCategory('calde', firstBtn);
         },
         error: function(err) {
             alert("Impossibile caricare il menù. Controlla la connessione.");
@@ -34,11 +34,15 @@ function initDataFetch() {
 }
 
 function transformCsvToMenu(csvData) {
-    menuData = {}; 
-    
-    // Reset Banner
+    menuData = {};
+
+    // Reset Banner (ora è un badge nell'header)
     const banner = document.getElementById('alert-banner');
-    banner.style.display = 'none';
+    if (banner) {
+        banner.style.display = 'none';
+        banner.textContent = '';
+        banner.classList.add('festive-badge');
+    }
 
     const titles = {
         'calde': 'Caffetteria',
@@ -51,23 +55,28 @@ function transformCsvToMenu(csvData) {
     };
 
     csvData.forEach(row => {
-        if(!row.categoria || !row.nome) return;
+        if (!row.categoria || !row.nome) return;
 
         /* --- LOGICA AVVISI --- */
-        if(row.categoria.toUpperCase().includes('AVVISO')) {
-            if(row.disponibile && (row.disponibile.toLowerCase() === 'no' || row.disponibile.toLowerCase() === 'false')) return;
-            
+        if (row.categoria.toUpperCase().includes('AVVISO')) {
+            if (row.disponibile && (row.disponibile.toLowerCase() === 'no' || row.disponibile.toLowerCase() === 'false')) return;
+
             const text = row.descrizione ? `${row.nome} - ${row.descrizione}` : row.nome;
-            banner.innerHTML = text;
-            banner.style.display = 'block';
-            return; 
+
+            // ULTIMA MODIFICA: avviso come badge coerente (non banner)
+            if (banner) {
+                banner.textContent = text;
+                banner.style.display = 'inline-flex'; // <- prima era 'block'
+            }
+
+            return;
         }
 
-        if(row.disponibile && (row.disponibile.toLowerCase() === 'no' || row.disponibile.toLowerCase() === 'false')) return;
+        if (row.disponibile && (row.disponibile.toLowerCase() === 'no' || row.disponibile.toLowerCase() === 'false')) return;
 
         let catKey = normalizeCategory(row.categoria);
 
-        if(!menuData[catKey]) {
+        if (!menuData[catKey]) {
             menuData[catKey] = {
                 title: titles[catKey] || row.categoria,
                 items: []
@@ -75,36 +84,36 @@ function transformCsvToMenu(csvData) {
         }
 
         let allergenesList = [];
-        if(row.allergeni) {
+        if (row.allergeni) {
             allergenesList = row.allergeni.split(',').map(s => s.trim().toLowerCase());
         }
 
         menuData[catKey].items.push({
             name: row.nome,
-            price: parseFloat(row.prezzo.replace(',', '.')),
+            price: parseFloat(String(row.prezzo || '').replace(',', '.')),
             description: row.descrizione || '',
             allergens: allergenesList,
             tag: row.tag || '',
             subcategory: row.categoria, // Mantiene la capitalizzazione originale (es. "Bibite")
-            soldOut: row.disponibile === 'soldout'
+            soldOut: (row.disponibile || '').toLowerCase() === 'soldout'
         });
     });
 }
 
 function normalizeCategory(catString) {
     const c = catString.toLowerCase();
-    
-    // NUOVA LOGICA: Cerca prima Aperitivi
-    if(c.includes('aperitiv') || c.includes('spritz') || c.includes('cocktail') || c.includes('prosecco') || c.includes('long drink')) return 'aperitivi';
 
-    if(c.includes('caff') || c.includes('cald') || c.includes('tè') || c.includes('tisane')) return 'calde';
-    if(c.includes('fredd') || c.includes('bibit') || c.includes('succh') || c.includes('acqu')) return 'fredde';
-    
+    // NUOVA LOGICA: Cerca prima Aperitivi
+    if (c.includes('aperitiv') || c.includes('spritz') || c.includes('cocktail') || c.includes('prosecco') || c.includes('long drink')) return 'aperitivi';
+
+    if (c.includes('caff') || c.includes('cald') || c.includes('tè') || c.includes('tisane')) return 'calde';
+    if (c.includes('fredd') || c.includes('bibit') || c.includes('succh') || c.includes('acqu')) return 'fredde';
+
     // Alcolici rimane per il resto
-    if(c.includes('alcol') || c.includes('vin') || c.includes('birr') || c.includes('amar') || c.includes('liquor') || c.includes('grap')) return 'alcolici';
-    
-    if(c.includes('cib') || c.includes('food') || c.includes('panin') || c.includes('snack') || c.includes('taglier') || c.includes('focacc')) return 'food';
-    if(c.includes('dolc') || c.includes('dessert') || c.includes('gelat') || c.includes('tort')) return 'dolci';
+    if (c.includes('alcol') || c.includes('vin') || c.includes('birr') || c.includes('amar') || c.includes('liquor') || c.includes('grap')) return 'alcolici';
+
+    if (c.includes('cib') || c.includes('food') || c.includes('panin') || c.includes('snack') || c.includes('taglier') || c.includes('focacc')) return 'food';
+    if (c.includes('dolc') || c.includes('dessert') || c.includes('gelat') || c.includes('tort')) return 'dolci';
     return 'altro';
 }
 
@@ -117,7 +126,7 @@ function openWifi() {
 }
 
 function closeWifi(e) {
-    if(e.target === document.getElementById('wifi-modal') || e.target.classList.contains('close-modal')) {
+    if (e.target === document.getElementById('wifi-modal') || e.target.classList.contains('close-modal')) {
         document.getElementById('wifi-modal').classList.remove('active');
         setTimeout(() => document.getElementById('wifi-modal').style.display = 'none', 300);
     }
@@ -126,6 +135,7 @@ function closeWifi(e) {
 let lastScrollTop = 0;
 const navContainer = document.querySelector('.sticky-nav-container');
 const backToTopBtn = document.getElementById('back-to-top');
+
 // --- NUOVA LOGICA SCROLL (barra riappare solo in alto) ---
 const scrollDelta = 10;
 window.addEventListener('scroll', function() {
@@ -152,7 +162,6 @@ window.addEventListener('scroll', function() {
         // altrimenti resta nascosta per non coprire il menù
     }
 
-
     lastScrollTop = currentScroll;
 
     // Pulsante "torna su"
@@ -161,20 +170,19 @@ window.addEventListener('scroll', function() {
     }
 }, { passive: true });
 
-
 function scrollToTop() {
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function checkOpenStatus() {
     const now = new Date();
     const hour = now.getHours();
     const el = document.getElementById('status-indicator');
-    
-    // Modifica qui gli orari se necessario
-    const isOpen = hour >= 7 && hour < 24; 
 
-    if(isOpen) {
+    // Modifica qui gli orari se necessario
+    const isOpen = hour >= 7 && hour < 24;
+
+    if (isOpen) {
         el.innerHTML = `<span class="status-dot"></span> Aperto`;
         el.classList.add('open');
         el.classList.remove('closed');
@@ -187,8 +195,8 @@ function checkOpenStatus() {
 
 async function fetchWeather() {
     const weatherEl = document.getElementById('weather-indicator');
-    const lat = 40.8106; 
-    const lon = 15.1127; 
+    const lat = 40.8106;
+    const lon = 15.1127;
     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
 
     try {
@@ -196,10 +204,10 @@ async function fetchWeather() {
         const data = await response.json();
         const temp = Math.round(data.current_weather.temperature);
         const code = data.current_weather.weathercode;
-        
+
         // Mappatura icone meteo semplificata
         let iconSvg;
-        if(code <= 1) { 
+        if (code <= 1) {
             // Sole
             iconSvg = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
         } else if (code <= 3) {
@@ -209,9 +217,9 @@ async function fetchWeather() {
             // Nebbia
             iconSvg = `<svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M5 16h14"></path><path d="M5 20h14"></path><path d="M5 8h14"></path></svg>`;
         } else if (code >= 71 && code <= 77) {
-             // Neve
-             iconSvg = `<svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line><path d="m20 16-4-4 4-4"></path><path d="m4 8 4 4-4 4"></path><path d="m16 4-4 4-4-4"></path><path d="m8 20 4-4 4 4"></path></svg>`;
-             weatherEl.classList.add('snow');
+            // Neve
+            iconSvg = `<svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line><path d="m20 16-4-4 4-4"></path><path d="m4 8 4 4-4 4"></path><path d="m16 4-4 4-4-4"></path><path d="m8 20 4-4 4 4"></path></svg>`;
+            weatherEl.classList.add('snow');
         } else if (code >= 95) {
             // Temporale
             iconSvg = `<svg viewBox="0 0 24 24"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"></path><polyline points="13 11 9 17 15 17 11 23"></polyline></svg>`;
@@ -258,30 +266,29 @@ function toggleLiteMode() {
     }
 }
 
-
 function showCategory(catId, btnElement) {
     const isLite = document.body.classList.contains('lite-mode');
     document.getElementById('menu-search').value = '';
-    
+
     if (!isLite && btnElement) window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    const container = document.getElementById('menu-container'); 
+    const container = document.getElementById('menu-container');
     const data = menuData[catId];
-    
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); 
-    if(btnElement) btnElement.classList.add('active');
 
-    if(data) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if (btnElement) btnElement.classList.add('active');
+
+    if (data) {
         container.innerHTML = `<h3>${data.title}</h3>`;
 
         /* LOGICA SOTTOCATEGORIE */
         const subcats = [...new Set(data.items.map(i => i.subcategory))].sort();
-        
-        if(subcats.length > 1) {
+
+        if (subcats.length > 1) {
             // Ordine preferenziale per alcolici (o altro)
             const preferredOrder = ['Aperitivi', 'Cocktail', 'Birre', 'Vini', 'Amari', 'Liquori', 'Grappe'];
-            
-            subcats.sort((a,b) => {
+
+            subcats.sort((a, b) => {
                 const idxA = preferredOrder.indexOf(a);
                 const idxB = preferredOrder.indexOf(b);
                 if (idxA !== -1 && idxB !== -1) return idxA - idxB;
@@ -291,11 +298,10 @@ function showCategory(catId, btnElement) {
             });
 
             subcats.forEach(sub => {
-                // EVITA TITOLI RIDONDANTI: Se il sottogruppo è uguale al titolo principale, non stampare l'H4
-                // Oppure se è "Bibite" dentro la categoria "fredde"
-                const isRedundant = sub.toLowerCase() === data.title.toLowerCase() || 
-                                  (catId === 'fredde' && sub.toLowerCase() === 'bibite');
-                
+                // EVITA TITOLI RIDONDANTI
+                const isRedundant = sub.toLowerCase() === data.title.toLowerCase() ||
+                    (catId === 'fredde' && sub.toLowerCase() === 'bibite');
+
                 if (!isRedundant) {
                     container.innerHTML += `<h4 class="subcategory-title">${sub}</h4>`;
                 }
@@ -313,9 +319,9 @@ function searchMenu() {
     const filter = document.getElementById('menu-search').value.toLowerCase();
     const container = document.getElementById('menu-container');
 
-    if(filter.length === 0) {
+    if (filter.length === 0) {
         const activeBtn = document.querySelector('.tab-btn.active');
-        if(activeBtn) showCategory(activeBtn.getAttribute('onclick').split("'")[1], activeBtn);
+        if (activeBtn) showCategory(activeBtn.getAttribute('onclick').split("'")[1], activeBtn);
         return;
     }
 
@@ -331,19 +337,19 @@ function searchMenu() {
 
 function renderItems(items, container, isLite) {
     items.forEach((item, index) => {
-        const price = item.price.toFixed(2).replace('.', ',');
+        const price = (Number.isFinite(item.price) ? item.price : 0).toFixed(2).replace('.', ',');
         const descHTML = item.description ? `<p>${item.description}</p>` : '';
-        
+
         let tagHTML = '';
-        if(item.tag === 'new') tagHTML = `<span class="tag-badge tag-new">Novità</span>`;
-        if(item.tag === 'hot') tagHTML = `<span class="tag-badge tag-hot">Top</span>`;
+        if (item.tag === 'new') tagHTML = `<span class="tag-badge tag-new">Novità</span>`;
+        if (item.tag === 'hot') tagHTML = `<span class="tag-badge tag-hot">Top</span>`;
 
         let allergensHTML = '';
-        if(item.allergens && item.allergens.length > 0) {
+        if (item.allergens && item.allergens.length > 0) {
             allergensHTML = `<div class="allergen-row">`;
             item.allergens.forEach(a => {
                 const data = allergenMap[a];
-                if(data) allergensHTML += `<span class="allergen-tag">${data.icon} ${data.label}</span>`;
+                if (data) allergensHTML += `<span class="allergen-tag">${data.icon} ${data.label}</span>`;
             });
             allergensHTML += `</div>`;
         }
@@ -361,84 +367,84 @@ function renderItems(items, container, isLite) {
 }
 
 function initSnow() {
-  const canvas = document.getElementById('snow-canvas');
-  if (!canvas) return;
+    const canvas = document.getElementById('snow-canvas');
+    if (!canvas) return;
 
-  // Se l’utente preferisce meno animazioni, non partire
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    // Se l’utente preferisce meno animazioni, non partire
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const ctx = canvas.getContext('2d');
-  let w = 0, h = 0, dpr = 1;
-  let flakes = [];
-  let rafId = null;
+    const ctx = canvas.getContext('2d');
+    let w = 0, h = 0, dpr = 1;
+    let flakes = [];
+    let rafId = null;
 
-  function resize() {
-    dpr = window.devicePixelRatio || 1;
-    w = Math.max(1, window.innerWidth);
-    h = Math.max(1, window.innerHeight);
-    canvas.width = Math.floor(w * dpr);
-    canvas.height = Math.floor(h * dpr);
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    function resize() {
+        dpr = window.devicePixelRatio || 1;
+        w = Math.max(1, window.innerWidth);
+        h = Math.max(1, window.innerHeight);
+        canvas.width = Math.floor(w * dpr);
+        canvas.height = Math.floor(h * dpr);
+        canvas.style.width = w + 'px';
+        canvas.style.height = h + 'px';
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // densità proporzionale allo schermo (limite per performance)
-    const count = Math.min(220, Math.floor((w * h) / 14000));
-    flakes = Array.from({ length: count }, () => spawnFlake(true));
-  }
-
-  function spawnFlake(initial = false) {
-    const size = 1 + Math.random() * 3.2;
-    return {
-      x: Math.random() * w,
-      y: initial ? Math.random() * h : -10 - Math.random() * 60,
-      r: size,
-      vy: 0.7 + Math.random() * 1.8,
-      vx: -0.4 + Math.random() * 0.8,
-      a: 0.35 + Math.random() * 0.5
-    };
-  }
-
-  function step() {
-    ctx.clearRect(0, 0, w, h);
-
-    for (let i = 0; i < flakes.length; i++) {
-      const f = flakes[i];
-      f.y += f.vy;
-      f.x += f.vx + Math.sin((f.y / 60)) * 0.25;
-
-      if (f.y > h + 12) flakes[i] = spawnFlake(false);
-      if (f.x < -20) f.x = w + 20;
-      if (f.x > w + 20) f.x = -20;
-
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(255,255,255,${f.a})`;
-      ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      ctx.fill();
+        // densità proporzionale allo schermo (limite per performance)
+        const count = Math.min(220, Math.floor((w * h) / 14000));
+        flakes = Array.from({ length: count }, () => spawnFlake(true));
     }
 
-    rafId = requestAnimationFrame(step);
-  }
+    function spawnFlake(initial = false) {
+        const size = 1 + Math.random() * 3.2;
+        return {
+            x: Math.random() * w,
+            y: initial ? Math.random() * h : -10 - Math.random() * 60,
+            r: size,
+            vy: 0.7 + Math.random() * 1.8,
+            vx: -0.4 + Math.random() * 0.8,
+            a: 0.35 + Math.random() * 0.5
+        };
+    }
 
-  function start() {
-    if (rafId) return;
-    step();
-  }
+    function step() {
+        ctx.clearRect(0, 0, w, h);
 
-  function stop() {
-    if (!rafId) return;
-    cancelAnimationFrame(rafId);
-    rafId = null;
-  }
+        for (let i = 0; i < flakes.length; i++) {
+            const f = flakes[i];
+            f.y += f.vy;
+            f.x += f.vx + Math.sin((f.y / 60)) * 0.25;
 
-  window.addEventListener('resize', resize, { passive: true });
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop();
-    else start();
-  });
+            if (f.y > h + 12) flakes[i] = spawnFlake(false);
+            if (f.x < -20) f.x = w + 20;
+            if (f.x > w + 20) f.x = -20;
 
-  resize();
-  start();
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(255,255,255,${f.a})`;
+            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        rafId = requestAnimationFrame(step);
+    }
+
+    function start() {
+        if (rafId) return;
+        step();
+    }
+
+    function stop() {
+        if (!rafId) return;
+        cancelAnimationFrame(rafId);
+        rafId = null;
+    }
+
+    window.addEventListener('resize', resize, { passive: true });
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stop();
+        else start();
+    });
+
+    resize();
+    start();
 }
 
 // Avvio
@@ -446,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkOpenStatus();
     fetchWeather();
     initDataFetch();
-    toggleLiteMode();      // imposta stato iniziale (lite attiva)
-    toggleLiteMode();      // subito dopo torna a normale → fulmine + "Lite"
+    toggleLiteMode();  // imposta stato iniziale (lite attiva)
+    toggleLiteMode();  // subito dopo torna a normale → fulmine + "Lite"
     initSnow();
 });
