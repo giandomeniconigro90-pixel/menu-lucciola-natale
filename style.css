@@ -359,7 +359,7 @@ body.lite-mode .nav-pill-wrapper {
     background: transparent;
     border: none;
     height: 100%;
-    /* MODIFICA: Da 50% a 33.333% per visualizzarne 3 */
+    /* MODIFICA: 3 tab su mobile (33.333% ciascuno) invece di 2 */
     flex: 0 0 33.333%; 
     width: 33.333%;
     margin: 0;
@@ -372,16 +372,15 @@ body.lite-mode .nav-pill-wrapper {
 }
 
 .tab-btn-inner {
-    /* MODIFICA: Aumentiamo la larghezza interna al 96% per sfruttare tutto lo spazio */
-    width: 96%; 
+    /* MODIFICA: Ottimizzato per 3 tab */
+    width: 96%;
     height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px; /* Gap ridotto per salvare spazio */
+    gap: 4px; /* Gap ridotto */
     border-radius: 30px;
-    /* MODIFICA: Font ridotto a 13px per far entrare le parole lunghe */
-    font-size: 13px; 
+    font-size: 13px; /* Font ridotto */
     color: #333333;
     font-weight: 600;
     white-space: nowrap;
@@ -1020,7 +1019,6 @@ body.lite-mode header {
     animation-duration: 15s;
     animation-delay: -10s;
 }
-
 
 
 @keyframes snowFall {
