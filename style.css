@@ -928,49 +928,58 @@ body.lite-mode .nav-cluster {
    NATALE: GHIRLANDA + NEVE (solo header) + FOOTER
    ========================================= */
 
-/* NATALE - LUCI BIANCHE (NO SVG, NO STRETCH) */
-.xmas-garland {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.95;
+/* LUCI “A FILI” BIANCHE (solo CSS) */
+.xmas-garland{
+  position:absolute;
+  top:0; left:0; right:0;
+  height:80px;
+  z-index:3;
+  pointer-events:none;
+  opacity:.95;
 }
 
-/* “filo” */
-.xmas-garland::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 18px;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.28);
+/* i fili curvi (2 catenarie) */
+.xmas-garland::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(140% 70px at 50% 0,
+      rgba(255,255,255,0) 58%,
+      rgba(255,255,255,0.28) 59% 60%,
+      rgba(255,255,255,0) 61%) no-repeat,
+    radial-gradient(150% 78px at 50% 6px,
+      rgba(255,255,255,0) 60%,
+      rgba(255,255,255,0.22) 61% 62%,
+      rgba(255,255,255,0) 63%) no-repeat;
 }
 
-/* lampadine bianche, ripetute con dimensione fissa */
-.xmas-garland::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+/* lampadine bianche ripetute a passo fisso */
+.xmas-garland::after{
+  content:"";
+  position:absolute;
+  inset:0;
 
+  /* pattern orizzontale che NON scala “a lampadina” */
   background-repeat: repeat-x;
-  background-position: center top;
-  background-size: 90px 70px;
+  background-size: 96px 80px;     /* distanza lampadine */
+  background-position: center 0;
 
   background-image:
-    radial-gradient(circle at 22px 34px,
-      rgba(255,255,255,0.95) 0 6px,
-      rgba(255,255,255,0) 7px),
-    radial-gradient(circle at 67px 34px,
-      rgba(255,255,255,0.95) 0 6px,
-      rgba(255,255,255,0) 7px);
+    radial-gradient(circle at 16px 32px,
+      rgba(255,255,255,0.98) 0 4px,
+      rgba(255,255,255,0.35) 5px,
+      rgba(255,255,255,0) 8px),
+    radial-gradient(circle at 48px 42px,
+      rgba(255,255,255,0.98) 0 4px,
+      rgba(255,255,255,0.35) 5px,
+      rgba(255,255,255,0) 8px),
+    radial-gradient(circle at 80px 32px,
+      rgba(255,255,255,0.98) 0 4px,
+      rgba(255,255,255,0.35) 5px,
+      rgba(255,255,255,0) 8px);
 
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.55));
+  filter: drop-shadow(0 0 6px rgba(255,255,255,0.6));
 }
 
 
