@@ -328,7 +328,7 @@ body.lite-mode .nav-pill-wrapper {
     height: 100%;
     width: 100%;
     padding: 0;
-    padding-right: 10px; /* Aggiunto padding finale */
+    padding-right: 0px; /* Aggiunto padding finale */
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
 }
