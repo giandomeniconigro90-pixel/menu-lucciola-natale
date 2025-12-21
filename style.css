@@ -333,8 +333,8 @@ body.lite-mode .nav-pill-wrapper {
     box-sizing: border-box;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    scroll-padding-left: 13px;
-    scroll-padding-right: 13px;
+    scroll-padding-left: 8px;
+    scroll-padding-right: 8px;
 }
 
 @media (max-width: 699px) {
