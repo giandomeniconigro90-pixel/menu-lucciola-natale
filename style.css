@@ -175,6 +175,13 @@ header::after {
     border-color: rgba(255,255,255,0.4);
 }
 
+/* Badge avviso integrato nell'header */
+.festive-badge{
+  background: rgba(212, 175, 55, 0.22);   /* oro soft */
+  border-color: rgba(212, 175, 55, 0.40);
+  color: #fff;
+}
+
 /* --- STICKY NAV --- */
 .sticky-nav-container {
     position: sticky;
