@@ -250,6 +250,7 @@ body.lite-mode .logo-circle {
     flex-grow: 1;
     width: 100%;
     overflow: hidden;
+    contain: paint;
     background-color: rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -316,10 +317,11 @@ body.lite-mode .nav-pill-wrapper {
 /* --- LOGICA SCROLL --- */
 
 @keyframes scrollHintAnimation {
-    0%, 100% { transform: translateX(0); }
-    30% { transform: translateX(10px); }
-    60% { transform: translateX(0); }
+  0%, 100% { transform: translateX(0); }
+  30%      { transform: translateX(-10px); } /* dx -> sx */
+  60%      { transform: translateX(0); }
 }
+
 
 /* style.css - Modifica questa sezione */
 
