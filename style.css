@@ -359,8 +359,9 @@ body.lite-mode .nav-pill-wrapper {
     background: transparent;
     border: none;
     height: 100%;
-    flex: 0 0 50%;
-    width: 50%;
+    /* MODIFICA: Da 50% a 33.333% per visualizzarne 3 */
+    flex: 0 0 33.333%; 
+    width: 33.333%;
     margin: 0;
     padding: 0;
     cursor: pointer;
@@ -371,14 +372,16 @@ body.lite-mode .nav-pill-wrapper {
 }
 
 .tab-btn-inner {
-    width: 90%;
+    /* MODIFICA: Aumentiamo la larghezza interna al 96% per sfruttare tutto lo spazio */
+    width: 96%; 
     height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 4px; /* Gap ridotto per salvare spazio */
     border-radius: 30px;
-    font-size: 15px;
+    /* MODIFICA: Font ridotto a 13px per far entrare le parole lunghe */
+    font-size: 13px; 
     color: #333333;
     font-weight: 600;
     white-space: nowrap;
