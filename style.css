@@ -350,8 +350,8 @@ body.lite-mode .nav-pill-wrapper {
     border: none;
     height: 100%;
     /* MODIFICA: 3 tab su mobile (33.333% ciascuno) invece di 2 */
-    flex: 0 0 33.333%; 
-    width: 33.333%;
+    flex: 0 0 31.5%; 
+    width: 31.5%;
     margin: 0;
     padding: 0;
     cursor: pointer;
@@ -362,7 +362,7 @@ body.lite-mode .nav-pill-wrapper {
 }
 
 .tab-btn-inner {
-    width: 94%; /* Leggermente meno del 100% per dare aria tra i bottoni */
+    width: 92%; /* Leggermente meno del 100% per dare aria tra i bottoni */
     height: 42px;
     display: flex;
     align-items: center;
