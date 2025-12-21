@@ -255,7 +255,7 @@ header::after {
   content:"";
   position:absolute;
   inset:-14px;  /* regola se vuoi più/meno grande */
-  background: url("images/9776748.png") center/contain no-repeat;
+  /*background: url("images/9776748.png") center/contain no-repeat;*/
   pointer-events:none;
 
   /* Dietro al cerchio/logo nella stacking context del logo */
