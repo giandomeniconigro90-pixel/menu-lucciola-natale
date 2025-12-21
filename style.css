@@ -977,38 +977,38 @@ body.lite-mode header {
     width: 100%;
     height: 200%;
     /* 
-       TRUCCO PER DIRADARE:
-       Ho aumentato la canvas dell'SVG a 50x50 (prima era 10x10) mantenendo il cerchio piccolo (r=1.5).
-       Risultato: molto più spazio vuoto tra un fiocco e l'altro.
+       BILANCIAMENTO PERFETTO:
+       Canvas SVG 25x25 (distanza media)
+       Raggio 1.8 (visibile ma piccolo)
     */
-    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='50' height='50'%3E%3Ccircle cx='25' cy='25' r='1.5' fill='%23ffffff' fill-opacity='0.55'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg version='1.1' xmlns='http://www.w3.org/2000/svg' width='25' height='25'%3E%3Ccircle cx='12.5' cy='12.5' r='1.8' fill='%23ffffff' fill-opacity='0.6'/%3E%3C/svg%3E");
     background-repeat: repeat;
     animation: snowFall linear infinite;
 }
 
-/* Layer Lontano (Molto rado) */
+/* Layer 1 */
 .layer-1 {
-    /* Spalmando 50px di pattern su 500px di spazio -> fiocchi distanti */
-    background-size: 500px 500px; 
-    opacity: 0.4;
-    animation-duration: 35s; /* Più lento */
+    background-size: 500px 500px;
+    opacity: 0.5;
+    animation-duration: 30s;
 }
 
-/* Layer Medio */
+/* Layer 2 */
 .layer-2 {
     background-size: 400px 400px;
-    opacity: 0.6;
-    animation-duration: 25s;
+    opacity: 0.7;
+    animation-duration: 22s;
     animation-delay: -5s;
 }
 
-/* Layer Vicino */
+/* Layer 3 */
 .layer-3 {
     background-size: 300px 300px;
-    opacity: 0.8;
-    animation-duration: 15s;
+    opacity: 0.85;
+    animation-duration: 14s;
     animation-delay: -10s;
 }
+
 
 @keyframes snowFall {
     0% { transform: translateY(0); }
