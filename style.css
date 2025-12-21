@@ -318,7 +318,7 @@ body.lite-mode .nav-pill-wrapper {
 
 @keyframes scrollHintAnimation {
   0%, 100% { transform: translateX(0); }
-  30%      { transform: translateX(-10px); } /* dx -> sx */
+  30%      { transform: translateX(-15px); } /* dx -> sx */
   60%      { transform: translateX(0); }
 }
 
