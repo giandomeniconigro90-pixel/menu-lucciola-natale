@@ -250,16 +250,18 @@ header::after {
     isolation: isolate; /* gestisce bene gli z-index interni */
 }
 
-/* GHIRLANDA attorno al logo */
+/* GHIRLANDA dietro al logo */
 .logo-circle::after{
   content:"";
   position:absolute;
-  inset:-14px;
-  background: url("images/9776748.png") center/contain no-repeat;
+  inset:-14px;  /* regola se vuoi più/meno grande */
+  background: url("images/9776748.jpg") center/contain no-repeat;
   pointer-events:none;
-  z-index:1;
 
-  /* mostra solo l’anello (taglia il centro e l’esterno) */
+  /* Dietro al cerchio/logo nella stacking context del logo */
+  z-index: 1;
+  
+  /* Maschera: mostra solo l’anello, non il quadrato bianco */
   -webkit-mask: radial-gradient(circle, transparent 46%, #000 47% 98%, transparent 99%);
           mask: radial-gradient(circle, transparent 46%, #000 47% 98%, transparent 99%);
 }
@@ -276,7 +278,7 @@ header::after {
 
 @media (max-width: 420px){
   .logo-circle{ width: 40px; height: 40px; }
-  .nav-mini-logo{ width: 34px; height: 34px; }
+  .nav-mini-logo{position: relative;z-index: 2; /* sopra la ghirlanda */ }
   .logo-circle::after{ inset: -12px; }
 }
 
