@@ -21,13 +21,6 @@
 
 <body>
 
-    <!-- EFFETTO NEVE CSS (Sostituisce il Canvas) -->
-    <div class="snow-container" aria-hidden="true">
-        <div class="snow-layer layer-1"></div>
-        <div class="snow-layer layer-2"></div>
-        <div class="snow-layer layer-3"></div>
-    </div>
-
     <!-- LITE SWITCH (Destra) -->
     <button id="lite-switch" onclick="toggleLiteMode()" 
         style="position: absolute; top: 15px; right: 15px; z-index: 9999; background: rgba(0,0,0,0.6); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; backdrop-filter: blur(5px); cursor: pointer; display: flex; align-items: center; gap: 6px;">
@@ -45,6 +38,21 @@
 
     <header>
         <div class="xmas-garland" aria-hidden="true"></div>
+
+        <header>
+    <div class="xmas-garland" aria-hidden="true"></div>
+
+    <!-- EFFETTO NEVE SOLO NELL’HEADER -->
+    <div class="snow-container" aria-hidden="true">
+        <div class="snow-layer layer-1"></div>
+        <div class="snow-layer layer-2"></div>
+        <div class="snow-layer layer-3"></div>
+    </div>
+
+    <div class="header-content">
+        ...
+    </div>
+</header>
 
         <div class="header-content">
             <h1>Bar La Lucciola</h1>
