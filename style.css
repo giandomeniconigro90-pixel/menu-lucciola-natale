@@ -750,31 +750,29 @@ body.lite-mode .item-price {
   align-items: center;
   gap: 10px;
 
-  /* Sfondo natalizio */
-  color: white;
+  /* Testo */
+  color: #fff;
   font-weight: 700;
   text-decoration: none;
+
   padding: 12px 25px;
   border-radius: 50px;
   font-size: 14px;
 
-  /* Bordo “candy cane” senza cambiare HTML */
+  /* Candy cane attorno + interno marrone */
   border: 3px solid transparent;
   background-image:
-    linear-gradient(135deg, #c62828 0%, #2e7d32 100%), /* rosso->verde */
+    linear-gradient(var(--primary-color), var(--primary-color)), /* interno marrone */
     repeating-linear-gradient(
       -45deg,
       #d32f2f 0 10px,
       #ffffff 10px 20px
-    );
+    ); /* bordo candy */
   background-origin: border-box;
   background-clip: padding-box, border-box;
 
-  /* Glow leggero natalizio */
-  box-shadow:
-    0 8px 18px rgba(198, 40, 40, 0.25),
-    0 8px 18px rgba(46, 125, 50, 0.18);
-
+  /* Ombra coerente col tema */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
   transition: transform 0.2s, filter 0.2s;
 }
 
