@@ -376,23 +376,22 @@ function renderItems(items, container, isLite) {
     });
 }
 
-/* --- FIX PER MOBILE: Mantiene le tab visibili quando cerchi --- */
+/* --- FIX PER MOBILE OTTIMIZZATO --- */
 const searchInput = document.getElementById('menu-search');
 
 if (searchInput) {
     searchInput.addEventListener('focus', () => {
-        // Aspettiamo 300ms che la tastiera del telefono sia uscita del tutto
+        // Ridotto a 150ms: agisce prima che l'occhio se ne accorga
         setTimeout(() => {
             const navTabs = document.querySelector('.nav-pill-wrapper');
             if (navTabs) {
-                // Questo comando forza lo scroll per mettere le tab in cima allo schermo
+                // 'auto' = scatto istantaneo, niente animazione di discesa
                 navTabs.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'start',
-                    inline: 'nearest'
+                    behavior: 'auto', 
+                    block: 'nearest' // 'nearest' è meno aggressivo di 'start'
                 });
             }
-        }, 300);
+        }, 150);
     });
 }
 
