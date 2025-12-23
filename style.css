@@ -1085,3 +1085,77 @@ body.lite-mode .logo-circle{
     z-index: 9999 !important; /* Alziamo anche la "Z" come hai suggerito */
     transition: top 0.2s ease; /* Un piccolo effetto fluido se si sposta */
 }
+
+/* =========================================
+   LAYOUT A GRIGLIA (2 COLONNE)
+   ========================================= */
+
+/* 1. Il contenitore diventa una griglia */
+#menu-container {
+    display: grid;
+    /* Crea colonne automatiche larghe almeno 165px.
+       Su mobile ne entrano 2, su PC 3 o 4. */
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+    gap: 12px; /* Spazio tra le card */
+    align-items: stretch; /* Tutte le card della stessa riga alte uguali */
+}
+
+/* 2. I Titoli (Categorie e Sottocategorie) devono "rompere" la griglia
+      e occupare tutta la larghezza (da colonna 1 alla fine) */
+#menu-container h3,
+#menu-container .subcategory-title {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+/* 3. Ridisegniamo la Card per essere "verticale" */
+.menu-item {
+    flex-direction: column; /* Impila: Testo sopra, Prezzo sotto */
+    align-items: flex-start; /* Allinea a sinistra */
+    justify-content: space-between; /* Spinge il prezzo in fondo */
+    text-align: left;
+    height: auto; 
+    margin-bottom: 0; /* Il gap lo gestisce la griglia */
+    padding: 14px;
+}
+
+/* Adatta i testi per spazi stretti */
+.item-info {
+    width: 100%;
+    margin-bottom: 12px; /* Spazio prima del prezzo */
+}
+
+.item-info h4 {
+    font-size: 15px; /* Leggermente più piccolo per stare su 2 righe */
+    line-height: 1.3;
+    margin-bottom: 4px;
+}
+
+.item-info p {
+    font-size: 12px;
+    /* Taglia la descrizione dopo 3 righe se troppo lunga (opzionale) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Posiziona il prezzo in basso a destra della card */
+.item-price {
+    align-self: flex-end; /* Spinge a destra */
+    margin-left: 0;
+    margin-top: auto; /* Spinge in basso se c'è spazio */
+    font-size: 14px;
+    padding: 6px 12px;
+}
+
+/* Sistema i badge (New/Top) per non rompere la riga del titolo */
+.tag-badge {
+    display: inline-block;
+    margin-left: 4px;
+    margin-bottom: 2px;
+    font-size: 8px;
+    vertical-align: top;
+}
