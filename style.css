@@ -190,21 +190,19 @@ header::after {
     color: #fff;
 }
 
+/* --- STICKY NAV --- */
 .sticky-nav-container {
-    position: -webkit-sticky; /* Importante per compatibilità iOS */
     position: sticky;
-    top: 0;                  /* Cambiato da 10px a 0 per bloccarlo in cima */
-    z-index: 1000;           /* Aumentato per stare sopra al resto */
+    top: 10px;
+    z-index: 100;
     margin-top: -40px;
     padding: 0;
-    padding-bottom: 10px;    /* Aggiunto spazio sotto per estetica */
     display: flex;
     flex-direction: column;
     align-items: center;
     pointer-events: none;
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease;
     opacity: 1;
-    background-color: var(--bg-warm); /* Sfondo solido per coprire il contenuto che scorre sotto */
 }
 
 .sticky-nav-container.nav-hidden {
