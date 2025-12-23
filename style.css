@@ -1135,11 +1135,11 @@ body.lite-mode .logo-circle{
 
 .item-info p {
     font-size: 12px;
-    /* Taglia la descrizione dopo 3 righe se troppo lunga (opzionale) */
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    /* Rimuoviamo il limite di righe */
+    display: block; 
+    overflow: visible;
+    /* Opzionale: riduciamo leggermente l'interlinea per risparmiare spazio */
+    line-height: 1.3; 
 }
 
 /* Posiziona il prezzo in basso a destra della card */
