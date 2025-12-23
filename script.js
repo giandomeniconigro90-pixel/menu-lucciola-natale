@@ -135,7 +135,7 @@ function closeWifi(e) {
     }
 }
 
-/* --- LOGICA SCROLL: RIAPPARE SOLO IN CIMA --- */
+/* --- LOGICA SCROLL: IDENTICA PER LITE E NORMAL --- */
 let lastScrollTop = 0;
 const navContainer = document.querySelector('.sticky-nav-container');
 const backToTopBtn = document.getElementById('back-to-top');
@@ -146,39 +146,31 @@ window.addEventListener('scroll', function() {
     const searchInput = document.getElementById('menu-search');
 
     // 0. PROTEZIONE RICERCA (Fix Tastiera Mobile)
-    // Se stai scrivendo, la barra DEVE restare visibile
+    // Se stai scrivendo, la barra DEVE restare visibile SEMPRE.
     if (document.activeElement === searchInput) {
         if (navContainer) navContainer.classList.remove('nav-hidden');
         return; 
     }
 
-    // 1. LITE MODE
-    if (document.body.classList.contains('lite-mode')) {
-        if (navContainer) navContainer.classList.remove('nav-hidden');
-        if (backToTopBtn) backToTopBtn.style.display = currentScroll > 300 ? 'flex' : 'none';
-        return;
-    }
-
-    // 2. MODALITÀ NORMALE
+    // 1. GESTIONE SCROLL (UNIFICATA)
     // Ignora piccoli movimenti involontari
     if (Math.abs(lastScrollTop - currentScroll) <= scrollDelta) return;
 
     if (currentScroll > lastScrollTop && currentScroll > 150) {
-        // SCROLL GIÙ: Nascondi dopo aver superato l'header
+        // SCROLL GIÙ: Nascondi dopo 150px
         if (navContainer) navContainer.classList.add('nav-hidden');
     } else {
         // SCROLL SU: 
-        // Riappare SOLO se siamo tornati nella parte alta della pagina (vicino all'header)
-        // 350px è circa l'altezza del tuo header. 
+        // Riappare SOLO se siamo tornati nella parte alta (vicino all'header).
+        // Funziona sia per Lite (header basso) che Normal (header alto).
         if (currentScroll < 350) { 
             if (navContainer) navContainer.classList.remove('nav-hidden');
         }
-        // Se risali ma sei ancora "nel mezzo" della pagina, la barra RESTA NASCOSTA.
     }
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 
-    // Pulsante "torna su"
+    // 2. PULSANTE BACK TO TOP
     if (backToTopBtn) {
         backToTopBtn.style.display = currentScroll > 300 ? 'flex' : 'none';
     }
