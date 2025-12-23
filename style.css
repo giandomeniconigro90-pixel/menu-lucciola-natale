@@ -1260,3 +1260,13 @@ body.lite-mode .logo-circle{
 .header-search-row .search-input-wrapper:has(.search-input:not(:placeholder-shown)){
   width: min(92%, 520px);
 }
+
+/* Riduce lo spazio tra barra ricerca e primo contenuto */
+.sticky-nav-container .header-search-row{
+  margin-bottom: 2px !important; /* era 10px inline */
+}
+
+/* Riduce solo il top spacing del menu subito sotto la sticky-nav */
+.sticky-nav-container + .menu-container{
+  padding-top: 10px !important; /* era 20px */
+}
