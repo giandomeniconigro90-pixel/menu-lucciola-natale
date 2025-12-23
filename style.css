@@ -25,6 +25,10 @@ body {
     overscroll-behavior-y: none;
     -webkit-tap-highlight-color: transparent;
     transition: background-color 0.3s ease;
+    /* Impedisce comportamenti touch come lo zoom, ma permette lo scroll */
+    touch-action: pan-x pan-y; 
+    /* Rinforza il blocco dello zoom del testo su iOS */
+    -webkit-text-size-adjust: 100%;
 }
 
 @keyframes kenBurns {
