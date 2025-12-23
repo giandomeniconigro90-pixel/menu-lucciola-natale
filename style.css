@@ -1078,3 +1078,12 @@ body.lite-mode .logo-circle{
     0% { transform: translateY(0); }
     100% { transform: translateY(50%); }
 }
+
+/* --- FIX TASTIERA MOBILE --- */
+/* Quando questa classe è attiva, la barra si incolla al bordo (0px) 
+   invece di galleggiare a 10px. Questo impedisce che "scappi via". */
+.sticky-nav-container.search-active {
+    top: 0 !important;
+    z-index: 9999 !important; /* Alziamo anche la "Z" come hai suggerito */
+    transition: top 0.2s ease; /* Un piccolo effetto fluido se si sposta */
+}
