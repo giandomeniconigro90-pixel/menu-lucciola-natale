@@ -135,7 +135,8 @@ function closeWifi(e) {
     }
 }
 
-/* --- LOGICA SCROLL: IDENTICA PER LITE E NORMAL --- */
+
+/* --- LOGICA SCROLL: UNIFICATA PER TUTTE LE MODALITÀ --- */
 let lastScrollTop = 0;
 const navContainer = document.querySelector('.sticky-nav-container');
 const backToTopBtn = document.getElementById('back-to-top');
@@ -152,17 +153,17 @@ window.addEventListener('scroll', function() {
         return; 
     }
 
-    // 1. GESTIONE SCROLL (UNIFICATA)
-    // Ignora piccoli movimenti involontari
+    // 1. LOGICA SCROLL (Identica per Normal e Lite)
+    // Ignora piccoli movimenti involontari (tremolii)
     if (Math.abs(lastScrollTop - currentScroll) <= scrollDelta) return;
 
     if (currentScroll > lastScrollTop && currentScroll > 150) {
-        // SCROLL GIÙ: Nascondi dopo 150px
+        // SCROLL GIÙ: Nascondi dopo aver superato i 150px
         if (navContainer) navContainer.classList.add('nav-hidden');
     } else {
         // SCROLL SU: 
         // Riappare SOLO se siamo tornati nella parte alta (vicino all'header).
-        // Funziona sia per Lite (header basso) che Normal (header alto).
+        // Funziona perfettamente anche in Lite Mode.
         if (currentScroll < 350) { 
             if (navContainer) navContainer.classList.remove('nav-hidden');
         }
@@ -175,6 +176,7 @@ window.addEventListener('scroll', function() {
         backToTopBtn.style.display = currentScroll > 300 ? 'flex' : 'none';
     }
 }, { passive: true });
+
 
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
