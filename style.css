@@ -962,8 +962,6 @@ body.lite-mode .search-input-wrapper {
 body.lite-mode .sticky-nav-container {
     position: sticky !important;
     top: 0 !important;
-    transform: none !important;
-    opacity: 1 !important;
     background: transparent !important;
     z-index: 999;
     box-shadow: none !important;
