@@ -143,6 +143,14 @@ const scrollDelta = 10;
 
 window.addEventListener('scroll', function() {
     let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    const searchInput = document.getElementById('menu-search');
+
+    // 0. PROTEZIONE RICERCA: Se sto scrivendo, NON fare nulla.
+    // Questo impedisce alla tastiera di far sparire la barra quando si apre.
+    if (document.activeElement === searchInput) {
+        if (navContainer) navContainer.classList.remove('nav-hidden');
+        return; 
+    }
 
     // 1. LITE MODE: barra sempre fissa
     if (document.body.classList.contains('lite-mode')) {
@@ -154,18 +162,17 @@ window.addEventListener('scroll', function() {
     // 2. MODALITÀ NORMALE
     if (Math.abs(lastScrollTop - currentScroll) <= scrollDelta) return;
 
-    if (currentScroll > lastScrollTop && currentScroll > 100) {
-        // Scorri in BASSO oltre 100px → NASCONDI
+    if (currentScroll > lastScrollTop && currentScroll > 150) { // SOGLIA ALZATA A 150
+        // Scorri in BASSO oltre 150px → NASCONDI
         if (navContainer) navContainer.classList.add('nav-hidden');
     } else {
-        // Scorri in ALTO: la barra riappare SOLO se sei quasi in cima
-        if (currentScroll < 180) {   
+        // Scorri in ALTO
+        if (currentScroll < lastScrollTop) {   
             if (navContainer) navContainer.classList.remove('nav-hidden');
         }
-        // altrimenti resta nascosta per non coprire il menù
     }
 
-    lastScrollTop = currentScroll;
+    lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
 
     // Pulsante "torna su"
     if (backToTopBtn) {
