@@ -1221,3 +1221,42 @@ body.lite-mode .logo-circle{
   transform: scale(1.06); /* “mangia” l’eventuale bordo bianco dell’immagine */
   transform-origin: center;
 }
+
+/* =========================================
+   SEARCH COMPACT -> EXPAND (solo CSS)
+   Usa .search-input-wrapper + :focus-within
+   Espande "di poco" (meno della barra tab)
+   ========================================= */
+
+/* Wrapper: da chiuso è “pill” piccolo */
+.header-search-row .search-input-wrapper{
+  width: 44px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+  transition: width .25s ease;
+}
+
+/* Input: resta cliccabile (serve per ottenere il focus), ma “invisibile” da chiuso */
+.header-search-row .search-input{
+  width: 100%;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+/* Quando tocchi dentro (input in focus): si espande (MA non fino al 100%) */
+.header-search-row .search-input-wrapper:focus-within{
+  width: min(92%, 520px);
+}
+
+.header-search-row .search-input-wrapper:focus-within .search-input{
+  opacity: 1;
+}
+
+/* Se c’è testo, resta visibile e tende a restare espansa (browser moderni) */
+.header-search-row .search-input:not(:placeholder-shown){
+  opacity: 1;
+}
+.header-search-row .search-input-wrapper:has(.search-input:not(:placeholder-shown)){
+  width: min(92%, 520px);
+}
