@@ -135,18 +135,17 @@ function closeWifi(e) {
     }
 }
 
-/* --- LOGICA SCROLL --- */
+/* --- LOGICA SCROLL CORRETTA --- */
 let lastScrollTop = 0;
 const navContainer = document.querySelector('.sticky-nav-container');
 const backToTopBtn = document.getElementById('back-to-top');
-const scrollDelta = 10;
+const scrollDelta = 10; // Tolleranza minima per considerare lo scroll "vero"
 
 window.addEventListener('scroll', function() {
     let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
     const searchInput = document.getElementById('menu-search');
 
-    // 0. PROTEZIONE RICERCA: Se sto scrivendo, NON fare nulla.
-    // Questo impedisce alla tastiera di far sparire la barra quando si apre.
+    // 0. PROTEZIONE RICERCA (Solo se l'input è a fuoco)
     if (document.activeElement === searchInput) {
         if (navContainer) navContainer.classList.remove('nav-hidden');
         return; 
@@ -160,14 +159,17 @@ window.addEventListener('scroll', function() {
     }
 
     // 2. MODALITÀ NORMALE
+    // Se lo scroll è minimo (tremolio), ignoralo
     if (Math.abs(lastScrollTop - currentScroll) <= scrollDelta) return;
 
-    if (currentScroll > lastScrollTop && currentScroll > 150) { // SOGLIA ALZATA A 150
-        // Scorri in BASSO oltre 150px → NASCONDI
+    // Logica Direzione
+    if (currentScroll > lastScrollTop && currentScroll > 150) {
+        // SCROLL GIÙ (> 150px dall'inizio): Nascondi
         if (navContainer) navContainer.classList.add('nav-hidden');
     } else {
-        // Scorri in ALTO
-        if (currentScroll < lastScrollTop) {   
+        // SCROLL SU: Mostra
+        // Controllo extra: su desktop evita che riappaia per micro-scroll involontari
+        if (currentScroll + window.innerHeight < document.body.scrollHeight) {
             if (navContainer) navContainer.classList.remove('nav-hidden');
         }
     }
