@@ -1159,3 +1159,25 @@ body.lite-mode .logo-circle{
     font-size: 8px;
     vertical-align: top;
 }
+
+/* DESCRIZIONI: TUTTO SU TELEFONI (anche grandi), CLAMP SU TABLET/DESKTOP */
+
+/* TELEFONI (anche grandi): mostra tutto */
+@media (max-width: 600px) {
+  .item-info p {
+    display: block;
+    overflow: visible;
+    -webkit-line-clamp: unset;
+    -webkit-box-orient: unset;
+  }
+}
+
+/* TABLET/DESKTOP: limita a 3 righe */
+@media (min-width: 601px) {
+  .item-info p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
