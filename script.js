@@ -376,22 +376,28 @@ function renderItems(items, container, isLite) {
     });
 }
 
-/* --- FIX PER MOBILE OTTIMIZZATO --- */
+/* --- FIX PER MOBILE DEFINITIVO --- */
 const searchInput = document.getElementById('menu-search');
 
 if (searchInput) {
     searchInput.addEventListener('focus', () => {
-        // Ridotto a 150ms: agisce prima che l'occhio se ne accorga
+        // 300ms è il tempo ideale per aspettare che la tastiera abbia finito di aprirsi
         setTimeout(() => {
             const navTabs = document.querySelector('.nav-pill-wrapper');
             if (navTabs) {
-                // 'auto' = scatto istantaneo, niente animazione di discesa
+                // 'start' forza l'elemento in cima (più affidabile di 'nearest')
+                // 'auto' elimina l'animazione di scorrimento (scatto istantaneo)
                 navTabs.scrollIntoView({ 
                     behavior: 'auto', 
-                    block: 'nearest' // 'nearest' è meno aggressivo di 'start'
+                    block: 'start' 
                 });
+
+                // PICCOLO TRUCCO EXTRA:
+                // Fa un micro-scroll impercettibile per costringere il browser 
+                // a "ridisegnare" la pagina se si fosse incantata (risolve il bug del "non si vede")
+                window.scrollBy(0, 1);
             }
-        }, 150);
+        }, 300);
     });
 }
 
