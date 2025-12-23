@@ -135,23 +135,24 @@ function closeWifi(e) {
     }
 }
 
-/* --- LOGICA SCROLL CORRETTA --- */
+/* --- LOGICA SCROLL: RIAPPARE SOLO IN CIMA --- */
 let lastScrollTop = 0;
 const navContainer = document.querySelector('.sticky-nav-container');
 const backToTopBtn = document.getElementById('back-to-top');
-const scrollDelta = 10; // Tolleranza minima per considerare lo scroll "vero"
+const scrollDelta = 10; 
 
 window.addEventListener('scroll', function() {
     let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
     const searchInput = document.getElementById('menu-search');
 
-    // 0. PROTEZIONE RICERCA (Solo se l'input è a fuoco)
+    // 0. PROTEZIONE RICERCA (Fix Tastiera Mobile)
+    // Se stai scrivendo, la barra DEVE restare visibile
     if (document.activeElement === searchInput) {
         if (navContainer) navContainer.classList.remove('nav-hidden');
         return; 
     }
 
-    // 1. LITE MODE: barra sempre fissa
+    // 1. LITE MODE
     if (document.body.classList.contains('lite-mode')) {
         if (navContainer) navContainer.classList.remove('nav-hidden');
         if (backToTopBtn) backToTopBtn.style.display = currentScroll > 300 ? 'flex' : 'none';
@@ -159,19 +160,20 @@ window.addEventListener('scroll', function() {
     }
 
     // 2. MODALITÀ NORMALE
-    // Se lo scroll è minimo (tremolio), ignoralo
+    // Ignora piccoli movimenti involontari
     if (Math.abs(lastScrollTop - currentScroll) <= scrollDelta) return;
 
-    // Logica Direzione
     if (currentScroll > lastScrollTop && currentScroll > 150) {
-        // SCROLL GIÙ (> 150px dall'inizio): Nascondi
+        // SCROLL GIÙ: Nascondi dopo aver superato l'header
         if (navContainer) navContainer.classList.add('nav-hidden');
     } else {
-        // SCROLL SU: Mostra
-        // Controllo extra: su desktop evita che riappaia per micro-scroll involontari
-        if (currentScroll + window.innerHeight < document.body.scrollHeight) {
+        // SCROLL SU: 
+        // Riappare SOLO se siamo tornati nella parte alta della pagina (vicino all'header)
+        // 350px è circa l'altezza del tuo header. 
+        if (currentScroll < 350) { 
             if (navContainer) navContainer.classList.remove('nav-hidden');
         }
+        // Se risali ma sei ancora "nel mezzo" della pagina, la barra RESTA NASCOSTA.
     }
 
     lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
