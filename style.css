@@ -419,6 +419,9 @@ body.lite-mode .nav-pill-wrapper {
     align-items: center;
     justify-content: center;
     scroll-snap-align: start;
+    color: var(--text-dark);
+    -webkit-appearance: none; /* Rimuove lo stile nativo dei bottoni su iOS */
+    appearance: none;
 }
 
 .tab-btn-inner {
@@ -432,6 +435,14 @@ body.lite-mode .nav-pill-wrapper {
     font-size: 13px;
     white-space: nowrap;
     border: 2px solid transparent;
+    color: inherit; /* Prende il colore dal genitore */
+    text-decoration: none; /* Rimuove sottolineature indesiderate */
+}
+
+.tab-btn a[href^="tel"], 
+.tab-btn a[href^="mailto"] {
+    color: inherit !important;
+    text-decoration: none !important;
 }
 
 .nav-scroll-area .tab-btn:first-child { margin-left: 0 !important; }
