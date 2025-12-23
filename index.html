@@ -2,9 +2,9 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>Bar La Lucciola - Menù</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <title>Bar La Lucciola - Menù</title>
+
   <link rel="icon" type="image/png" href="images/icon_app.png" />
   <link rel="apple-touch-icon" href="images/icon_app.png" />
   <meta name="theme-color" content="#2c2c2c" />
@@ -25,14 +25,13 @@
   <button
     id="lite-switch"
     onclick="toggleLiteMode()"
-    style="position:absolute; top:15px; right:15px; z-index:9999; background:rgba(0,0,0,0.6); color:white; border:1px solid rgba(255,255,255,0.3); padding:8px 14px; border-radius:20px; font-size:12px; font-weight:bold; backdrop-filter:blur(5px); cursor:pointer; display:flex; align-items:center; gap:6px;"
     aria-label="Modalità Lite"
   ></button>
 
   <!-- WIFI BUTTON (Sinistra) -->
   <button
+    class="wifi-fab"
     onclick="openWifi()"
-    style="position:absolute; top:15px; left:15px; z-index:9999; background:rgba(0,0,0,0.6); color:white; border:1px solid rgba(255,255,255,0.3); width:36px; height:36px; border-radius:50%; backdrop-filter:blur(5px); cursor:pointer; display:flex; align-items:center; justify-content:center;"
     aria-label="Wi-Fi"
   >
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -45,25 +44,20 @@
 
   <header>
     <div class="xmas-garland" aria-hidden="true">
-  <svg class="garland-svg" viewBox="0 0 1000 120" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
-    <!-- Fili -->
-    <path class="wire" d="M0,32 C260,92 740,92 1000,12"></path>
-    <path class="wire" d="M0,62 C260,122 740,122 1000,42"></path>
+      <svg class="garland-svg" viewBox="0 0 1000 120" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+        <path class="wire" d="M0,32 C260,92 740,92 1000,12"></path>
+        <path class="wire" d="M0,62 C260,122 740,122 1000,42"></path>
+        <path class="bulb bulb-1" d="M0,32 C260,92 740,92 1000,12"></path>
+        <path class="bulb bulb-2" d="M0,62 C260,122 740,122 1000,42"></path>
+      </svg>
+    </div>
 
-    <!-- Lampadine (puntini sul path) -->
-    <path class="bulb bulb-1" d="M0,32 C260,92 740,92 1000,12"></path>
-    <path class="bulb bulb-2" d="M0,62 C260,122 740,122 1000,42"></path>
-  </svg>
-</div>
-
-    <!-- EFFETTO NEVE SOLO NELL’HEADER -->
     <div class="snow-container" aria-hidden="true">
       <div class="snow-layer layer-1"></div>
       <div class="snow-layer layer-2"></div>
       <div class="snow-layer layer-3"></div>
     </div>
 
-    <!-- Testo + badge (UNA SOLA VOLTA) -->
     <div class="header-content">
       <h1>Bar La Lucciola</h1>
       <div class="subtitle">Laceno - Bagnoli Irpino</div>
@@ -74,19 +68,17 @@
         </div>
 
         <div id="weather-indicator" class="weather-badge" style="display:none"></div>
-
         <div id="alert-banner" class="status-badge festive-badge" style="display:none"></div>
       </div>
     </div>
   </header>
 
   <div class="sticky-nav-container">
-    <!-- RIGA 1 (SOPRA): Tabs Categorie -->
     <div class="nav-cluster">
       <div class="nav-pill-wrapper">
         <div class="nav-scroll-area">
 
-          <button class="tab-btn active" onclick="showCategory('calde', this)" style="margin-left:3px;">
+          <button class="tab-btn active tab-edge-left" onclick="showCategory('calde', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
@@ -144,7 +136,7 @@
             </span>
           </button>
 
-          <button class="tab-btn" onclick="showCategory('dolci', this)" style="margin-right:3px;">
+          <button class="tab-btn tab-edge-right" onclick="showCategory('dolci', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m4.5 13.5 3-3"></path>
@@ -159,11 +151,12 @@
       </div>
     </div>
 
-    <!-- RIGA 2 (SOTTO): Logo + Ricerca -->
-    <div class="header-search-row" style="display:flex; align-items:center; justify-content:space-between; width:95%; max-width:600px; margin:5px auto 10px auto; pointer-events: auto;">
+    <div class="header-search-row">
       <div class="logo-circle">
-<img src="images/IMG_4459.png" alt="Logo La Lucciola" class="nav-mini-logo"></div>
-      <div class="search-container" style="margin:0 0 0 15px; width:100%; max-width:none !important;">
+        <img src="images/IMG_4459.png" alt="Logo La Lucciola" class="nav-mini-logo">
+      </div>
+
+      <div class="search-container in-header">
         <div class="search-input-wrapper">
           <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"></circle>
@@ -177,7 +170,6 @@
 
   <div id="menu-container" class="menu-container"></div>
 
-  <!-- TASTO RECENSIONE -->
   <div class="review-btn-container">
     <a href="https://www.google.com/maps/search/?api=1&query=Bar+La+Lucciola+Laceno+Bagnoli+Irpino" target="_blank" class="review-btn" rel="noopener">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
@@ -187,10 +179,7 @@
     </a>
   </div>
 
-  <!-- BACK TO TOP -->
-  <button id="back-to-top" onclick="scrollToTop()"
-    style="position:fixed; bottom:25px; right:25px; width:45px; height:45px; border-radius:50%; background:var(--primary-color); color:white; border:none; box-shadow:0 4px 15px rgba(0,0,0,0.3); display:none; align-items:center; justify-content:center; z-index:900; cursor:pointer; transition:transform 0.2s;"
-    aria-label="Torna su">
+  <button id="back-to-top" onclick="scrollToTop()" aria-label="Torna su">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="m18 15-6-6-6 6"></path>
     </svg>
@@ -210,7 +199,7 @@
         0827 68069
       </a>
 
-      <div class="footer-address" style="margin-top:5px;">P.IVA 611810647</div>
+      <div class="footer-address footer-vat">P.IVA 611810647</div>
     </div>
 
     <div class="footer-social">
@@ -224,7 +213,6 @@
     <div class="footer-bottom">© 2025 Bar La Lucciola • Coperto e Servizio inclusi • Designed for Laceno</div>
   </footer>
 
-  <!-- MODALE WIFI -->
   <div id="wifi-modal" class="modal-overlay" onclick="closeWifi(event)">
     <div class="modal-content">
       <div class="close-modal" onclick="closeWifi(event)">&times;</div>
@@ -245,4 +233,4 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="script.js"></script>
 </body>
-</html>
+            </html>
