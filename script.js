@@ -376,6 +376,26 @@ function renderItems(items, container, isLite) {
     });
 }
 
+/* --- FIX PER MOBILE: Mantiene le tab visibili quando cerchi --- */
+const searchInput = document.getElementById('menu-search');
+
+if (searchInput) {
+    searchInput.addEventListener('focus', () => {
+        // Aspettiamo 300ms che la tastiera del telefono sia uscita del tutto
+        setTimeout(() => {
+            const navTabs = document.querySelector('.nav-pill-wrapper');
+            if (navTabs) {
+                // Questo comando forza lo scroll per mettere le tab in cima allo schermo
+                navTabs.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start',
+                    inline: 'nearest'
+                });
+            }
+        }, 300);
+    });
+}
+
 // --- AVVIO DELL'APPLICAZIONE ---
 document.addEventListener('DOMContentLoaded', () => {
     checkOpenStatus();
