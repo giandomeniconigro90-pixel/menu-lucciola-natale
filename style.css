@@ -746,18 +746,40 @@ body.lite-mode .item-price {
 }
 
 .review-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--google-blue);
-    color: white;
-    padding: 12px 25px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(66, 133, 244, 0.3);
-    transition: transform 0.2s;
-    font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  /* Sfondo natalizio */
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-size: 14px;
+
+  /* Bordo “candy cane” senza cambiare HTML */
+  border: 3px solid transparent;
+  background-image:
+    linear-gradient(135deg, #c62828 0%, #2e7d32 100%), /* rosso->verde */
+    repeating-linear-gradient(
+      -45deg,
+      #d32f2f 0 10px,
+      #ffffff 10px 20px
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  /* Glow leggero natalizio */
+  box-shadow:
+    0 8px 18px rgba(198, 40, 40, 0.25),
+    0 8px 18px rgba(46, 125, 50, 0.18);
+
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.review-btn:hover {
+  filter: brightness(1.03);
 }
 
 .review-btn:active { transform: scale(0.95); }
