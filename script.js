@@ -376,32 +376,6 @@ function renderItems(items, container, isLite) {
     });
 }
 
-/* --- FIX MOBILE DEFINITIVO (CSS + JS) --- */
-const searchInput = document.getElementById('menu-search');
-const stickyNav = document.querySelector('.sticky-nav-container');
-
-if (searchInput && stickyNav) {
-    searchInput.addEventListener('focus', () => {
-        // 1. Attiva la modalità "Ancoraggio Forte" (top: 0)
-        stickyNav.classList.add('search-active');
-
-        // 2. Aspetta la tastiera e scrolla
-        setTimeout(() => {
-            stickyNav.scrollIntoView({ 
-                behavior: 'auto', 
-                block: 'start' 
-            });
-            // Piccola correzione di 1 pixel per svegliare il browser
-            window.scrollBy(0, 1);
-        }, 300);
-    });
-
-    // Quando chiudi la ricerca o clicchi fuori, torna al design originale (top: 10px)
-    searchInput.addEventListener('blur', () => {
-        stickyNav.classList.remove('search-active');
-    });
-}
-
 // --- AVVIO DELL'APPLICAZIONE ---
 document.addEventListener('DOMContentLoaded', () => {
     checkOpenStatus();
