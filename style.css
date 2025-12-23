@@ -1007,3 +1007,90 @@ body.lite-mode .nav-pill-wrapper{
   box-shadow:0 1px 3px rgba(0,0,0,.06);
   backdrop-filter:none !important;
 }
+/* ===== Inline-styles moved to CSS (HTML clean) ===== */
+
+/* Top buttons (Lite + WiFi) */
+#lite-switch{
+  position:absolute;
+  top:15px;
+  right:15px;
+  z-index:9999;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.3);
+  padding:8px 14px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+  backdrop-filter:blur(5px);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+/* WiFi “fab” */
+.wifi-fab{
+  position:absolute;
+  top:15px;
+  left:15px;
+  z-index:9999;
+  background:rgba(0,0,0,0.6);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.3);
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  backdrop-filter:blur(5px);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* Header search row layout (was inline) */
+.header-search-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:95%;
+  max-width:600px;
+  pointer-events:auto;
+
+  /* il margin-bottom finale lo governa già il tuo fix a 0 */
+  margin:5px auto 10px auto;
+}
+
+/* Search container inside header row (was inline) */
+.search-container.in-header{
+  margin:0 0 0 15px;
+  width:100%;
+  max-width:none !important;
+}
+
+/* Back-to-top button (was inline) */
+#back-to-top{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:var(--primary-color);
+  color:#fff;
+  border:none;
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  display:none; /* lo gestisce lo script */
+  align-items:center;
+  justify-content:center;
+  z-index:900;
+  cursor:pointer;
+  transition:transform .2s;
+}
+
+/* Footer VAT spacing (was inline) */
+.footer-vat{margin-top:5px}
+
+/* Tab edge spacing (was inline) */
+.tab-edge-left{margin-left:3px}
+.tab-edge-right{margin-right:3px}
