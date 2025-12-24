@@ -15,6 +15,7 @@
   --status-closed:#ff5252;
   --allergen-bg:rgba(0,0,0,0.05);
   --google-blue:#4285F4;
+  --menu-space: 14px;
 }
 
 /* =========================================================
@@ -584,7 +585,6 @@ header .snow-container{
 h3{
   color:var(--primary-color);
   font-family:"Playfair Display",serif;
-  margin:10px 0 25px 0;
   font-size:24px;
   font-weight:700;
   display:flex;
@@ -598,23 +598,29 @@ h3::after{
   opacity:.2;
   margin-left:15px;
 }
+.menu-container > h3{
+  margin:10px 0 25px 0;
+}
+
+.menu-container .subcategory-title{
+  margin:25px 0 12px 5px;
+}
+
 .subcategory-title{
   color:var(--text-dark);
   font-family:"Playfair Display",serif;
   font-size:19px;
   font-weight:600;
-  margin:25px 0 12px 5px;
   padding-left:12px;
   border-left:4px solid var(--primary-color);
   opacity:0;
   animation:fadeInUp .5s forwards;
 }
 
-/* Griglia sul container reale (#menu-container) */
 #menu-container{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
-  gap:12px;
+  gap: var(--menu-space);
   align-items:stretch;
 }
 
@@ -623,8 +629,7 @@ h3::after{
 #menu-container .subcategory-title{
   grid-column:1 / -1;
   width:100%;
-  margin-top:20px;
-  margin-bottom:5px;
+  margin: 0;                 /* fondamentale: niente top/bottom */
 }
 
 /* Card (versione finale: verticale per griglia) */
@@ -1094,45 +1099,3 @@ body.lite-mode .nav-pill-wrapper{
 /* Tab edge spacing (was inline) */
 .tab-edge-left{margin-left:3px}
 .tab-edge-right{margin-right:3px}
-
-:root{
-  --v-space: 14px; /* scegli tu: 12 / 14 / 16 */
-}
-
-/* 1) La griglia decide tutti gli spazi verticali */
-#menu-container{
-  gap: var(--v-space) !important;
-}
-
-/* 2) Dentro la griglia: niente margin verticali sui titoli */
-#menu-container h3,
-#menu-container .subcategory-title{
-  margin: 0 0 0 0 !important;          /* fondamentale */
-}
-
-/* 3) Mantieni solo lo stile della sottocategoria (barretta + rientro) */
-#menu-container .subcategory-title{
-  margin-left: 5px !important;
-  padding-left: 12px !important;
-}
-
-:root{
-  --menu-space: 14px; /* metti qui il valore che corrisponde allo screenshot */
-}
-
-/* Spazi verticali e orizzontali tra TUTTI gli elementi della griglia */
-#menu-container{
-  gap: var(--menu-space) !important;
-}
-
-/* Niente margini verticali: lo spazio lo dà solo la grid (sempre uguale) */
-#menu-container h3,
-#menu-container .subcategory-title{
-  margin: 0 !important;
-}
-
-/* Mantieni solo lo stile della sottocategoria (rientro + barretta) */
-#menu-container .subcategory-title{
-  margin-left: 5px !important;
-  padding-left: 12px !important;
-}
