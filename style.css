@@ -1115,3 +1115,24 @@ body.lite-mode .nav-pill-wrapper{
   margin-left: 5px !important;
   padding-left: 12px !important;
 }
+
+:root{
+  --menu-space: 14px; /* metti qui il valore che corrisponde allo screenshot */
+}
+
+/* Spazi verticali e orizzontali tra TUTTI gli elementi della griglia */
+#menu-container{
+  gap: var(--menu-space) !important;
+}
+
+/* Niente margini verticali: lo spazio lo dà solo la grid (sempre uguale) */
+#menu-container h3,
+#menu-container .subcategory-title{
+  margin: 0 !important;
+}
+
+/* Mantieni solo lo stile della sottocategoria (rientro + barretta) */
+#menu-container .subcategory-title{
+  margin-left: 5px !important;
+  padding-left: 12px !important;
+}
