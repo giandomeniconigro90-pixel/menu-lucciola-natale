@@ -637,9 +637,8 @@ h3::after{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  justify-content:space-between;
+  justify-content:flex-start;
   text-align:left;
-
   background:#fff;
   padding:14px;
   border-radius:16px;
@@ -686,11 +685,11 @@ h3::after{
   white-space:nowrap;
 
   align-self:flex-end;
-  margin-left:0;
+  argin-left:0;
   margin-top:auto;
 }
 
-/* TELEFONI: mostra tutto */
+/* TE  margin-top: 8px;to */
 @media (max-width:600px){
   .item-info p{
     display:block;
@@ -1130,4 +1129,42 @@ body.lite-mode .nav-pill-wrapper{
   margin: 0 !important;
   padding-top: 10px;     /* standard come Caffetteria */
   padding-bottom: 10px;  /* standard come Caffetteria */
+}
+/* =========================================================
+   PATCH FINALE: spacing titoli + card variabili senza vuoti
+   (incolla IN FONDO a style.css)
+   ========================================================= */
+
+/* 1) Gap unico griglia (usa la variabile se ce l'hai) */
+#menu-container{
+  gap: var(--menu-space, 14px) !important;
+  align-items: stretch;
+}
+
+/* 2) Titoli full-width in griglia + spacing uniforme tipo "Caffetteria" */
+#menu-container > h3,
+#menu-container > .subcategory-title,
+#menu-container h3,
+#menu-container .subcategory-title{
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0 !important;
+  padding: 10px 0; /* standard unico */
+}
+
+/* Mantieni il rientro della sottocategoria */
+#menu-container .subcategory-title{
+  margin-left: 5px !important;
+  padding-left: 12px !important;
+}
+
+/* 3) Card: devono crescere col contenuto ma senza "spazio elastico" */
+.menu-item{
+  justify-content: flex-start; /* niente space-between */
+}
+
+/* 4) Prezzo: niente push in basso (era la causa del vuoto) */
+.item-price{
+  margin-left: 0;     /* fix: prima avevi 'argin-left' */
+  margin-top: 8px;    /* invece di auto */
 }
