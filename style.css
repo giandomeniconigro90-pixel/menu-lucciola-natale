@@ -1100,3 +1100,24 @@ body.lite-mode .nav-pill-wrapper{
 /* Tab edge spacing (was inline) */
 .tab-edge-left{margin-left:3px}
 .tab-edge-right{margin-right:3px}
+
+
+/* =========================================================
+   FIX SPACING TABLET/DESKTOP
+   (forza: spazi = SOLO gap della griglia)
+   ========================================================= */
+@media (min-width:601px){
+  /* stessa distanza verticale su desktop */
+  #menu-container{
+    gap: var(--menu-space) !important;
+  }
+
+  /* azzera tutti i margini verticali che su desktop "ricompaiono" */
+  #menu-container h3,
+  #menu-container .subcategory-title{
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
