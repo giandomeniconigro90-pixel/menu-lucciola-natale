@@ -1153,5 +1153,28 @@ body.lite-mode .nav-pill-wrapper{
   padding-left: 12px !important;
 }
 
-body{ outline:5px solid red !important; }
-html{ background: #ff0000 !important; }
+/* =========================================================
+   FIX DEFINITIVO: titoli in griglia = spazi SOLO da gap
+   ========================================================= */
+
+/* gap unico griglia */
+#menu-container{
+  gap: var(--menu-space) !important;
+}
+
+/* titoli dentro la griglia (anche se non sono figli diretti) */
+#menu-container h3,
+#menu-container .subcategory-title{
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* rientro sottocategoria */
+#menu-container .subcategory-title{
+  margin-left: 5px !important;
+  padding-left: 12px !important;
+}
