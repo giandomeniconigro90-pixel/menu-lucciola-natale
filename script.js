@@ -47,7 +47,7 @@ function isSoldOutLike(value) {
 }
 
 function getActiveCategoryFromOnclick(btn) {
-  // Mantiene la tua logica: legge l'onclick="showCategory('xxx', this)"
+  // legge: onclick="showCategory('xxx', this)"
   const raw = btn?.getAttribute?.('onclick') || '';
   const m = raw.match(/showCategory('([^']+)'/);
   return m ? m[1] : null;
