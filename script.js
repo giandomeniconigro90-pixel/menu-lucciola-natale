@@ -48,7 +48,7 @@ function isSoldOutLike(value) {
 
 function getActiveCategoryFromOnclick(btn) {
   const raw = btn?.getAttribute?.('onclick') || '';
-  const m = raw.match(/showCategory('([^']+)'/);
+  const m = raw.match(/'([^']+)'/); // prende la prima stringa tra apici
   return m ? m[1] : null;
 }
 
