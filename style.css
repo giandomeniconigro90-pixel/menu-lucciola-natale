@@ -1152,3 +1152,5 @@ body.lite-mode .nav-pill-wrapper{
   margin-left: 5px !important;
   padding-left: 12px !important;
 }
+
+body{ outline:5px solid red !important; }
