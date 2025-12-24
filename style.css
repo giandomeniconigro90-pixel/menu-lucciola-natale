@@ -15,7 +15,7 @@
   --status-closed:#ff5252;
   --allergen-bg:rgba(0,0,0,0.05);
   --google-blue:#4285F4;
-  --menu-space: 14px;
+  --menu-space:14px;
 }
 
 /* =========================================================
@@ -582,6 +582,7 @@ header .snow-container{
   min-height:400px;
 }
 
+/* Titolo categoria (h3) */
 h3{
   color:var(--primary-color);
   font-family:"Playfair Display",serif;
@@ -598,14 +599,8 @@ h3::after{
   opacity:.2;
   margin-left:15px;
 }
-.menu-container > h3{
-  margin:10px 0 25px 0;
-}
 
-.menu-container .subcategory-title{
-  margin:25px 0 12px 5px;
-}
-
+/* Sottocategoria */
 .subcategory-title{
   color:var(--text-dark);
   font-family:"Playfair Display",serif;
@@ -617,19 +612,27 @@ h3::after{
   animation:fadeInUp .5s forwards;
 }
 
+/* Griglia */
 #menu-container{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
-  gap: var(--menu-space);
+  gap:var(--menu-space);
   align-items:stretch;
 }
 
-/* Titoli full-width nella griglia */
-#menu-container h3,
-#menu-container .subcategory-title{
+/* Titoli full-width nella griglia (lo spacing lo gestisce SOLO il gap) */
+#menu-container > h3,
+#menu-container > .subcategory-title{
   grid-column:1 / -1;
   width:100%;
-  margin: 0;                 /* fondamentale: niente top/bottom */
+  margin:0;
+  padding:0;
+}
+
+/* Mantieni rientro orizzontale sottocategoria (non influisce sugli spazi verticali) */
+#menu-container > .subcategory-title{
+  margin-left:5px;
+  padding-left:12px;
 }
 
 /* Card (versione finale: verticale per griglia) */
@@ -685,11 +688,11 @@ h3::after{
   white-space:nowrap;
 
   align-self:flex-end;
-  argin-left:0;
-  margin-top:auto;
+  margin-left:0;     /* FIX: era "argin-left" */
+  margin-top:8px;    /* FIX: era auto e creava vuoto */
 }
 
-/* TE  margin-top: 8px;to */
+/* TELEFONI: mostra tutto */
 @media (max-width:600px){
   .item-info p{
     display:block;
@@ -1011,6 +1014,7 @@ body.lite-mode .nav-pill-wrapper{
   box-shadow:0 1px 3px rgba(0,0,0,.06);
   backdrop-filter:none !important;
 }
+
 /* ===== Inline-styles moved to CSS (HTML clean) ===== */
 
 /* Top buttons (Lite + WiFi) */
@@ -1060,8 +1064,6 @@ body.lite-mode .nav-pill-wrapper{
   width:95%;
   max-width:600px;
   pointer-events:auto;
-
-  /* il margin-bottom finale lo governa già il tuo fix a 0 */
   margin:5px auto 10px auto;
 }
 
@@ -1098,73 +1100,3 @@ body.lite-mode .nav-pill-wrapper{
 /* Tab edge spacing (was inline) */
 .tab-edge-left{margin-left:3px}
 .tab-edge-right{margin-right:3px}
-
-
-/* ===== SPACING UNICO per TUTTE le TAB (override finale) ===== */
-
-/* 1) La griglia decide gli spazi */
-#menu-container{
-  gap: var(--menu-space) !important;
-}
-
-/* 2) Dentro #menu-container: azzera QUALSIASI margin verticale dei titoli */
-#menu-container > h3,
-#menu-container h3,
-#menu-container .subcategory-title{
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-}
-
-/* 3) Se vuoi tenere il “rientro” della sottocategoria come ora */
-#menu-container .subcategory-title{
-  margin-left: 5px !important;
-  padding-left: 12px !important;
-}
-
-/* ===== Standard "Caffetteria" per TUTTE le TAB ===== */
-
-/* Il titolo categoria e i titoli subcategoria dentro la griglia */
-#menu-container > h3,
-#menu-container > .subcategory-title{
-  margin: 0 !important;
-  padding-top: 10px;     /* standard come Caffetteria */
-  padding-bottom: 10px;  /* standard come Caffetteria */
-}
-/* =========================================================
-   PATCH FINALE: spacing titoli + card variabili senza vuoti
-   (incolla IN FONDO a style.css)
-   ========================================================= */
-
-/* 1) Gap unico griglia (usa la variabile se ce l'hai) */
-#menu-container{
-  gap: var(--menu-space, 14px) !important;
-  align-items: stretch;
-}
-
-/* 2) Titoli full-width in griglia + spacing uniforme tipo "Caffetteria" */
-#menu-container > h3,
-#menu-container > .subcategory-title,
-#menu-container h3,
-#menu-container .subcategory-title{
-  grid-column: 1 / -1;
-  width: 100%;
-  margin: 0 !important;
-  padding: 10px 0; /* standard unico */
-}
-
-/* Mantieni il rientro della sottocategoria */
-#menu-container .subcategory-title{
-  margin-left: 5px !important;
-  padding-left: 12px !important;
-}
-
-/* 3) Card: devono crescere col contenuto ma senza "spazio elastico" */
-.menu-item{
-  justify-content: flex-start; /* niente space-between */
-}
-
-/* 4) Prezzo: niente push in basso (era la causa del vuoto) */
-.item-price{
-  margin-left: 0;     /* fix: prima avevi 'argin-left' */
-  margin-top: 8px;    /* invece di auto */
-}
