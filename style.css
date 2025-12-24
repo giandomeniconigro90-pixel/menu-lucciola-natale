@@ -1121,3 +1121,34 @@ body.lite-mode .nav-pill-wrapper{
     padding-bottom: 0 !important;
   }
 }
+
+/* =========================================================
+   PATCH DEFINITIVA: titoli = SOLO gap (tutti i layout)
+   ========================================================= */
+
+/* 1) Gap unico griglia */
+#menu-container{
+  gap: var(--menu-space) !important;
+}
+
+/* 2) Dentro la griglia: i titoli NON devono avere margini/padding verticali */
+#menu-container h3,
+#menu-container .subcategory-title{
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 3) E devono restare full-width sempre */
+#menu-container h3,
+#menu-container .subcategory-title{
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+/* 4) Mantieni SOLO il rientro della sottocategoria */
+#menu-container .subcategory-title{
+  margin-left: 5px !important;
+  padding-left: 12px !important;
+}
