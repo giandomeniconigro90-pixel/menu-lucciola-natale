@@ -1121,3 +1121,13 @@ body.lite-mode .nav-pill-wrapper{
   margin-left: 5px !important;
   padding-left: 12px !important;
 }
+
+/* ===== Standard "Caffetteria" per TUTTE le TAB ===== */
+
+/* Il titolo categoria e i titoli subcategoria dentro la griglia */
+#menu-container > h3,
+#menu-container > .subcategory-title{
+  margin: 0 !important;
+  padding-top: 10px;     /* standard come Caffetteria */
+  padding-bottom: 10px;  /* standard come Caffetteria */
+}
