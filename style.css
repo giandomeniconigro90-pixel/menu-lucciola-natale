@@ -1099,3 +1099,25 @@ body.lite-mode .nav-pill-wrapper{
 /* Tab edge spacing (was inline) */
 .tab-edge-left{margin-left:3px}
 .tab-edge-right{margin-right:3px}
+
+
+/* ===== SPACING UNICO per TUTTE le TAB (override finale) ===== */
+
+/* 1) La griglia decide gli spazi */
+#menu-container{
+  gap: var(--menu-space) !important;
+}
+
+/* 2) Dentro #menu-container: azzera QUALSIASI margin verticale dei titoli */
+#menu-container > h3,
+#menu-container h3,
+#menu-container .subcategory-title{
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+/* 3) Se vuoi tenere il “rientro” della sottocategoria come ora */
+#menu-container .subcategory-title{
+  margin-left: 5px !important;
+  padding-left: 12px !important;
+}
