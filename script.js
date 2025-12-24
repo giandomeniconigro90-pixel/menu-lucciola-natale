@@ -371,7 +371,7 @@ function showCategory(catId, btnElement) {
       (catId === 'fredde' && sub.toLowerCase() === 'bibite');
 
     if (!isRedundant) {
-      container.innerHTML += `<h4 class="subcategory-title">${sub}</h4>`;
+      container.innerHTML += `<h3 class="subcategory-title">${sub}</h3>`;
     }
 
     const groupItems = data.items.filter((i) => i.subcategory === sub);
