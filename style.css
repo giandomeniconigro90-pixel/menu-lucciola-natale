@@ -1094,3 +1094,24 @@ body.lite-mode .nav-pill-wrapper{
 /* Tab edge spacing (was inline) */
 .tab-edge-left{margin-left:3px}
 .tab-edge-right{margin-right:3px}
+
+:root{
+  --v-space: 14px; /* scegli tu: 12 / 14 / 16 */
+}
+
+/* 1) La griglia decide tutti gli spazi verticali */
+#menu-container{
+  gap: var(--v-space) !important;
+}
+
+/* 2) Dentro la griglia: niente margin verticali sui titoli */
+#menu-container h3,
+#menu-container .subcategory-title{
+  margin: 0 0 0 0 !important;          /* fondamentale */
+}
+
+/* 3) Mantieni solo lo stile della sottocategoria (barretta + rientro) */
+#menu-container .subcategory-title{
+  margin-left: 5px !important;
+  padding-left: 12px !important;
+}
