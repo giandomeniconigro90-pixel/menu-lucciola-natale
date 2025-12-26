@@ -1272,3 +1272,26 @@ footer{ margin-top: 60px !important; } /* ripristina il design originale del foo
 #menu-container > .subcategory-title{
   margin-bottom: 0 !important;
 }
+
+/* ===== PATCH MINIMA: spazi uniformi + niente scroll orizzontale ===== */
+
+/* 0) Stop scroll orizzontale indesiderato */
+html, body{
+  overflow-x: hidden;
+}
+
+/* 1) Spazio titolo -> prima card (uniforma Food con Calde) */
+#menu-container > h3,
+#menu-container > .subcategory-title{
+  margin-bottom: 0 !important;
+}
+
+/* 2) Spazio ultima card -> bottone (costante, senza alterare header/tab/scroll) */
+.menu-container{
+  padding-bottom: var(--menu-space) !important;
+}
+
+/* 3) Evita che le card/griglia “forzino” overflow in flex/grid edge-case */
+.menu-item{
+  min-width: 0;
+}
