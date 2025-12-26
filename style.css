@@ -1180,53 +1180,66 @@ body.lite-mode .nav-pill-wrapper{
 }
 
 /* =========================================================
-   FIX DEFINITIVO E TOTALE (CARD FOOD)
+   FIX DEFINITIVO SPAZIATURE (Titolo, Card, Container)
    ========================================================= */
 
-/* 1. Griglia: Allineamento in alto (tassativo) */
-#menu-container {
-  align-items: start !important;
+/* 1. Container Menu: Ridotto spazio e min-height */
+.menu-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px 20px 20px 20px !important; /* Meno padding verticale */
+  min-height: auto !important; /* Rimuove lo spazio vuoto enorme sotto se ci sono poche card */
+  padding-bottom: 30px !important; /* Spazio giusto prima del bottone recensione */
 }
 
-/* 2. Card: Deve essere un blocco compatto, senza min-height */
+/* 2. Titolo Categoria (H3): Azzerare margini esterni eccessivi */
+h3 {
+  margin-top: 10px !important;    /* Avvicina al menu in alto */
+  margin-bottom: 15px !important; /* Avvicina alle card sotto */
+  padding-top: 0 !important;
+}
+
+/* 3. Griglia: Compatta e senza buchi */
+#menu-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 14px !important; /* Gap standard tra le card */
+  align-items: start !important; /* Fondamentale per non stirare le card */
+  align-content: start !important; /* Compatta le righe verso l'alto */
+}
+
+/* 4. Titoli dentro la Griglia: Devono occupare solo lo spazio necessario */
+#menu-container > h3,
+#menu-container > .subcategory-title {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 0 !important;
+  margin-bottom: 5px !important; /* Spazietto minimo prima delle card */
+  padding: 0 !important;
+  height: auto !important;
+  align-self: end !important; /* Si attacca al contenuto sotto */
+}
+
+/* 5. Card: Compatta e pulita (conferma fix precedenti) */
 .menu-item {
   display: flex !important;
   flex-direction: column !important;
   height: auto !important;
   min-height: 0 !important;
-  padding-bottom: 12px !important; /* Riduciamo un po' il padding sotto */
+  padding-bottom: 12px !important;
+  margin-bottom: 0 !important; /* Niente margini extra, ci pensa il gap della griglia */
 }
 
-/* 3. Info container: NON deve espandersi */
 .item-info {
-  margin-bottom: 8px !important; /* Spazio fisso ridotto tra testo e prezzo */
-  flex-grow: 0 !important;       /* IMPEDISCE di occupare spazio vuoto */
-  width: 100%;
+  margin-bottom: 8px !important;
+  flex-grow: 0 !important;
 }
 
-/* 4. Descrizione: Rimuovi margini parassiti che creano buchi */
 .item-info p {
   margin-top: 4px !important;
-  margin-bottom: 0 !important;   /* Fondamentale */
-  padding-bottom: 0 !important;
-}
-
-/* 5. Prezzo: Semplice blocco in fondo */
-.item-price {
-  margin-top: 0 !important;      /* Nessuna spinta dall'alto */
-  align-self: flex-end !important;
   margin-bottom: 0 !important;
 }
 
-/* 6. Allergeni: Compatti */
-.allergen-row {
-  margin-top: 6px !important;
-  gap: 4px !important;
-}
-.allergen-tag {
-  font-size: 10px !important;
-  padding: 1px 5px !important;
-}
 
 
 
