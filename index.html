@@ -21,6 +21,38 @@
 
 <body>
 
+    <!-- SCRIPT LITE MODE IMMEDIATO -->
+    <script>
+        (function() {
+            // 1. Recupera preferenza utente salvata
+            var savedMode = localStorage.getItem('liteMode');
+            
+            // 2. Controlla connessione (Network Information API)
+            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+            var isSlow = false;
+            
+            if (connection) {
+                // Consideriamo lento: 2g, slow-2g o se l'utente ha attivato "Risparmio Dati"
+                if (connection.saveData === true || 
+                    connection.effectiveType === 'slow-2g' || 
+                    connection.effectiveType === '2g' || 
+                    connection.effectiveType === '3g') {
+                    isSlow = true;
+                }
+            }
+
+            // 3. Applica la classe SE:
+            //    - L'utente l'ha attivata manualmente in passato ('true')
+            //    - OPPURE è lento E l'utente non l'ha disattivata manualmente ('false')
+            if (savedMode === 'true' || (isSlow && savedMode !== 'false')) {
+                document.body.classList.add('lite-mode');
+            }
+        })();
+    </script>
+    
+    <!-- ... qui inizia il resto del tuo HTML (header, etc.) ... -->
+
+
   <!-- LITE SWITCH (Destra) -->
   <button
     id="lite-switch"
