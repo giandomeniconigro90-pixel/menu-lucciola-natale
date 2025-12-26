@@ -1179,25 +1179,30 @@ body.lite-mode .nav-pill-wrapper{
   padding-left: 12px !important;
 }
 
-/* Card: deve occupare tutta l'altezza della cella */
+/* =========================================================
+   FIX CARD DINAMICHE (Corretto)
+   ========================================================= */
+
+/* Card: FLEX verticale, ma altezza AUTO per evitare il collasso */
 .menu-item {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-start !important; /* Il contenuto parte dall'alto */
-  height: 100% !important; /* Occupa tutta l'altezza che la griglia le dà */
-  box-sizing: border-box; /* Per evitare che il padding sballi l'altezza */
+  justify-content: flex-start !important;
+  height: auto !important; /* IMPORTANTE: auto, non 100%, sennò spariscono */
+  box-sizing: border-box;
 }
 
-/* Info (titolo + descrizione): non deve forzare altezze strane */
+/* Info: si allunga per riempire lo spazio vuoto */
 .item-info {
-  margin-bottom: 15px !important; /* Un po' di aria fissa tra testo e resto */
-  flex-grow: 1 !important; /* Se c'è spazio vuoto, se lo prende lui (spingendo il prezzo giù) */
+  margin-bottom: 15px !important; /* Aria fissa prima del prezzo */
+  flex-grow: 1 !important; /* Spinge giù tutto quello che c'è sotto */
+  width: 100%;
 }
 
-/* Prezzo: spinto in fondo e con aria sotto */
+/* Prezzo: forzato in basso a destra */
 .item-price {
-  margin-top: auto !important; /* "Molla" che spinge il prezzo in fondo alla card */
-  margin-bottom: 5px !important; /* Quello "spazietto" sotto che volevi */
+  margin-top: auto !important; /* La "molla" che lo spinge in fondo */
+  margin-bottom: 5px !important; /* Spazietto finale */
   align-self: flex-end !important; /* Allineato a destra */
+  margin-left: 0 !important;
 }
-
