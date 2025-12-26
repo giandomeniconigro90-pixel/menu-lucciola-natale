@@ -11,7 +11,11 @@ const allergenMap = {
   sedano: { icon: '🌿', label: 'Sedano' }
 };
 
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
+const SHEET_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
+
+// CSV ORARI (metti file locale "orari.csv" nella root del sito, oppure un Google Sheet pubblicato output=csv)
+const HOURS_CSV_URL = 'orari.csv';
 
 const CATEGORY_TITLES = {
   calde: 'Caffetteria',
@@ -29,6 +33,17 @@ const PREFERRED_SUBCAT_ORDER = ['Aperitivi', 'Cocktail', 'Birre', 'Vini', 'Amari
    STATO
    =========================== */
 let menuData = {};
+
+// {0..6: [{start,end,startMin,endMin}, ...]}
+let openingSchedule = {
+  0: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }],
+  1: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }],
+  2: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }],
+  3: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }],
+  4: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }],
+  5: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }],
+  6: [{ start: '07:00', end: '24:00', startMin: 420, endMin: 1440 }]
+};
 
 /* ===========================
    UTILS
@@ -52,24 +67,192 @@ function getActiveCategoryFromOnclick(btn) {
   return m ? m[1] : null;
 }
 
+/* ===========================
+   ORARI: CSV -> TAB + STATUS
+   =========================== */
+function dayToIndex(day) {
+  const m = {
+    dom: 0,
+    domenica: 0,
+    lun: 1,
+    lunedi: 1,
+    lunedì: 1,
+    mar: 2,
+    martedi: 2,
+    martedì: 2,
+    mer: 3,
+    mercoledi: 3,
+    mercoledì: 3,
+    gio: 4,
+    giovedi: 4,
+    giovedì: 4,
+    ven: 5,
+    venerdi: 5,
+    venerdì: 5,
+    sab: 6,
+    sabato: 6
+  };
+  const k = safeTrim(day).toLowerCase();
+  return m[k] ?? null;
+}
+
+function timeToMinutes(t) {
+  const s = safeTrim(t);
+  if (!s) return null;
+  if (s.toUpperCase() === 'CHIUSO') return null;
+  const parts = s.split(':');
+  const hh = Number(parts[0]);
+  const mm = Number(parts[1] ?? 0);
+
+  // consenti "24:00"
+  if (hh === 24 && mm === 0) return 1440;
+  if (!Number.isFinite(hh) || !Number.isFinite(mm)) return null;
+  return hh * 60 + mm;
+}
+
+function parseHoursCsv(rows) {
+  const schedule = { 0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [] };
+
+  rows.forEach((r) => {
+    const d = dayToIndex(r.day);
+    if (d === null) return;
+
+    const startMin = timeToMinutes(r.start);
+    const endMin = timeToMinutes(r.end);
+
+    // "CHIUSO" => giorno senza fasce
+    if (startMin === null || endMin === null) return;
+
+    schedule[d].push({
+      start: safeTrim(r.start),
+      end: safeTrim(r.end),
+      startMin,
+      endMin
+    });
+  });
+
+  // (opzionale) ordina le fasce per startMin
+  for (let d = 0; d <= 6; d++) {
+    schedule[d].sort((a, b) => (a.startMin ?? 0) - (b.startMin ?? 0));
+  }
+
+  return schedule;
+}
+
+function formatDaySlots(slots) {
+  if (!slots?.length) return 'Chiuso';
+  return slots.map((s) => `${s.start}–${s.end}`).join(' / ');
+}
+
+function renderOpeningHoursTable() {
+  const box = document.getElementById('opening-hours-box');
+  if (!box) return;
+
+  const names = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
+  const today = new Date().getDay();
+
+  let html = `<div class="opening-hours-title">Orari</div>`;
+  html += `<table class="opening-hours-table">`;
+
+  for (let d = 0; d <= 6; d++) {
+    const rowClass = d === today ? 'opening-hours-today' : '';
+    html += `
+      <tr class="${rowClass}">
+        <td>${names[d]}</td>
+        <td>${formatDaySlots(openingSchedule[d])}</td>
+      </tr>
+    `;
+  }
+
+  html += `</table>`;
+  box.innerHTML = html;
+}
+
+function isOpenNow(dateObj) {
+  const day = dateObj.getDay(); // 0..6
+  const nowMin = dateObj.getHours() * 60 + dateObj.getMinutes();
+
+  const todaySlots = openingSchedule[day] || [];
+  const yday = (day + 6) % 7;
+  const ydaySlots = openingSchedule[yday] || [];
+
+  // Fasce di oggi (incluse quelle che passano mezzanotte)
+  for (const s of todaySlots) {
+    if (s.endMin > s.startMin) {
+      if (nowMin >= s.startMin && nowMin < s.endMin) return true;
+    } else if (s.endMin < s.startMin) {
+      // fascia che passa mezzanotte: aperto se ora >= start
+      if (nowMin >= s.startMin) return true;
+    }
+  }
+
+  // Fasce di ieri che passano mezzanotte e arrivano a oggi
+  for (const s of ydaySlots) {
+    if (s.endMin < s.startMin) {
+      if (nowMin < s.endMin) return true;
+    }
+  }
+
+  return false;
+}
+
+function initOpeningHours() {
+  // 1) cache immediata
+  const cached = localStorage.getItem('openingHoursCache');
+  if (cached) {
+    try {
+      const parsed = JSON.parse(cached);
+      if (parsed && typeof parsed === 'object') {
+        openingSchedule = parsed;
+      }
+      renderOpeningHoursTable();
+      checkOpenStatus();
+    } catch (_) {}
+  }
+
+  // 2) fetch CSV in background
+  Papa.parse(HOURS_CSV_URL, {
+    download: true,
+    header: true,
+    skipEmptyLines: true,
+    transform: (v) => safeTrim(v),
+
+    complete: (results) => {
+      openingSchedule = parseHoursCsv(results.data);
+      localStorage.setItem('openingHoursCache', JSON.stringify(openingSchedule));
+      renderOpeningHoursTable();
+      checkOpenStatus();
+    },
+
+    error: (err) => {
+      console.error('Errore caricamento orari:', err);
+      // se fallisce, resta la schedule di default + eventuale cache
+      renderOpeningHoursTable();
+      checkOpenStatus();
+    }
+  });
+}
+
+/* ===========================
+   DATA FETCH / PARSE
+   =========================== */
 function initDataFetch() {
   // 1. TENTATIVO CACHE: Carica subito dalla memoria del telefono se esiste
   const cachedData = localStorage.getItem('menuDataCache');
-  
+
   if (cachedData) {
     try {
       menuData = JSON.parse(cachedData);
-      console.log("Menu caricato dalla cache (istantaneo)");
-      
+      console.log('Menu caricato dalla cache (istantaneo)');
+
       // Renderizza subito la prima categoria (Calde) senza aspettare internet
       const firstBtn = document.querySelector('.tab-btn');
-      // Se c'è già un bottone attivo (es. ricarica pagina), usa quello, altrimenti il primo
       const activeBtn = document.querySelector('.tab-btn.active') || firstBtn;
       const catToLoad = getActiveCategoryFromOnclick(activeBtn) || 'calde';
-      
+
       if (activeBtn) showCategory(catToLoad, activeBtn);
     } catch (e) {
-      console.error("Cache corrotta, attendo rete...", e);
+      console.error('Cache corrotta, attendo rete...', e);
     }
   }
 
@@ -78,28 +261,27 @@ function initDataFetch() {
     download: true,
     header: true,
     skipEmptyLines: true,
+
+    // PULIZIA SPAZI AUTOMATICA (Fix "Bibite" doppie)
     transform: (value) => safeTrim(value),
 
     complete: (results) => {
       // Elabora i nuovi dati da Google
       transformCsvToMenu(results.data);
-      
+
       // SALVA I NUOVI DATI IN CACHE (per la prossima volta)
       localStorage.setItem('menuDataCache', JSON.stringify(menuData));
-      
+
       // Aggiorna la vista con i dati nuovi (live update)
-      // Cerchiamo quale categoria sta guardando l'utente ora
       const activeBtn = document.querySelector('.tab-btn.active');
       if (activeBtn) {
-          const currentCat = getActiveCategoryFromOnclick(activeBtn);
-          // Ricarica la categoria corrente senza scrollare in alto (passando null come btn)
-          if(currentCat) showCategory(currentCat, null); 
+        const currentCat = getActiveCategoryFromOnclick(activeBtn);
+        if (currentCat) showCategory(currentCat, null);
       } else {
-          // Fallback se non c'era nulla selezionato
-          const firstBtn = document.querySelector('.tab-btn');
-          if (firstBtn) showCategory('calde', firstBtn);
+        const firstBtn = document.querySelector('.tab-btn');
+        if (firstBtn) showCategory('calde', firstBtn);
       }
-      console.log("Menu aggiornato da Google Sheets (Background)");
+      console.log('Menu aggiornato da Google Sheets (Background)');
     },
 
     error: (err) => {
@@ -169,13 +351,7 @@ function normalizeCategory(catString) {
   const c = String(catString || '').toLowerCase();
 
   // Cerca prima Aperitivi
-  if (
-    c.includes('aperitiv') ||
-    c.includes('spritz') ||
-    c.includes('cocktail') ||
-    c.includes('prosecco') ||
-    c.includes('long drink')
-  ) {
+  if (c.includes('aperitiv') || c.includes('spritz') || c.includes('cocktail') || c.includes('prosecco') || c.includes('long drink')) {
     return 'aperitivi';
   }
 
@@ -257,14 +433,13 @@ function scrollToTop() {
 }
 
 /* ===========================
-   STATUS (APERTURA)
+   STATUS (APERTURA) - da CSV
    =========================== */
 function checkOpenStatus() {
-  const hour = new Date().getHours();
   const el = document.getElementById('status-indicator');
   if (!el) return;
 
-  const isOpen = hour >= 7 && hour < 24;
+  const isOpen = isOpenNow(new Date());
 
   if (isOpen) {
     el.innerHTML = `<span class="status-dot"></span> Aperto`;
@@ -297,15 +472,16 @@ async function fetchWeather() {
 
     let iconSvg;
 
+    // reset classi speciali
+    weatherEl.classList.remove('snow');
+
     if (code <= 1) {
       iconSvg =
         `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
     } else if (code <= 3) {
-      iconSvg =
-        `<svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>`;
+      iconSvg = `<svg viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>`;
     } else if (code === 45 || code === 48) {
-      iconSvg =
-        `<svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M5 16h14"></path><path d="M5 20h14"></path><path d="M5 8h14"></path></svg>`;
+      iconSvg = `<svg viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M5 16h14"></path><path d="M5 20h14"></path><path d="M5 8h14"></path></svg>`;
     } else if (code >= 71 && code <= 77) {
       iconSvg =
         `<svg viewBox="0 0 24 24"><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line><path d="m20 16-4-4 4-4"></path><path d="m4 8 4 4-4 4"></path><path d="m16 4-4 4-4-4"></path><path d="m8 20 4-4 4 4"></path></svg>`;
@@ -335,7 +511,7 @@ function toggleLiteMode() {
 
   // Toggle classe
   const isLite = body.classList.toggle('lite-mode');
-  
+
   // Salva preferenza PER SEMPRE (così se torno domani si ricorda)
   localStorage.setItem('liteMode', isLite);
 
@@ -405,8 +581,7 @@ function showCategory(catId, btnElement) {
 
   subcats.forEach((sub) => {
     const isRedundant =
-      sub.toLowerCase() === data.title.toLowerCase() ||
-      (catId === 'fredde' && sub.toLowerCase() === 'bibite');
+      sub.toLowerCase() === data.title.toLowerCase() || (catId === 'fredde' && sub.toLowerCase() === 'bibite');
 
     if (!isRedundant) {
       container.innerHTML += `<h3 class="subcategory-title">${sub}</h3>`;
@@ -478,13 +653,18 @@ function renderItems(items, container, isLite) {
    BOOTSTRAP
    =========================== */
 document.addEventListener('DOMContentLoaded', () => {
-  checkOpenStatus();
+  // Orari + tabella + status (da CSV)
+  initOpeningHours();
+
+  // Meteo + menu
   fetchWeather();
   initDataFetch();
 
-  // Ora il bottone legge lo stato REALE dal body (che è stato impostato dallo script inline nell'HTML)
+  // Aggiorna badge aperto/chiuso ogni minuto (senza refresh)
+  setInterval(checkOpenStatus, 60 * 1000);
+
+  // Bottone lite: allinea l'icona allo stato reale del body
   const btn = document.getElementById('lite-switch');
   const isLiteNow = document.body.classList.contains('lite-mode');
   if (btn) updateLiteButton(btn, isLiteNow);
 });
-
