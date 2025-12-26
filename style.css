@@ -1180,51 +1180,54 @@ body.lite-mode .nav-pill-wrapper{
 }
 
 /* =========================================================
-   CARD UNIFICATE (Tutte le categorie uguali)
+   FIX DEFINITIVO E TOTALE (CARD FOOD)
    ========================================================= */
 
-/* 1. La griglia allinea le card in alto, NON le stira inutilmente */
+/* 1. Griglia: Allineamento in alto (tassativo) */
 #menu-container {
-  align-items: start !important; /* Questo è il segreto per evitare il vuoto enorme */
+  align-items: start !important;
 }
 
-/* 2. La card è compatta e cresce solo se serve */
+/* 2. Card: Deve essere un blocco compatto, senza min-height */
 .menu-item {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-start !important;
-  height: 100% !important; /* Si adatta alla riga se ci sono vicini alti */
-  min-height: auto !important;
-  box-sizing: border-box;
+  height: auto !important;
+  min-height: 0 !important;
+  padding-bottom: 12px !important; /* Riduciamo un po' il padding sotto */
 }
 
-/* 3. Spaziatura standard (come Caffetteria) */
+/* 3. Info container: NON deve espandersi */
 .item-info {
-  margin-bottom: 15px !important; /* Spazio standard uguale per tutti */
-  flex-grow: 1 !important; /* Spinge il prezzo in basso SE la card è alta */
+  margin-bottom: 8px !important; /* Spazio fisso ridotto tra testo e prezzo */
+  flex-grow: 0 !important;       /* IMPEDISCE di occupare spazio vuoto */
   width: 100%;
 }
 
-/* 4. Prezzo standard */
+/* 4. Descrizione: Rimuovi margini parassiti che creano buchi */
+.item-info p {
+  margin-top: 4px !important;
+  margin-bottom: 0 !important;   /* Fondamentale */
+  padding-bottom: 0 !important;
+}
+
+/* 5. Prezzo: Semplice blocco in fondo */
 .item-price {
-  margin-top: auto !important; /* Molla verso il basso */
-  margin-bottom: 5px !important;
+  margin-top: 0 !important;      /* Nessuna spinta dall'alto */
   align-self: flex-end !important;
-  margin-left: 0 !important;
+  margin-bottom: 0 !important;
 }
 
-/* 5. Allergeni normali (non microscopici, coerenti col design) */
+/* 6. Allergeni: Compatti */
 .allergen-row {
-  margin-top: 8px !important;
+  margin-top: 6px !important;
   gap: 4px !important;
-  flex-wrap: wrap;
+}
+.allergen-tag {
+  font-size: 10px !important;
+  padding: 1px 5px !important;
 }
 
-.allergen-tag {
-  font-size: 10px !important; /* Dimensione leggibile standard */
-  padding: 2px 6px !important;
-  height: auto !important;
-}
 
 
 
