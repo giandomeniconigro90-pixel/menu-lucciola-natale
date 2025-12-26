@@ -1240,58 +1240,5 @@ h3 {
   margin-bottom: 0 !important;
 }
 
-/* ===== LAYOUT UNIFORME: spazio extra sopra il bottone (non tra bottone e footer) ===== */
-html, body { height: 100%; }
 
-body{
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
-/* Annulla eventuali patch precedenti che “spingono” solo il footer */
-.review-btn-container{ flex: none !important; }
-footer{ margin-top: 60px !important; } /* ripristina il design originale del footer */
-
-/* Il “contenuto menu” (che è anche la griglia) assorbe lo spazio libero quando ci sono pochi prodotti */
-#menu-container.menu-container{
-  flex: 1 0 auto;          /* riempie la viewport solo se serve */
-  min-height: 0;           /* evita comportamenti strani su mobile */
-  padding-bottom: var(--menu-space) !important; /* distanza costante card -> bottone */
-}
-
-/* La griglia NON deve dilatarsi in verticale quando ha altezza “definita” (perché è in un flex layout) */
-#menu-container{
-  align-content: start !important;
-  align-items: start !important;
-  grid-auto-rows: max-content;
-}
-
-/* Compatta: titolo/subtitolo -> prime card */
-#menu-container > h3,
-#menu-container > .subcategory-title{
-  margin-bottom: 0 !important;
-}
-
-/* ===== PATCH MINIMA: spazi uniformi + niente scroll orizzontale ===== */
-
-/* 0) Stop scroll orizzontale indesiderato */
-html, body{
-  overflow-x: hidden;
-}
-
-/* 1) Spazio titolo -> prima card (uniforma Food con Calde) */
-#menu-container > h3,
-#menu-container > .subcategory-title{
-  margin-bottom: 0 !important;
-}
-
-/* 2) Spazio ultima card -> bottone (costante, senza alterare header/tab/scroll) */
-.menu-container{
-  padding-bottom: var(--menu-space) !important;
-}
-
-/* 3) Evita che le card/griglia “forzino” overflow in flex/grid edge-case */
-.menu-item{
-  min-width: 0;
-}
