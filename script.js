@@ -301,8 +301,14 @@ function toggleLiteMode() {
   const btn = document.getElementById('lite-switch');
   if (!btn) return;
 
-  body.classList.toggle('lite-mode');
-  updateLiteButton(btn, body.classList.contains('lite-mode'));
+  // Toggle classe
+  const isLite = body.classList.toggle('lite-mode');
+  
+  // Salva preferenza PER SEMPRE (così se torno domani si ricorda)
+  localStorage.setItem('liteMode', isLite);
+
+  // Aggiorna icona
+  updateLiteButton(btn, isLite);
 }
 
 function updateLiteButton(btn, isLite) {
@@ -444,6 +450,9 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchWeather();
   initDataFetch();
 
+  // Ora il bottone legge lo stato REALE dal body (che è stato impostato dallo script inline nell'HTML)
   const btn = document.getElementById('lite-switch');
-  if (btn) updateLiteButton(btn, false);
+  const isLiteNow = document.body.classList.contains('lite-mode');
+  if (btn) updateLiteButton(btn, isLiteNow);
 });
+
