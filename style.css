@@ -1241,6 +1241,33 @@ h3 {
 }
 
 
+/* =========================================================
+   LAYOUT IDENTICO TRA TAB (footer sempre coerente)
+   ========================================================= */
+
+/* 1) La pagina è una colonna: header+nav, poi contenuto, poi recensione, poi footer */
+html, body{
+  height: 100%;
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+}
+
+/* 2) Il menu deve “prendersi” lo spazio libero quando ci sono poche card */
+.menu-container{
+  flex: 1 0 auto;       /* riempie spazio disponibile */
+  min-height: 0 !important; /* evita effetti strani con contenuti lunghi */
+}
+
+/* 3) Recensione e footer NON devono risalire */
+.review-btn-container,
+footer{
+  flex: 0 0 auto;
+}
+
+
 
 
 
