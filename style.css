@@ -1110,3 +1110,35 @@ body.lite-mode .nav-pill-wrapper{
   cursor:pointer;
   transition:transform .2s;
 }
+
+#opening-hours-box {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.opening-hours-title {
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 8px 0;
+}
+
+.opening-hours-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.opening-hours-table td {
+  padding: 6px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.opening-hours-table td:first-child {
+  width: 70px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.opening-hours-today td {
+  color: var(--primary-color);
+}
