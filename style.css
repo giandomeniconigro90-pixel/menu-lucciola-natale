@@ -1180,57 +1180,51 @@ body.lite-mode .nav-pill-wrapper{
 }
 
 /* =========================================================
-   FIX CARD DINAMICHE (Corretto)
+   CARD UNIFICATE (Tutte le categorie uguali)
    ========================================================= */
 
-/* Card: FLEX verticale, ma altezza AUTO per evitare il collasso */
+/* 1. La griglia allinea le card in alto, NON le stira inutilmente */
+#menu-container {
+  align-items: start !important; /* Questo è il segreto per evitare il vuoto enorme */
+}
+
+/* 2. La card è compatta e cresce solo se serve */
 .menu-item {
   display: flex !important;
   flex-direction: column !important;
   justify-content: flex-start !important;
-  height: auto !important; /* IMPORTANTE: auto, non 100%, sennò spariscono */
+  height: 100% !important; /* Si adatta alla riga se ci sono vicini alti */
+  min-height: auto !important;
   box-sizing: border-box;
 }
 
-/* Info: si allunga per riempire lo spazio vuoto */
+/* 3. Spaziatura standard (come Caffetteria) */
 .item-info {
-  margin-bottom: 15px !important; /* Aria fissa prima del prezzo */
-  flex-grow: 1 !important; /* Spinge giù tutto quello che c'è sotto */
+  margin-bottom: 15px !important; /* Spazio standard uguale per tutti */
+  flex-grow: 1 !important; /* Spinge il prezzo in basso SE la card è alta */
   width: 100%;
 }
 
-/* Prezzo: forzato in basso a destra */
+/* 4. Prezzo standard */
 .item-price {
-  margin-top: auto !important; /* La "molla" che lo spinge in fondo */
-  margin-bottom: 5px !important; /* Spazietto finale */
-  align-self: flex-end !important; /* Allineato a destra */
+  margin-top: auto !important; /* Molla verso il basso */
+  margin-bottom: 5px !important;
+  align-self: flex-end !important;
   margin-left: 0 !important;
 }
 
-/* =========================================================
-   FIX ALLERGENI COMPATTI (Tab Food)
-   ========================================================= */
-
-/* Riduciamo lo spazio sopra la riga allergeni */
+/* 5. Allergeni normali (non microscopici, coerenti col design) */
 .allergen-row {
-  margin-top: 4px !important; /* Era 6px */
-  gap: 3px !important; /* Icone più vicine */
-  flex-wrap: wrap; /* Se sono tanti vanno a capo invece di allargare la card */
+  margin-top: 8px !important;
+  gap: 4px !important;
+  flex-wrap: wrap;
 }
 
-/* Icone allergeni più discrete */
 .allergen-tag {
-  font-size: 9px !important; /* Testo più piccolo */
-  padding: 1px 5px !important; /* Meno imbottitura */
-  height: 18px; /* Altezza fissa minima */
-  line-height: 18px;
+  font-size: 10px !important; /* Dimensione leggibile standard */
+  padding: 2px 6px !important;
+  height: auto !important;
 }
-
-/* Riduciamo un po' il margine fisso sotto le info per recuperare spazio */
-.item-info {
-  margin-bottom: 8px !important; /* Era 15px nel fix precedente */
-}
-
 
 
 
