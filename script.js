@@ -52,26 +52,58 @@ function getActiveCategoryFromOnclick(btn) {
   return m ? m[1] : null;
 }
 
-/* ===========================
-   DATA FETCH / PARSE
-   =========================== */
 function initDataFetch() {
+  // 1. TENTATIVO CACHE: Carica subito dalla memoria del telefono se esiste
+  const cachedData = localStorage.getItem('menuDataCache');
+  
+  if (cachedData) {
+    try {
+      menuData = JSON.parse(cachedData);
+      console.log("Menu caricato dalla cache (istantaneo)");
+      
+      // Renderizza subito la prima categoria (Calde) senza aspettare internet
+      const firstBtn = document.querySelector('.tab-btn');
+      // Se c'è già un bottone attivo (es. ricarica pagina), usa quello, altrimenti il primo
+      const activeBtn = document.querySelector('.tab-btn.active') || firstBtn;
+      const catToLoad = getActiveCategoryFromOnclick(activeBtn) || 'calde';
+      
+      if (activeBtn) showCategory(catToLoad, activeBtn);
+    } catch (e) {
+      console.error("Cache corrotta, attendo rete...", e);
+    }
+  }
+
+  // 2. RETE: Scarica comunque i dati aggiornati in background
   Papa.parse(SHEET_URL, {
     download: true,
     header: true,
     skipEmptyLines: true,
-
-    // PULIZIA SPAZI AUTOMATICA (Fix "Bibite" doppie)
     transform: (value) => safeTrim(value),
 
     complete: (results) => {
+      // Elabora i nuovi dati da Google
       transformCsvToMenu(results.data);
-      const firstBtn = document.querySelector('.tab-btn');
-      if (firstBtn) showCategory('calde', firstBtn);
+      
+      // SALVA I NUOVI DATI IN CACHE (per la prossima volta)
+      localStorage.setItem('menuDataCache', JSON.stringify(menuData));
+      
+      // Aggiorna la vista con i dati nuovi (live update)
+      // Cerchiamo quale categoria sta guardando l'utente ora
+      const activeBtn = document.querySelector('.tab-btn.active');
+      if (activeBtn) {
+          const currentCat = getActiveCategoryFromOnclick(activeBtn);
+          // Ricarica la categoria corrente senza scrollare in alto (passando null come btn)
+          if(currentCat) showCategory(currentCat, null); 
+      } else {
+          // Fallback se non c'era nulla selezionato
+          const firstBtn = document.querySelector('.tab-btn');
+          if (firstBtn) showCategory('calde', firstBtn);
+      }
+      console.log("Menu aggiornato da Google Sheets (Background)");
     },
 
     error: (err) => {
-      console.error('Errore nel caricamento del menu:', err);
+      console.error('Errore Google Sheets:', err);
     }
   });
 }
