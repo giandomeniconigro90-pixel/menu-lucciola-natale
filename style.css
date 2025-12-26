@@ -1240,5 +1240,9 @@ h3 {
   margin-bottom: 0 !important;
 }
 
-
-
+/* Solo per tab Food: mantiene footer “giù” anche con poche card (nessuna modifica a header/nav/scroll) */
+@supports selector(:has(*)) {
+  body:has(.tab-btn.active[onclick*="showCategory('food'"]) #menu-container.menu-container{
+    min-height: max(400px, 55vh) !important;
+  }
+}
