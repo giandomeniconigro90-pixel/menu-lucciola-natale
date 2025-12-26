@@ -1240,6 +1240,42 @@ h3 {
   margin-bottom: 0 !important;
 }
 
+/* ===== Uniforma spazi + footer sempre giù (tutte le tab) ===== */
+
+html, body { height: 100%; }
+
+body{
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 1) Riduce spazio: "Food & Snack" -> prima card (vale per tutte le categorie) */
+#menu-container > h3,
+#menu-container > .subcategory-title{
+  margin-bottom: 0 !important;
+}
+
+/* 2) Evita buchi “interni” nel grid quando ci sono poche card */
+#menu-container{
+  align-content: start !important;
+  grid-auto-rows: max-content;
+}
+
+/* 3) Riduce spazio: ultima card -> bottone recensione */
+.menu-container{
+  padding-bottom: var(--menu-space) !important;
+}
+
+/* 4) Mantiene la distanza estetica col footer, ma il footer resta ancorato in basso */
+.review-btn-container{
+  margin-bottom: 60px; /* equivalente del vecchio margin-top del footer */
+}
+
+/* 5) Footer sempre in basso senza cambiare la logica */
+footer{
+  margin-top: auto !important;
+}
 
 
 
