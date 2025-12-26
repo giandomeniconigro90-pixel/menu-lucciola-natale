@@ -1,4 +1,4 @@
-/* style.css */
+/* style.css (CLEAN) */
 
 /* =========================================================
    VARIABILI
@@ -276,12 +276,6 @@ header .snow-container{
   position:relative;
 }
 
-/* RIGA 2: Logo + ricerca */
-.header-search-row{
-  overflow:visible !important;
-  align-items:center;
-}
-
 /* Fix tastiera mobile: quando attiva, la barra si incolla a top 0 */
 .sticky-nav-container.search-active{
   top:0 !important;
@@ -290,7 +284,7 @@ header .snow-container{
 }
 
 /* =========================================================
-   LOGO (cerchio + immagine) + FIX alone
+   LOGO (cerchio + immagine)
    ========================================================= */
 .logo-circle{
   z-index:20;
@@ -305,7 +299,7 @@ header .snow-container{
   flex-shrink:0;
   transition:all .4s ease;
 
-  /* Stato finale (fix alone) */
+  /* Stato finale */
   background:transparent !important;
   border:none !important;
   box-shadow:none !important;
@@ -491,6 +485,10 @@ header .snow-container{
   transform:scale(1.15);
 }
 
+/* Tab edge spacing */
+.tab-edge-left{margin-left:3px}
+.tab-edge-right{margin-right:3px}
+
 /* =========================================================
    SEARCH BAR (base) + COMPACT->EXPAND
    ========================================================= */
@@ -503,7 +501,6 @@ header .snow-container{
   position:relative;
   z-index:5;
 }
-
 .search-input-wrapper{
   position:relative;
   display:flex;
@@ -537,6 +534,18 @@ header .snow-container{
   height:18px;
 }
 
+/* Header search row layout */
+.header-search-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:95%;
+  max-width:600px;
+  pointer-events:auto;
+  margin:5px auto 10px auto;
+  overflow:visible; /* era in un blocco separato */
+}
+
 /* Compact -> Expand SOLO nella header-search-row */
 .header-search-row .search-input-wrapper{
   width:44px;
@@ -563,7 +572,14 @@ header .snow-container{
   width:min(92%,520px);
 }
 
-/* Spazio sotto la search: stato finale (attuale) */
+/* Search container inside header row */
+.search-container.in-header{
+  margin:0 0 0 15px;
+  width:100%;
+  max-width:none !important;
+}
+
+/* Spazio sotto la search: stato finale */
 .sticky-nav-container .header-search-row{
   margin:0 auto 0 auto !important;
 }
@@ -572,14 +588,14 @@ header .snow-container{
 }
 
 /* =========================================================
-   CONTENUTO: MENU + GRIGLIA (stato finale attuale)
+   CONTENUTO: MENU + GRIGLIA (pulito, senza patch duplicate)
    ========================================================= */
 .menu-container{
   max-width:800px;
   margin:0 auto;
-  padding:20px;
-  padding-bottom:50px;
-  min-height:400px;
+  padding:10px 20px 20px 20px;
+  padding-bottom:30px;
+  min-height:auto;
 }
 
 /* Titolo categoria (h3) */
@@ -590,6 +606,8 @@ h3{
   font-weight:700;
   display:flex;
   align-items:center;
+  margin:0;
+  padding:0;
 }
 h3::after{
   content:"";
@@ -600,13 +618,12 @@ h3::after{
   margin-left:15px;
 }
 
-/* Sottocategoria */
+/* Sottocategoria (base) */
 .subcategory-title{
   color:var(--text-dark);
   font-family:"Playfair Display",serif;
   font-size:19px;
   font-weight:600;
-  padding-left:12px;
   border-left:4px solid var(--primary-color);
   opacity:0;
   animation:fadeInUp .5s forwards;
@@ -617,25 +634,34 @@ h3::after{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(165px,1fr));
   gap:var(--menu-space);
-  align-items:stretch;
+  align-items:start;     /* evita “stiramenti” */
+  align-content:start;   /* compatta verso l’alto */
 }
 
-/* Titoli full-width nella griglia (lo spacing lo gestisce SOLO il gap) */
+/* Titoli full-width nella griglia */
 #menu-container > h3,
 #menu-container > .subcategory-title{
   grid-column:1 / -1;
   width:100%;
   margin:0;
   padding:0;
+  height:auto;
+  align-self:end;
+  margin-bottom:5px; /* micro-spazio prima delle card */
 }
 
-/* Mantieni rientro orizzontale sottocategoria (non influisce sugli spazi verticali) */
+/* Un filo di spazio sopra al primissimo titolo (equivale al vecchio margin-top:10px) */
+#menu-container > h3:first-child{
+  margin-top:10px;
+}
+
+/* Rientro sottocategoria + distanza testo ↔ barra */
 #menu-container > .subcategory-title{
   margin-left:5px;
-  padding-left:12px;
+  padding-left:16px; /* valore finale concordato */
 }
 
-/* Card (versione finale: verticale per griglia) */
+/* Card */
 .menu-item{
   display:flex;
   flex-direction:column;
@@ -644,6 +670,7 @@ h3::after{
   text-align:left;
   background:#fff;
   padding:14px;
+  padding-bottom:12px;
   border-radius:16px;
 
   background-image:
@@ -657,11 +684,16 @@ h3::after{
   opacity:0;
   animation:fadeInUp .5s cubic-bezier(.2,.8,.2,1) forwards;
 
-  margin-bottom:0; /* gap gestito da grid */
+  margin-bottom:0; /* ci pensa il gap */
   height:auto;
+  min-height:0;
 }
 
-.item-info{width:100%;margin-bottom:12px}
+.item-info{
+  width:100%;
+  margin-bottom:8px;
+  flex-grow:0;
+}
 .item-info h4{
   margin:0 0 4px 0;
   font-size:15px;
@@ -670,7 +702,7 @@ h3::after{
   font-weight:600;
 }
 .item-info p{
-  margin:5px 0 0 0;
+  margin:4px 0 0 0;
   font-size:12px;
   color:#888;
   line-height:1.3;
@@ -688,8 +720,8 @@ h3::after{
   white-space:nowrap;
 
   align-self:flex-end;
-  margin-left:0;     /* FIX: era "argin-left" */
-  margin-top:8px;    /* FIX: era auto e creava vuoto */
+  margin-left:0;
+  margin-top:8px;
 }
 
 /* TELEFONI: mostra tutto */
@@ -941,6 +973,7 @@ footer::before{
   border-top:1px solid #f0f0f0;
   padding-top:15px;
 }
+.footer-vat{margin-top:5px}
 
 /* =========================================================
    LITE MODE
@@ -1015,7 +1048,9 @@ body.lite-mode .nav-pill-wrapper{
   backdrop-filter:none !important;
 }
 
-/* ===== Inline-styles moved to CSS (HTML clean) ===== */
+/* =========================================================
+   Inline-styles moved to CSS (HTML clean)
+   ========================================================= */
 
 /* Top buttons (Lite + WiFi) */
 #lite-switch{
@@ -1056,25 +1091,7 @@ body.lite-mode .nav-pill-wrapper{
   justify-content:center;
 }
 
-/* Header search row layout (was inline) */
-.header-search-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  width:95%;
-  max-width:600px;
-  pointer-events:auto;
-  margin:5px auto 10px auto;
-}
-
-/* Search container inside header row (was inline) */
-.search-container.in-header{
-  margin:0 0 0 15px;
-  width:100%;
-  max-width:none !important;
-}
-
-/* Back-to-top button (was inline) */
+/* Back-to-top button */
 #back-to-top{
   position:fixed;
   bottom:25px;
@@ -1093,161 +1110,3 @@ body.lite-mode .nav-pill-wrapper{
   cursor:pointer;
   transition:transform .2s;
 }
-
-/* Footer VAT spacing (was inline) */
-.footer-vat{margin-top:5px}
-
-/* Tab edge spacing (was inline) */
-.tab-edge-left{margin-left:3px}
-.tab-edge-right{margin-right:3px}
-
-
-/* =========================================================
-   FIX SPACING TABLET/DESKTOP
-   (forza: spazi = SOLO gap della griglia)
-   ========================================================= */
-@media (min-width:601px){
-  /* stessa distanza verticale su desktop */
-  #menu-container{
-    gap: var(--menu-space) !important;
-  }
-
-  /* azzera tutti i margini verticali che su desktop "ricompaiono" */
-  #menu-container h3,
-  #menu-container .subcategory-title{
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-  }
-}
-
-/* =========================================================
-   PATCH DEFINITIVA: titoli = SOLO gap (tutti i layout)
-   ========================================================= */
-
-/* 1) Gap unico griglia */
-#menu-container{
-  gap: var(--menu-space) !important;
-}
-
-/* 2) Dentro la griglia: i titoli NON devono avere margini/padding verticali */
-#menu-container h3,
-#menu-container .subcategory-title{
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* 3) E devono restare full-width sempre */
-#menu-container h3,
-#menu-container .subcategory-title{
-  grid-column: 1 / -1;
-  width: 100%;
-}
-
-/* 4) Mantieni SOLO il rientro della sottocategoria */
-#menu-container .subcategory-title{
-  margin-left: 5px !important;
-  padding-left: 12px !important;
-}
-
-/* =========================================================
-   FIX DEFINITIVO: titoli in griglia = spazi SOLO da gap
-   ========================================================= */
-
-/* gap unico griglia */
-#menu-container{
-  gap: var(--menu-space) !important;
-}
-
-/* titoli dentro la griglia (anche se non sono figli diretti) */
-#menu-container h3,
-#menu-container .subcategory-title{
-  grid-column: 1 / -1;
-  width: 100%;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* rientro sottocategoria */
-#menu-container .subcategory-title{
-  margin-left: 5px !important;
-  padding-left: 16px !important;
-}
-
-/* =========================================================
-   FIX DEFINITIVO SPAZIATURE (Titolo, Card, Container)
-   ========================================================= */
-
-/* 1. Container Menu: Ridotto spazio e min-height */
-.menu-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 10px 20px 20px 20px !important; /* Meno padding verticale */
-  min-height: auto !important; /* Rimuove lo spazio vuoto enorme sotto se ci sono poche card */
-  padding-bottom: 30px !important; /* Spazio giusto prima del bottone recensione */
-}
-
-/* 2. Titolo Categoria (H3): Azzerare margini esterni eccessivi */
-h3 {
-  margin-top: 10px !important;    /* Avvicina al menu in alto */
-  margin-bottom: 15px !important; /* Avvicina alle card sotto */
-  padding-top: 0 !important;
-}
-
-/* 3. Griglia: Compatta e senza buchi */
-#menu-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-  gap: 14px !important; /* Gap standard tra le card */
-  align-items: start !important; /* Fondamentale per non stirare le card */
-  align-content: start !important; /* Compatta le righe verso l'alto */
-}
-
-/* 4. Titoli dentro la Griglia: Devono occupare solo lo spazio necessario */
-#menu-container > h3,
-#menu-container > .subcategory-title {
-  grid-column: 1 / -1;
-  width: 100%;
-  margin-top: 0 !important;
-  margin-bottom: 5px !important; /* Spazietto minimo prima delle card */
-  padding: 0 !important;
-  height: auto !important;
-  align-self: end !important; /* Si attacca al contenuto sotto */
-}
-
-/* 5. Card: Compatta e pulita (conferma fix precedenti) */
-.menu-item {
-  display: flex !important;
-  flex-direction: column !important;
-  height: auto !important;
-  min-height: 0 !important;
-  padding-bottom: 12px !important;
-  margin-bottom: 0 !important; /* Niente margini extra, ci pensa il gap della griglia */
-}
-
-.item-info {
-  margin-bottom: 8px !important;
-  flex-grow: 0 !important;
-}
-
-.item-info p {
-  margin-top: 4px !important;
-  margin-bottom: 0 !important;
-}
-
-/* Uniforma distanza testo ↔ barra verticale per TUTTE le sottocategorie */
-#menu-container .subcategory-title{
-  padding-left: 16px !important;
-}
-
-/* Solo per tab Food: mantiene footer “giù” anche con poche card (nessuna modifica a header/nav/scroll) 
-@supports selector(:has(*)) {
-  body:has(.tab-btn.active[onclick*="showCategory('food'"]) #menu-container.menu-container{
-    min-height: max(400px, 55vh) !important;
-  }
-}*/
