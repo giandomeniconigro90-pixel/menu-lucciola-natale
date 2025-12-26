@@ -1178,3 +1178,26 @@ body.lite-mode .nav-pill-wrapper{
   margin-left: 5px !important;
   padding-left: 12px !important;
 }
+
+/* Card: deve occupare tutta l'altezza della cella */
+.menu-item {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important; /* Il contenuto parte dall'alto */
+  height: 100% !important; /* Occupa tutta l'altezza che la griglia le dà */
+  box-sizing: border-box; /* Per evitare che il padding sballi l'altezza */
+}
+
+/* Info (titolo + descrizione): non deve forzare altezze strane */
+.item-info {
+  margin-bottom: 15px !important; /* Un po' di aria fissa tra testo e resto */
+  flex-grow: 1 !important; /* Se c'è spazio vuoto, se lo prende lui (spingendo il prezzo giù) */
+}
+
+/* Prezzo: spinto in fondo e con aria sotto */
+.item-price {
+  margin-top: auto !important; /* "Molla" che spinge il prezzo in fondo alla card */
+  margin-bottom: 5px !important; /* Quello "spazietto" sotto che volevi */
+  align-self: flex-end !important; /* Allineato a destra */
+}
+
