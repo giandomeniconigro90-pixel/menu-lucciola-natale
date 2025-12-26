@@ -21,38 +21,47 @@
 
 <body>
 
-    <!-- SCRIPT LITE MODE IMMEDIATO -->
-    <script>
-        (function() {
-            // 1. Recupera preferenza utente salvata
-            var savedMode = localStorage.getItem('liteMode');
+   <script>
+    (function() {
+        var savedMode = localStorage.getItem('liteMode');
+        
+        // Se l'utente ha già scelto LITE, applicala subito
+        if (savedMode === 'true') {
+            document.body.classList.add('lite-mode');
+        } 
+        // Se l'utente NON ha scelto NORMAL (quindi è la prima volta o non ha preferenze)
+        else if (savedMode !== 'false') {
             
-            // 2. Controlla connessione (Network Information API)
+            // 1. Prova API standard (Android)
             var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-            var isSlow = false;
-            
-            if (connection) {
-                // Consideriamo lento: 2g, slow-2g o se l'utente ha attivato "Risparmio Dati"
-                if (connection.saveData === true || 
-                    connection.effectiveType === 'slow-2g' || 
-                    connection.effectiveType === '2g' || 
-                    connection.effectiveType === '3g') {
-                    isSlow = true;
-                }
-            }
-
-            // 3. Applica la classe SE:
-            //    - L'utente l'ha attivata manualmente in passato ('true')
-            //    - OPPURE è lento E l'utente non l'ha disattivata manualmente ('false')
-            if (savedMode === 'true' || (isSlow && savedMode !== 'false')) {
+            if (connection && (connection.saveData || /2g|3g/.test(connection.effectiveType))) {
                 document.body.classList.add('lite-mode');
+            } 
+            
+            // 2. FALLBACK PER IPHONE:
+            // Crea un'immagine minuscola invisibile. Se non carica entro 1.5 secondi -> LITE
+            else {
+                var testImg = new Image();
+                var start = new Date().getTime();
+                var timeout = setTimeout(function() {
+                    // Se siamo ancora qui dopo 1.5s, è lento: attiva Lite
+                    document.body.classList.add('lite-mode');
+                    // Aggiorna anche il bottone se lo script.js è già partito
+                    var btn = document.getElementById('lite-switch');
+                    if(btn && window.updateLiteButton) window.updateLiteButton(btn, true);
+                }, 1500); // 1500ms = 1.5 secondi di tolleranza
+
+                testImg.onload = function() {
+                    clearTimeout(timeout); // Se carica veloce, annulla il timer (resta Normal)
+                };
+                
+                // Immagine piccolissima (1x1 pixel) per test
+                testImg.src = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png?" + new Date().getTime();
             }
-        })();
-    </script>
+        }
+    })();
+</script>
     
-    <!-- ... qui inizia il resto del tuo HTML (header, etc.) ... -->
-
-
   <!-- LITE SWITCH (Destra) -->
   <button
     id="lite-switch"
