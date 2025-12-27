@@ -1111,37 +1111,6 @@ body.lite-mode .nav-pill-wrapper{
   transition:transform .2s;
 }
 
-#opening-hours-box {
-  width: 100%;
-  margin-top: 14px;
-}
-
-.opening-hours-title {
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0 0 8px 0;
-}
-
-.opening-hours-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-
-.opening-hours-table td {
-  padding: 6px 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.opening-hours-table td:first-child {
-  width: 70px;
-  font-weight: 700;
-  color: var(--text-dark);
-}
-
-.opening-hours-today td {
-  color: var(--primary-color);
-}
 /* ORARI: in alto a destra nel footer */
 .footer-info{
   padding-right: 280px; /* lascia spazio al box orari a destra */
@@ -1149,15 +1118,38 @@ body.lite-mode .nav-pill-wrapper{
 
 #opening-hours-box{
   position: absolute;
-  top: 30px;            /* uguale al padding-top del footer */
-  right: 20px;          /* uguale al padding-right del footer */
+  top: 30px;
+  right: 20px;
+  z-index: 5;
   width: fit-content;
   max-width: 260px;
   margin: 0;
 }
 
+.opening-hours-title{
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0 0 6px 0;
+}
+
 .opening-hours-table{
   width: auto;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.opening-hours-table td{
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.opening-hours-table td:first-child{
+  font-weight: 700;
+  padding-left: 0;
+}
+
+.opening-hours-today td{
+  color: var(--primary-color);
 }
 
 /* Responsive: su schermi piccoli torna “normale” sotto */
