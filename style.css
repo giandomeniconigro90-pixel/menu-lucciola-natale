@@ -948,13 +948,11 @@ h3::after {
    FOOTER (layout stabile: niente overlap)
    ========================================================= */
 footer {
-  --footer-snow: #ffffff;
   position: relative;
   background-color: #fff;
   padding: 30px 20px;
+  border-top: 1px solid #f0f0f0;
   margin-top: 60px;
-  border-top-left-radius: 30px;
-  border-top-right-radius: 30px;
   box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.03);
   overflow: visible;
 
@@ -965,23 +963,6 @@ footer {
     "bottom bottom";
   align-items: start;
   gap: 20px;
-}
-
-footer::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -18px;
-  height: 24px;
-  pointer-events: none;
-  background:
-    radial-gradient(22px 14px at 10% 100%, var(--footer-snow) 60%, transparent 61%),
-    radial-gradient(30px 16px at 30% 100%, var(--footer-snow) 60%, transparent 61%),
-    radial-gradient(24px 15px at 55% 100%, var(--footer-snow) 60%, transparent 61%),
-    radial-gradient(32px 16px at 80% 100%, var(--footer-snow) 60%, transparent 61%),
-    linear-gradient(var(--footer-snow), var(--footer-snow));
-  background-repeat: no-repeat;
 }
 
 /* Colonna sinistra */
