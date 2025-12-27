@@ -2,7 +2,10 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+  />
   <title>Bar La Lucciola - Menù</title>
 
   <link rel="icon" type="image/png" href="images/icon_app.png" />
@@ -13,73 +16,78 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+    rel="stylesheet"
+  />
   <link rel="preload" as="image" href="images/la-lucciola-neve.jpg" fetchpriority="high" />
-  <link rel="preload" as="image" href="images/IMG_4459.png">
+  <link rel="preload" as="image" href="images/IMG_4459.png" />
   <link rel="stylesheet" href="style.css" />
+
   <!-- Aggiungi nel <head>, prima degli stili -->
-  <link rel="preconnect" href="https://docs.google.com">
-  <link rel="preconnect" href="https://sheets.googleapis.com">
-    
+  <link rel="preconnect" href="https://docs.google.com" />
+  <link rel="preconnect" href="https://sheets.googleapis.com" />
 </head>
 
 <body>
+  <script>
+    (function () {
+      var savedMode = localStorage.getItem('liteMode');
 
-   <script>
-    (function() {
-        var savedMode = localStorage.getItem('liteMode');
-        
-        // Se l'utente ha già scelto LITE, applicala subito
-        if (savedMode === 'true') {
-            document.body.classList.add('lite-mode');
-        } 
-        // Se l'utente NON ha scelto NORMAL (quindi è la prima volta o non ha preferenze)
-        else if (savedMode !== 'false') {
-            
-            // 1. Prova API standard (Android)
-            var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-            if (connection && (connection.saveData || /2g|3g/.test(connection.effectiveType))) {
-                document.body.classList.add('lite-mode');
-            } 
-            
-            // 2. FALLBACK PER IPHONE:
-            // Crea un'immagine minuscola invisibile. Se non carica entro 1.5 secondi -> LITE
-            else {
-                var testImg = new Image();
-                var start = new Date().getTime();
-                var timeout = setTimeout(function() {
-                    // Se siamo ancora qui dopo 1.5s, è lento: attiva Lite
-                    document.body.classList.add('lite-mode');
-                    // Aggiorna anche il bottone se lo script.js è già partito
-                    var btn = document.getElementById('lite-switch');
-                    if(btn && window.updateLiteButton) window.updateLiteButton(btn, true);
-                }, 1500); // 1500ms = 1.5 secondi di tolleranza
-
-                testImg.onload = function() {
-                    clearTimeout(timeout); // Se carica veloce, annulla il timer (resta Normal)
-                };
-                
-                // Immagine piccolissima (1x1 pixel) per test
-                testImg.src = "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png?" + new Date().getTime();
-            }
+      // Se l'utente ha già scelto LITE, applicala subito
+      if (savedMode === 'true') {
+        document.body.classList.add('lite-mode');
+      }
+      // Se l'utente NON ha scelto NORMAL (quindi è la prima volta o non ha preferenze)
+      else if (savedMode !== 'false') {
+        // 1. Prova API standard (Android)
+        var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        if (connection && (connection.saveData || /2g|3g/.test(connection.effectiveType))) {
+          document.body.classList.add('lite-mode');
         }
+
+        // 2. FALLBACK PER IPHONE:
+        // Crea un'immagine minuscola invisibile. Se non carica entro 1.5 secondi -> LITE
+        else {
+          var testImg = new Image();
+          var start = new Date().getTime();
+          var timeout = setTimeout(function () {
+            // Se siamo ancora qui dopo 1.5s, è lento: attiva Lite
+            document.body.classList.add('lite-mode');
+            // Aggiorna anche il bottone se lo script.js è già partito
+            var btn = document.getElementById('lite-switch');
+            if (btn && window.updateLiteButton) window.updateLiteButton(btn, true);
+          }, 1500); // 1500ms = 1.5 secondi di tolleranza
+
+          testImg.onload = function () {
+            clearTimeout(timeout); // Se carica veloce, annulla il timer (resta Normal)
+          };
+
+          // Immagine piccolissima (1x1 pixel) per test
+          testImg.src =
+            "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png?" +
+            new Date().getTime();
+        }
+      }
     })();
-</script>
-    
+  </script>
+
   <!-- LITE SWITCH (Destra) -->
-  <button
-    id="lite-switch"
-    onclick="toggleLiteMode()"
-    aria-label="Modalità Lite"
-  ></button>
+  <button id="lite-switch" onclick="toggleLiteMode()" aria-label="Modalità Lite"></button>
 
   <!-- WIFI BUTTON (Sinistra) -->
-  <button
-    class="wifi-fab"
-    onclick="openWifi()"
-    aria-label="Wi-Fi"
-  >
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+  <button class="wifi-fab" onclick="openWifi()" aria-label="Wi-Fi">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
       <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
       <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
@@ -89,7 +97,12 @@
 
   <header>
     <div class="xmas-garland" aria-hidden="true">
-      <svg class="garland-svg" viewBox="0 0 1000 120" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+      <svg
+        class="garland-svg"
+        viewBox="0 0 1000 120"
+        preserveAspectRatio="xMidYMin slice"
+        aria-hidden="true"
+      >
         <path class="wire" d="M0,32 C260,92 740,92 1000,12"></path>
         <path class="wire" d="M0,62 C260,122 740,122 1000,42"></path>
         <path class="bulb bulb-1" d="M0,32 C260,92 740,92 1000,12"></path>
@@ -122,7 +135,6 @@
     <div class="nav-cluster">
       <div class="nav-pill-wrapper">
         <div class="nav-scroll-area">
-
           <button class="tab-btn active tab-edge-left" onclick="showCategory('calde', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -164,7 +176,9 @@
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M8 22h8"></path>
                 <path d="M12 15v7"></path>
-                <path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"></path>
+                <path
+                  d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"
+                ></path>
               </svg>
               Alcolici
             </span>
@@ -173,7 +187,9 @@
           <button class="tab-btn" onclick="showCategory('food', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2h4"></path>
+                <path
+                  d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1-2-2h4"
+                ></path>
                 <path d="M9 3v2a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V3"></path>
                 <circle cx="12" cy="12" r="1"></circle>
               </svg>
@@ -186,28 +202,44 @@
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m4.5 13.5 3-3"></path>
                 <path d="m19.5 13.5-3-3"></path>
-                <path d="M12 9c-4.5-2-8 1-9.5 4.5 2.5 4 6 5 9.5 5s7-1 9.5-5c-1.5-3.5-5-6.5-9.5-4.5Z"></path>
+                <path
+                  d="M12 9c-4.5-2-8 1-9.5 4.5 2.5 4 6 5 9.5 5s7-1 9.5-5c-1.5-3.5-5-6.5-9.5-4.5Z"
+                ></path>
               </svg>
               Dolci
             </span>
           </button>
-
         </div>
       </div>
     </div>
 
     <div class="header-search-row">
       <div class="logo-circle">
-        <img src="images/IMG_4459.png" alt="Logo La Lucciola" class="nav-mini-logo">
+        <img src="images/IMG_4459.png" alt="Logo La Lucciola" class="nav-mini-logo" />
       </div>
 
       <div class="search-container in-header">
         <div class="search-input-wrapper">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <svg
+            class="search-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" id="menu-search" class="search-input" placeholder="Cerca nel menù..." onkeyup="searchMenu()" />
+          <input
+            type="text"
+            id="menu-search"
+            class="search-input"
+            placeholder="Cerca nel menù..."
+            onkeyup="searchMenu()"
+          />
         </div>
       </div>
     </div>
@@ -216,16 +248,40 @@
   <div id="menu-container" class="menu-container"></div>
 
   <div class="review-btn-container">
-    <a href="https://www.google.com/maps/search/?api=1&query=Bar+La+Lucciola+Laceno+Bagnoli+Irpino" target="_blank" class="review-btn" rel="noopener">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+    <a
+      href="https://www.google.com/maps/search/?api=1&query=Bar+La+Lucciola+Laceno+Bagnoli+Irpino"
+      target="_blank"
+      class="review-btn"
+      rel="noopener"
+    >
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        stroke="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+        ></path>
       </svg>
       Lascia una Recensione
     </a>
   </div>
 
   <button id="back-to-top" onclick="scrollToTop()" aria-label="Torna su">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       <path d="m18 15-6-6-6 6"></path>
     </svg>
   </button>
@@ -233,38 +289,75 @@
   <footer>
     <div class="footer-info">
       <div class="footer-title">Bar La Lucciola</div>
-      <a href="https://www.google.com/maps/search/?api=1&query=Bar+La+Lucciola+Laceno+Bagnoli+Irpino" target="_blank" class="footer-address" rel="noopener">
+
+      <a
+        href="https://www.google.com/maps/search/?api=1&query=Bar+La+Lucciola+Laceno+Bagnoli+Irpino"
+        target="_blank"
+        class="footer-address"
+        rel="noopener"
+      >
         Via Dei Prati, 2 - Laceno
       </a>
 
       <a href="tel:082768069" class="footer-phone">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path
+            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+          ></path>
         </svg>
         0827 68069
       </a>
-      
+
       <div class="footer-address footer-vat">P.IVA 611810647</div>
     </div>
 
-      <div id="opening-hours-box"></div>
-    
+    <div id="opening-hours-box"></div>
+
     <div class="footer-social">
-      <a href="https://www.facebook.com/barlalucciolaLACENO" target="_blank" class="social-circle" aria-label="Facebook" rel="noopener">
+      <a
+        href="https://www.facebook.com/barlalucciolaLACENO"
+        target="_blank"
+        class="social-circle"
+        aria-label="Facebook"
+        rel="noopener"
+      >
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+          <path
+            d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+          ></path>
         </svg>
       </a>
     </div>
 
-    <div class="footer-bottom">© 2025 Bar La Lucciola • Coperto e Servizio inclusi • Designed for Laceno</div>
+    <div class="footer-bottom">
+      © 2025 Bar La Lucciola • Coperto e Servizio inclusi • Designed for Laceno
+    </div>
   </footer>
 
   <div id="wifi-modal" class="modal-overlay" onclick="closeWifi(event)">
     <div class="modal-content">
       <div class="close-modal" onclick="closeWifi(event)">&times;</div>
 
-      <svg class="wifi-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <svg
+        class="wifi-icon-large"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
         <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
         <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
         <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
@@ -280,4 +373,4 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="script.js"></script>
 </body>
-            </html>
+</html>
