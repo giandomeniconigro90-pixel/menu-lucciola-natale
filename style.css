@@ -1142,3 +1142,31 @@ body.lite-mode .nav-pill-wrapper{
 .opening-hours-today td {
   color: var(--primary-color);
 }
+/* ORARI: in alto a destra nel footer */
+.footer-info{
+  padding-right: 280px; /* lascia spazio al box orari a destra */
+}
+
+#opening-hours-box{
+  position: absolute;
+  top: 30px;            /* uguale al padding-top del footer */
+  right: 20px;          /* uguale al padding-right del footer */
+  width: fit-content;
+  max-width: 260px;
+  margin: 0;
+}
+
+.opening-hours-table{
+  width: auto;
+}
+
+/* Responsive: su schermi piccoli torna “normale” sotto */
+@media (max-width: 520px){
+  .footer-info{ padding-right: 0; }
+  #opening-hours-box{
+    position: static;
+    display: block;
+    margin-top: 10px;
+    max-width: 100%;
+  }
+}
