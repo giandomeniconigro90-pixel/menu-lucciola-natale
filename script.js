@@ -11,10 +11,12 @@ const allergenMap = {
   sedano: { icon: '🌿', label: 'Sedano' }
 };
 
-const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
+const SHEET_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
 
 // CSV ORARI (metti file locale "orari.csv" nella root del sito, oppure un Google Sheet pubblicato output=csv)
-const HOURS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThV67Jsk8wnHdlvqTjio2GuPGg0NIdRNzT5tgL5TLSwBzA85jNWec6dG2nRxJqF5-pinUjY_v99rqn/pub?output=csv';
+const HOURS_CSV_URL =
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vThV67Jsk8wnHdlvqTjio2GuPGg0NIdRNzT5tgL5TLSwBzA85jNWec6dG2nRxJqF5-pinUjY_v99rqn/pub?output=csv';
 
 const CATEGORY_TITLES = {
   calde: 'Caffetteria',
@@ -26,7 +28,15 @@ const CATEGORY_TITLES = {
   altro: 'Altro'
 };
 
-const PREFERRED_SUBCAT_ORDER = ['Aperitivi', 'Cocktail', 'Birre', 'Vini', 'Amari', 'Liquori', 'Grappe'];
+const PREFERRED_SUBCAT_ORDER = [
+  'Aperitivi',
+  'Cocktail',
+  'Birre',
+  'Vini',
+  'Amari',
+  'Liquori',
+  'Grappe'
+];
 
 /* ===========================
    STATO
@@ -91,6 +101,7 @@ function dayToIndex(day) {
     sab: 6,
     sabato: 6
   };
+
   const k = safeTrim(day).toLowerCase();
   return m[k] ?? null;
 }
@@ -99,6 +110,7 @@ function timeToMinutes(t) {
   const s = safeTrim(t);
   if (!s) return null;
   if (s.toUpperCase() === 'CHIUSO') return null;
+
   const parts = s.split(':');
   const hh = Number(parts[0]);
   const mm = Number(parts[1] ?? 0);
@@ -350,18 +362,40 @@ function normalizeCategory(catString) {
   const c = String(catString || '').toLowerCase();
 
   // Cerca prima Aperitivi
-  if (c.includes('aperitiv') || c.includes('spritz') || c.includes('cocktail') || c.includes('prosecco') || c.includes('long drink')) {
+  if (
+    c.includes('aperitiv') ||
+    c.includes('spritz') ||
+    c.includes('cocktail') ||
+    c.includes('prosecco') ||
+    c.includes('long drink')
+  ) {
     return 'aperitivi';
   }
 
   if (c.includes('caff') || c.includes('cald') || c.includes('tè') || c.includes('tisane')) return 'calde';
   if (c.includes('fredd') || c.includes('bibit') || c.includes('succh') || c.includes('acqu')) return 'fredde';
 
-  if (c.includes('alcol') || c.includes('vin') || c.includes('birr') || c.includes('amar') || c.includes('liquor') || c.includes('grap'))
+  if (
+    c.includes('alcol') ||
+    c.includes('vin') ||
+    c.includes('birr') ||
+    c.includes('amar') ||
+    c.includes('liquor') ||
+    c.includes('grap')
+  ) {
     return 'alcolici';
+  }
 
-  if (c.includes('cib') || c.includes('food') || c.includes('panin') || c.includes('snack') || c.includes('taglier') || c.includes('focacc'))
+  if (
+    c.includes('cib') ||
+    c.includes('food') ||
+    c.includes('panin') ||
+    c.includes('snack') ||
+    c.includes('taglier') ||
+    c.includes('focacc')
+  ) {
     return 'food';
+  }
 
   if (c.includes('dolc') || c.includes('dessert') || c.includes('gelat') || c.includes('tort')) return 'dolci';
 
@@ -580,7 +614,8 @@ function showCategory(catId, btnElement) {
 
   subcats.forEach((sub) => {
     const isRedundant =
-      sub.toLowerCase() === data.title.toLowerCase() || (catId === 'fredde' && sub.toLowerCase() === 'bibite');
+      sub.toLowerCase() === data.title.toLowerCase() ||
+      (catId === 'fredde' && sub.toLowerCase() === 'bibite');
 
     if (!isRedundant) {
       container.innerHTML += `<h3 class="subcategory-title">${sub}</h3>`;
