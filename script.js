@@ -11,11 +11,10 @@ const allergenMap = {
   sedano: { icon: '🌿', label: 'Sedano' }
 };
 
-const SHEET_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
 
 // CSV ORARI (metti file locale "orari.csv" nella root del sito, oppure un Google Sheet pubblicato output=csv)
-const HOURS_CSV_URL = 'orari.csv';
+const HOURS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vThV67Jsk8wnHdlvqTjio2GuPGg0NIdRNzT5tgL5TLSwBzA85jNWec6dG2nRxJqF5-pinUjY_v99rqn/pub?output=csv';
 
 const CATEGORY_TITLES = {
   calde: 'Caffetteria',
