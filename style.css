@@ -877,7 +877,7 @@ h3::after{
 .review-btn:active{transform:scale(.95)}
 
 /* =========================================================
-   FOOTER
+   FOOTER (layout stabile: niente overlap)
    ========================================================= */
 footer{
   --footer-snow:#ffffff;
@@ -888,13 +888,17 @@ footer{
   border-top-left-radius:30px;
   border-top-right-radius:30px;
   box-shadow:0 -10px 40px rgba(0,0,0,.03);
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:20px;
   overflow:visible;
+
+  display:grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "info hours"
+    "bottom bottom";
+  align-items:start;
+  gap:20px;
 }
+
 footer::before{
   content:"";
   position:absolute;
@@ -911,7 +915,13 @@ footer::before{
     linear-gradient(var(--footer-snow),var(--footer-snow));
   background-repeat:no-repeat;
 }
-.footer-info{text-align:left}
+
+/* Colonna sinistra */
+.footer-info{
+  grid-area:info;
+  text-align:left;
+}
+
 .footer-title{
   font-family:"Playfair Display",serif;
   font-size:1.3rem;
@@ -943,28 +953,46 @@ footer::before{
   padding:6px 12px;
   border-radius:8px;
 }
-.footer-social{display:flex;align-items:center}
-.social-circle{
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  background-color:#fff;
-  border:1px solid rgba(0,0,0,.08);
-  box-shadow:0 4px 15px rgba(0,0,0,.08);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:transform .2s ease;
-  color:#1877f2;
+.footer-vat{margin-top:5px}
+
+/* ORARI: colonna destra, in flow (NO absolute) */
+#opening-hours-box{
+  grid-area:hours;
+  position:static;
+  justify-self:end;
+  align-self:start;
+  width:max-content;
+  max-width:260px;
+  margin:0;
 }
-.social-circle:active{transform:scale(.95)}
-.social-circle svg{
-  width:28px;
-  height:28px;
-  fill:currentColor;
-  stroke:none;
+.opening-hours-title{
+  font-weight:700;
+  color:var(--text-dark);
+  margin:0 0 6px 0;
 }
+.opening-hours-table{
+  width:auto;
+  border-collapse:collapse;
+  font-size:0.85rem;
+}
+.opening-hours-table td{
+  padding:2px 6px;
+  white-space:nowrap;
+}
+.opening-hours-table td:first-child{
+  font-weight:700;
+  padding-left:0;
+}
+.opening-hours-today td{
+  color:var(--primary-color);
+}
+
+/* Facebook: lo spostiamo altrove -> qui non deve occupare spazio */
+.footer-social{display:none;}
+
+/* Riga finale */
 .footer-bottom{
+  grid-area:bottom;
   width:100%;
   text-align:center;
   margin-top:20px;
@@ -973,7 +1001,22 @@ footer::before{
   border-top:1px solid #f0f0f0;
   padding-top:15px;
 }
-.footer-vat{margin-top:5px}
+
+/* Responsive: impila in colonna unica */
+@media (max-width: 520px){
+  footer{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "info"
+      "hours"
+      "bottom";
+  }
+  #opening-hours-box{
+    justify-self:start;
+    max-width:100%;
+    margin-top:10px;
+  }
+}
 
 /* =========================================================
    LITE MODE
@@ -1111,54 +1154,6 @@ body.lite-mode .nav-pill-wrapper{
   transition:transform .2s;
 }
 
-/* ORARI: in alto a destra nel footer */
-.footer-info{
-  padding-right: 280px; /* lascia spazio al box orari a destra */
-}
-
-#opening-hours-box{
-  position: absolute;
-  top: 30px;
-  right: 20px;
-  z-index: 5;
-  width: fit-content;
-  max-width: 260px;
-  margin: 0;
-}
-
-.opening-hours-title{
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0 0 6px 0;
-}
-
-.opening-hours-table{
-  width: auto;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
-
-.opening-hours-table td{
-  padding: 2px 6px;
-  white-space: nowrap;
-}
-
-.opening-hours-table td:first-child{
-  font-weight: 700;
-  padding-left: 0;
-}
-
-.opening-hours-today td{
-  color: var(--primary-color);
-}
-
-/* Responsive: su schermi piccoli torna “normale” sotto */
-@media (max-width: 520px){
-  .footer-info{ padding-right: 0; }
-  #opening-hours-box{
-    position: static;
-    display: block;
-    margin-top: 10px;
-    max-width: 100%;
-  }
-}
+/* Tab edge spacing */
+.tab-edge-left{margin-left:3px}
+.tab-edge-right{margin-right:3px}
