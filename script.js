@@ -437,12 +437,14 @@ window.addEventListener(
     const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
     const searchInput = document.getElementById('menu-search');
 
-    // PROTEZIONE RICERCA (Fix Tastiera Mobile): se scrivi, la barra resta visibile
-    if (document.activeElement === searchInput) {
-      navContainer?.classList.remove('nav-hidden');
-      return;
-    }
-
+// Se stai scrivendo e inizi a scrollare: chiudi subito la ricerca
+if (document.activeElement === searchInput) {
+  searchInput.blur(); // chiude tastiera + toglie focus
+  navContainer?.classList.remove('nav-hidden'); // opzionale: evita sparizioni “brusche”
+  if (window.syncSearchExpanded) window.syncSearchExpanded(); // richiude (toglie expanded)
+  // NON fare return: lascia proseguire la logica di hide/show nav
+}
+     
     // Ignora tremolii
     if (Math.abs(lastScrollTop - currentScroll) <= scrollDelta) return;
 
