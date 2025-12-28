@@ -837,12 +837,22 @@ h3::after {
   font-size: 0.8em;
 }
 
-.allergen-row { display: flex; gap: 4px; margin-top: 6px; }
+.allergen-row { 
+  display: flex; 
+  gap: 4px; 
+  margin-top: 6px; 
+  flex-wrap: wrap;           /* FIX: va a capo */
+}
+
+
 
 .allergen-tag {
   font-size: 10px;
   background: var(--allergen-bg);
+  max-width: 100%;
+  white-space: normal;c
   padding: 2px 6px;
+  overflow-wrap: anywhere;
   border-radius: 4px;
   color: #666;
   display: inline-flex;
