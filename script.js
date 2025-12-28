@@ -582,10 +582,12 @@ function showCategory(catId, btnElement) {
   const searchInput = document.getElementById('menu-search');
   if (searchInput) searchInput.value = '';
 
+   if (window.syncSearchExpanded) window.syncSearchExpanded();
+
   if (!isLite && btnElement) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
+   
   const container = document.getElementById('menu-container');
   const data = menuData[catId];
 
@@ -687,6 +689,26 @@ function renderItems(items, container, isLite) {
    BOOTSTRAP
    =========================== */
 document.addEventListener('DOMContentLoaded', () => {
+
+   const searchInput = document.getElementById('menu-search');
+  const searchWrapper = searchInput?.closest('.search-input-wrapper');
+
+function syncSearchExpanded() {
+  if (!searchInput || !searchWrapper) return;
+  const hasText = searchInput.value.trim().length > 0;
+  const isFocused = document.activeElement === searchInput;
+  searchWrapper.classList.toggle('expanded', hasText || isFocused);
+}
+
+if (searchInput && searchWrapper) {
+  searchInput.addEventListener('input', syncSearchExpanded);
+  searchInput.addEventListener('focus', syncSearchExpanded);
+  searchInput.addEventListener('blur', syncSearchExpanded);
+  syncSearchExpanded();
+}
+
+// se vuoi richiamarla anche da altre funzioni:
+window.syncSearchExpanded = syncSearchExpanded;
   // Orari + tabella + status (da CSV)
   initOpeningHours();
 
@@ -701,4 +723,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('lite-switch');
   const isLiteNow = document.body.classList.contains('lite-mode');
   if (btn) updateLiteButton(btn, isLiteNow);
+   
 });
