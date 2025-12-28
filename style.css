@@ -619,9 +619,11 @@ header .snow-container {
 .header-search-row .search-input:not(:placeholder-shown) {
   opacity: 1;
 }
-
-.header-search-row .search-input-wrapper:has(.search-input:not(:placeholder-shown)) {
+.header-search-row .search-input-wrapper.expanded {
   width: min(92%, 520px);
+}
+.header-search-row .search-input-wrapper.expanded .search-input{
+  opacity: 1;
 }
 
 /* Search container inside header row */
