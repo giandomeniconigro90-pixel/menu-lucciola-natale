@@ -29,32 +29,24 @@
 <body>
 <script>
     (function () {
-      // Default: NORMAL
+      // Default NORMAL
 
-      // 1) Se il browser dichiara rete lenta (Android/Chrome)
+      // Attiva Lite solo se l'utente ha "Risparmio dati" (segnale forte, pochi falsi positivi)
       var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-      if (c && (c.saveData || /2g|3g/.test(c.effectiveType || ''))) {
+      if (c && c.saveData) {
         document.body.classList.add('lite-mode');
         return;
       }
 
-      // 2) Fallback prudente (Safari/iPhone): test su risorsa del TUO sito
-      // Timeout più alto per evitare falsi positivi dopo "clear cache"
+      // Fallback: attiva Lite solo se NON riesci proprio a caricare un asset locale
       var testImg = new Image();
-      var timeout = setTimeout(function () {
-        document.body.classList.add('lite-mode');
-      }, 3500);
-
-      testImg.onload = function () { clearTimeout(timeout); };
       testImg.onerror = function () {
-        clearTimeout(timeout);
         document.body.classList.add('lite-mode');
       };
-
-      // Usa un asset locale che esiste davvero
       testImg.src = "images/icon_app.png?ts=" + Date.now();
     })();
 </script>
+
 
 <!-- LITE SWITCH (Destra)
   <button id="lite-switch" onclick="toggleLiteMode()" aria-label="Modalità Lite"></button>-->
