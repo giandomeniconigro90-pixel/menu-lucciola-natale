@@ -257,48 +257,55 @@ function initDataFetch() {
       console.log('Menu caricato dalla cache (istantaneo)');
 
       // Renderizza subito la prima categoria (Calde) senza aspettare internet
-      const firstBtn = document.querySelector('.tab-btn');
-      const activeBtn = document.querySelector('.tab-btn.active') || firstBtn;
-      const catToLoad = getActiveCategoryFromOnclick(activeBtn) || 'calde';
-
-      if (activeBtn) showCategory(catToLoad, activeBtn);
+      const caldeBtn = Array.from(document.querySelectorAll('.tab-btn'))
+        .find(btn => getActiveCategoryFromOnclick(btn) === 'calde');
+      if (caldeBtn) showCategory('calde', caldeBtn);
     } catch (e) {
       console.error('Cache corrotta, attendo rete...', e);
     }
   }
 
-  // 2. RETE: Scarica comunque i dati aggiornati in background
-  Papa.parse(SHEET_URL, {
-    download: true,
-    header: true,
-    skipEmptyLines: true,
+    // 2. RETE: Scarica comunque i dati aggiornati in background
+    Papa.parse(SHEET_URL, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
 
-    // PULIZIA SPAZI AUTOMATICA (Fix "Bibite" doppie)
-    transform: (value) => safeTrim(value),
+      // PULIZIA SPAZI AUTOMATICA (Fix "Bibite" doppie)
+      transform: (value) => safeTrim(value),
 
-    complete: (results) => {
-      // Elabora i nuovi dati da Google
-      transformCsvToMenu(results.data);
+      complete: (results) => {
+        // Elabora i nuovi dati da Google
+        transformCsvToMenu(results.data);
 
-      // SALVA I NUOVI DATI IN CACHE (per la prossima volta)
-      localStorage.setItem('menuDataCache', JSON.stringify(menuData));
+        // SALVA I NUOVI DATI IN CACHE (per la prossima volta)
+        localStorage.setItem('menuDataCache', JSON.stringify(menuData));
 
-      // Aggiorna la vista con i dati nuovi (live update)
-      const activeBtn = document.querySelector('.tab-btn.active');
-      if (activeBtn) {
-        const currentCat = getActiveCategoryFromOnclick(activeBtn);
-        if (currentCat) showCategory(currentCat, null);
-      } else {
-        const firstBtn = document.querySelector('.tab-btn');
-        if (firstBtn) showCategory('calde', firstBtn);
+        // Aggiorna la vista con i dati nuovi (live update)
+        const activeBtn = document.querySelector('.tab-btn.active');
+        if (activeBtn) {
+          const currentCat = getActiveCategoryFromOnclick(activeBtn);
+          if (currentCat) {
+            // mantiene la categoria attualmente selezionata
+            showCategory(currentCat, null);
+          }
+        } else {
+          // nessun tab attivo: fallback esplicito su "calde"
+          const caldeBtn = Array.from(document.querySelectorAll('.tab-btn'))
+            .find((btn) => getActiveCategoryFromOnclick(btn) === 'calde');
+          if (caldeBtn) {
+            showCategory('calde', caldeBtn);
+          }
+        }
+
+        console.log('Menu aggiornato da Google Sheets (Background)');
+      },
+
+      error: (err) => {
+        console.error('Errore Google Sheets:', err);
       }
-      console.log('Menu aggiornato da Google Sheets (Background)');
-    },
+    });
 
-    error: (err) => {
-      console.error('Errore Google Sheets:', err);
-    }
-  });
 }
 
 function transformCsvToMenu(csvData) {
