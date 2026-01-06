@@ -27,50 +27,37 @@
 </head>
 
 <body>
-  <script>
+<script>
     (function () {
-      var savedMode = localStorage.getItem('liteMode');
+      // Default: NORMAL
 
-      // Se l'utente ha già scelto LITE, applicala subito
-      if (savedMode === 'true') {
+      // 1) Se il browser dichiara rete lenta (Android/Chrome)
+      var c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (c && (c.saveData || /2g|3g/.test(c.effectiveType || ''))) {
         document.body.classList.add('lite-mode');
+        return;
       }
-      // Se l'utente NON ha scelto NORMAL (quindi è la prima volta o non ha preferenze)
-      else if (savedMode !== 'false') {
-        // 1. Prova API standard (Android)
-        var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-        if (connection && (connection.saveData || /2g|3g/.test(connection.effectiveType))) {
-          document.body.classList.add('lite-mode');
-        }
 
-        // 2. FALLBACK PER IPHONE:
-        // Crea un'immagine minuscola invisibile. Se non carica entro 1.5 secondi -> LITE
-        else {
-          var testImg = new Image();
-          var start = new Date().getTime();
-          var timeout = setTimeout(function () {
-            // Se siamo ancora qui dopo 1.5s, è lento: attiva Lite
-            document.body.classList.add('lite-mode');
-            // Aggiorna anche il bottone se lo script.js è già partito
-            var btn = document.getElementById('lite-switch');
-            if (btn && window.updateLiteButton) window.updateLiteButton(btn, true);
-          }, 1500); // 1500ms = 1.5 secondi di tolleranza
+      // 2) Fallback prudente (Safari/iPhone): test su risorsa del TUO sito
+      // Timeout più alto per evitare falsi positivi dopo "clear cache"
+      var testImg = new Image();
+      var timeout = setTimeout(function () {
+        document.body.classList.add('lite-mode');
+      }, 3500);
 
-          testImg.onload = function () {
-            clearTimeout(timeout); // Se carica veloce, annulla il timer (resta Normal)
-          };
+      testImg.onload = function () { clearTimeout(timeout); };
+      testImg.onerror = function () {
+        clearTimeout(timeout);
+        document.body.classList.add('lite-mode');
+      };
 
-          // Immagine piccolissima (1x1 pixel) per test
-          testImg.src =
-            "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png?" +
-            new Date().getTime();
-        }
-      }
+      // Usa un asset locale che esiste davvero
+      testImg.src = "images/icon_app.png?ts=" + Date.now();
     })();
-  </script>
+</script>
 
-  <!-- LITE SWITCH (Destra) -->
-  <button id="lite-switch" onclick="toggleLiteMode()" aria-label="Modalità Lite"></button>
+<!-- LITE SWITCH (Destra)
+  <button id="lite-switch" onclick="toggleLiteMode()" aria-label="Modalità Lite"></button>-->
 
   <!-- WIFI BUTTON (Sinistra) -->
   <button class="wifi-fab" onclick="openWifi()" aria-label="Wi-Fi">

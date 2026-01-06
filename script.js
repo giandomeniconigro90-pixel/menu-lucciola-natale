@@ -545,7 +545,7 @@ async function fetchWeather() {
 
 /* ===========================
    LITE MODE BUTTON
-   =========================== */
+   ===========================
 function toggleLiteMode() {
   const body = document.body;
   const btn = document.getElementById('lite-switch');
@@ -555,7 +555,8 @@ function toggleLiteMode() {
   const isLite = body.classList.toggle('lite-mode');
 
   // Salva preferenza PER SEMPRE (così se torno domani si ricorda)
-  localStorage.setItem('liteMode', isLite);
+localStorage.setItem('liteModeUser', isLite ? 'true' : 'false'); // scelta manuale
+localStorage.removeItem('liteMode'); // pulizia vecchia chiave (se presente)
 
   // Aggiorna icona
   updateLiteButton(btn, isLite);
@@ -581,7 +582,7 @@ function updateLiteButton(btn, isLite) {
       <span>Normal</span>
     `;
   }
-}
+}*/
 
 /* ===========================
    MENU UI
@@ -739,9 +740,9 @@ window.syncSearchExpanded = syncSearchExpanded;
   // Aggiorna badge aperto/chiuso ogni minuto (senza refresh)
   setInterval(checkOpenStatus, 60 * 1000);
 
-  // Bottone lite: allinea l'icona allo stato reale del body
+  /* Bottone lite: allinea l'icona allo stato reale del body
   const btn = document.getElementById('lite-switch');
   const isLiteNow = document.body.classList.contains('lite-mode');
-  if (btn) updateLiteButton(btn, isLiteNow);
+  if (btn) updateLiteButton(btn, isLiteNow);*/
    
 });
