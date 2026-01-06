@@ -600,8 +600,19 @@ function showCategory(catId, btnElement) {
   const container = document.getElementById('menu-container');
   const data = menuData[catId];
 
-  document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
-  if (btnElement) btnElement.classList.add('active');
+ let targetBtn = btnElement;
+
+ // Se non mi passi il bottone, lo cerco in base alla categoria
+ if (!targetBtn) {
+   targetBtn = Array.from(document.querySelectorAll('.tab-btn'))
+     .find((b) => getActiveCategoryFromOnclick(b) === catId);
+ }
+
+ if (targetBtn) {
+   document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
+   targetBtn.classList.add('active');
+ }
+
 
   if (!data || !container) return;
 
