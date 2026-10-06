@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"/>
+    content="width=device-width, initial-scale=1.0, "/>
   
   <title>Bar La Lucciola - Menù</title>
 
@@ -19,7 +19,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"rel="stylesheet"/>
   <link rel="preload" as="image" href="images/la-lucciola-neve.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="images/IMG_4459.png" />
-  <link rel="stylesheet" href="style.css?v=20251228-1">
+  <link rel="stylesheet" href="style.css?v=20261006-1">
+  <script>
+    if (new URLSearchParams(location.search).get('tema') === 'natale') {
+      const theme = document.createElement('link');
+      theme.rel = 'stylesheet'; theme.href = 'themes/natale.css';
+      document.head.appendChild(theme);
+    }
+  </script>
 
   <!-- Aggiungi nel <head>, prima degli stili -->
   <link rel="preconnect" href="https://docs.google.com" />
@@ -43,13 +50,13 @@
       testImg.onerror = function () {
         document.body.classList.add('lite-mode');
       };
-      testImg.src = "images/icon_app.png?ts=" + Date.now();
+      testImg.src = "images/icon_app.png";
     })();
 </script>
 
 
-<!-- LITE SWITCH (Destra)
-  <button id="lite-switch" onclick="toggleLiteMode()" aria-label="Modalità Lite"></button>-->
+<!-- LITE SWITCH (Destra) -->
+  <button id="lite-switch" onclick="toggleLiteMode()" aria-label="Modalità Lite"></button>
 
   <!-- WIFI BUTTON (Sinistra) -->
   <button class="wifi-fab" onclick="openWifi()" aria-label="Wi-Fi">
@@ -114,7 +121,7 @@
       </div>
       <div class="nav-pill-wrapper">
         <div class="nav-scroll-area">
-          <button class="tab-btn active tab-edge-left" onclick="showCategory('calde', this)">
+          <button class="tab-btn active tab-edge-left" data-cat="calde" onclick="showCategory('calde', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
@@ -127,7 +134,7 @@
             </span>
           </button>
 
-          <button class="tab-btn" onclick="showCategory('fredde', this)">
+          <button class="tab-btn" data-cat="fredde" onclick="showCategory('fredde', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <line x1="12" y1="12" x2="22" y2="12"></line>
@@ -141,7 +148,7 @@
             </span>
           </button>
 
-          <button class="tab-btn" onclick="showCategory('aperitivi', this)">
+          <button class="tab-btn" data-cat="aperitivi" onclick="showCategory('aperitivi', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M8 22h8M12 15v7M2 2h20l-10 13L2 2z"></path>
@@ -150,7 +157,7 @@
             </span>
           </button>
 
-          <button class="tab-btn" onclick="showCategory('alcolici', this)">
+          <button class="tab-btn" data-cat="alcolici" onclick="showCategory('alcolici', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M8 22h8"></path>
@@ -163,7 +170,7 @@
             </span>
           </button>
 
-          <button class="tab-btn" onclick="showCategory('food', this)">
+          <button class="tab-btn" data-cat="food" onclick="showCategory('food', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path
@@ -176,7 +183,7 @@
             </span>
           </button>
 
-          <button class="tab-btn tab-edge-right" onclick="showCategory('dolci', this)">
+          <button class="tab-btn tab-edge-right" data-cat="dolci" onclick="showCategory('dolci', this)">
             <span class="tab-btn-inner">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m4.5 13.5 3-3"></path>
@@ -194,7 +201,7 @@
 
     <div class="header-search-row">
 
-      <!-- SEARCH DISATTIVATA
+      <!-- Ricerca -->
       <div class="search-container in-header">
         <div class="search-input-wrapper">
           <svg
@@ -215,14 +222,14 @@
             id="menu-search"
             class="search-input"
             placeholder="Cerca nel menù..."
-            onkeyup="searchMenu()"
+            oninput="searchMenu()" aria-label="Cerca nel menù"
           />
         </div>
       </div>
-      -->
     </div>
   </div>
 
+  <p id="menu-notice" role="status" hidden></p>
   <div id="menu-container" class="menu-container"></div>
 
   <div class="review-btn-container">
@@ -352,3 +359,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+

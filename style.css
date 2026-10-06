@@ -207,74 +207,6 @@ header::after {
 }
 
 /* =========================================================
-   NATALE: LUCI + NEVE (solo header)
-   ========================================================= */
-.xmas-garland {
-  position: absolute;
-  top: -14px;
-  left: 0;
-  right: 0;
-  height: 90px;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0.95;
-}
-
-.garland-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  overflow: visible;
-}
-
-.garland-svg .wire {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.28);
-  stroke-width: 2.2;
-  stroke-linecap: round;
-}
-
-.garland-svg .bulb {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.98);
-  stroke-width: 8;
-  stroke-linecap: round;
-  stroke-dasharray: 0.001 34;
-  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.75));
-  opacity: 0.95;
-}
-
-.garland-svg .bulb-2 {
-  stroke-width: 7;
-  opacity: 0.85;
-  stroke-dasharray: 0.001 38;
-}
-
-/* Neve SOLO nell'header */
-header .snow-container {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2;
-  overflow: hidden;
-}
-
-.snow-layer {
-  position: absolute;
-  top: -100%;
-  left: 0;
-  width: 100%;
-  height: 200%;
-  background-image: url("data:image/svg+xml,%3Csvg%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%20width='80'%20height='80'%3E%3Ccircle%20cx='40'%20cy='40'%20r='2.0'%20fill='%23ffffff'%20fill-opacity='0.65'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  animation: snowFall linear infinite;
-}
-
-.layer-1 { background-size: 80px 80px; opacity: 0.50; animation-duration: 45s; }
-.layer-2 { background-size: 110px 110px; opacity: 0.60; animation-duration: 35s; animation-delay: -6s; }
-.layer-3 { background-size: 150px 150px; opacity: 0.70; animation-duration: 28s; animation-delay: -12s; }
-
-/* =========================================================
    STICKY NAV
    ========================================================= */
 .sticky-nav-container {
@@ -729,11 +661,6 @@ h3::after {
   padding-bottom: 12px;
   border-radius: 16px;
 
-  background-image:
-    linear-gradient(#fff, #fff),
-    repeating-linear-gradient(-45deg, #e53935 0, #e53935 10px, #ffffff 10px, #ffffff 20px);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
   border: 4px solid transparent;
 
   box-shadow: var(--shadow-soft);
@@ -850,7 +777,7 @@ h3::after {
   font-size: 10px;
   background: var(--allergen-bg);
   max-width: 100%;
-  white-space: normal;c
+  white-space: normal;
   padding: 2px 6px;
   overflow-wrap: anywhere;
   border-radius: 4px;
@@ -943,11 +870,7 @@ h3::after {
   font-size: 14px;
 
   border: 3px solid transparent;
-  background-image:
-    linear-gradient(var(--primary-color), var(--primary-color)),
-    repeating-linear-gradient(-45deg, #d32f2f 0 10px, #ffffff 10px 20px);
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
+  background: var(--primary-color);
 
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18);
   transition: transform 0.2s, filter 0.2s;
@@ -1231,3 +1154,13 @@ body.lite-mode .nav-pill-wrapper {
   cursor: pointer;
   transition: transform 0.2s;
 }
+
+
+/* Tema normale */
+.xmas-garland, header .snow-container { display: none; }
+#menu-notice { max-width: 760px; margin: 12px auto; padding: 12px 20px; }
+.empty-menu { grid-column: 1 / -1; }
+.item-price { white-space: normal; }
+.tag-aperitivo { background: #fff3e0; color: #8B5A2B; }
+body.lite-mode .menu-item, body.lite-mode .subcategory-title, body.lite-mode .search-container { animation: none; opacity: 1; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } .menu-item, .subcategory-title, .search-container { opacity: 1; } }
