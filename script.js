@@ -562,6 +562,28 @@ function updateLiteButton(btn, isLite) {
 /* ===========================
    MENU UI
    =========================== */
+function revealCategoryButton(btn) {
+  const rail = btn?.closest?.('.nav-scroll-area');
+  if (!rail || rail.scrollWidth <= rail.clientWidth) return;
+  const buttons = Array.from(rail.querySelectorAll('.tab-btn'));
+  const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+  let left;
+  if (btn === buttons[0]) {
+    left = 0;
+  } else if (btn === buttons[buttons.length - 1]) {
+    left = maxScroll;
+  } else {
+    const buttonRect = btn.getBoundingClientRect();
+    const railRect = rail.getBoundingClientRect();
+    left = rail.scrollLeft + buttonRect.left - railRect.left - rail.clientLeft
+      - (rail.clientWidth - buttonRect.width) / 2;
+    left = Math.max(0, Math.min(maxScroll, left));
+  }
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  // Scroll this rail only, without moving the page or footer.
+  rail.scrollTo({ left, behavior: reduceMotion ? 'auto' : 'smooth' });
+}
+
 function showCategory(catId, btnElement) {
   const isLite = document.body.classList.contains('lite-mode');
   const searchInput = document.getElementById('menu-search');
@@ -587,6 +609,7 @@ function showCategory(catId, btnElement) {
  if (targetBtn) {
    document.querySelectorAll('.tab-btn').forEach((b) => b.classList.remove('active'));
    targetBtn.classList.add('active');
+   revealCategoryButton(targetBtn);
  }
 
 
