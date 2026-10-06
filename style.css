@@ -317,7 +317,9 @@ header::after {
   flex-grow: 1;
   width: 100%;
   overflow: hidden;
-  contain: paint;
+  box-sizing: border-box;
+  min-width: 0;
+  padding-inline: 12px;
   background-color: rgba(255, 255, 255, 0.45);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -332,12 +334,11 @@ header::after {
   overflow-x: auto;
   height: 100%;
   width: 100%;
-  padding: 0 5px;
+  padding: 0;
   box-sizing: border-box;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  scroll-padding-left: 5px;
-  scroll-padding-right: 5px;
+  scroll-padding-inline: 0;
 }
 
 .nav-scroll-area::before,
@@ -350,7 +351,7 @@ header::after {
 
 @media (max-width: 699px) {
   .nav-scroll-area {
-    animation: scrollHintAnimation 1.5s ease-in-out 1.5s 1 forwards;
+    /* Keep the scroll viewport stationary so edge borders remain visible. */
   }
 }
 
@@ -359,8 +360,8 @@ header::after {
   background: transparent;
   border: none;
   height: 100%;
-  flex: 0 0 33.34%;
-  width: 33.34%;
+  flex: 0 0 calc(100% / 3);
+  width: calc(100% / 3);
   margin: 0;
   padding: 0;
   cursor: pointer;
@@ -374,6 +375,7 @@ header::after {
 }
 
 .tab-btn-inner {
+  box-sizing: border-box;
   width: 90%;
   height: 42px;
   display: flex;
@@ -403,12 +405,13 @@ header::after {
     scroll-snap-type: none;
     justify-content: center;
     width: 100%;
-    overflow-x: hidden;
+    overflow-x: auto;
+    justify-content: flex-start;
     gap: 10px;
   }
 
   .tab-btn {
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     width: auto;
     margin: 0;
     min-width: 80px;
@@ -423,9 +426,10 @@ header::after {
   .nav-pill-wrapper {
     display: inline-flex;
     width: max-content;
+    max-width: 100%;
     min-width: 0;
     flex-grow: 0;
-    padding: 0 5px;
+    padding: 0 12px;
     justify-content: center;
     margin: 0;
     position: static;
