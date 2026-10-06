@@ -12,7 +12,7 @@ const allergenMap = {
 };
 
 const SHEET_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vR0T1gIy-XDXJv_IYaOOOlgaJ4y7yidX2PF7RZjYp7BZEQZ4ttjHg-fbcFqLGyFVBzmeVT0W7zzJXyy/pub?output=csv';
+  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwXfLcc87HMAFbEutoPSsBdwKwUNlcNJNZNVcGjaYjF_OcMUG_GhIqkG3MCUMGZHHZc1OhwPS9tG0/pub?gid=277069676&single=true&output=csv';
 
 // CSV ORARI (metti file locale "orari.csv" nella root del sito, oppure un Google Sheet pubblicato output=csv)
 const HOURS_CSV_URL =
@@ -259,7 +259,7 @@ function restoreMenuView() {
 }
 function initDataFetch() {
   try {
-    const cached = JSON.parse(storage.getItem('menuDataCacheV2'));
+    const cached = JSON.parse(storage.getItem('menuDataCacheV2:' + SHEET_URL));
     if (validMenu(cached?.menu)) {
       menuData = cached.menu;
       const banner = document.getElementById('alert-banner');
@@ -275,7 +275,7 @@ function initDataFetch() {
     complete(results) {
       try { validateMenuResults(results); } catch (e) { failed(); return; }
       transformCsvToMenu(results.data);
-      storage.setItem('menuDataCacheV2', JSON.stringify({menu: menuData, notice: document.getElementById('alert-banner')?.textContent || ''}));
+      storage.setItem('menuDataCacheV2:' + SHEET_URL, JSON.stringify({menu: menuData, notice: document.getElementById('alert-banner')?.textContent || ''}));
       restoreMenuView(); menuNotice('');
     },
     error: failed
