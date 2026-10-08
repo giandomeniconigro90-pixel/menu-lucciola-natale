@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"rel="stylesheet"/>
   <link rel="preload" as="image" href="images/la-lucciola-neve.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="images/IMG_4459.png" />
-  <link rel="stylesheet" href="style.css?v=20261008-3">
+  <link rel="stylesheet" href="style.css?v=20261008-4">
   <script>
     if (new URLSearchParams(location.search).get('tema') === 'natale') {
       const theme = document.createElement('link');
@@ -122,6 +122,7 @@
   <div class="sticky-nav-container">
     <div class="nav-cluster">
       <div class="nav-pill-wrapper">
+        <button type="button" id="category-prev" class="category-arrow" onclick="scrollCategories(-1)" aria-label="Categorie precedenti" hidden>‹</button>
         <div class="nav-scroll-area">
           <button class="tab-btn active tab-edge-left" data-cat="calde" onclick="showCategory('calde', this)">
             <span class="tab-btn-inner">
@@ -198,6 +199,7 @@
             </span>
           </button>
         </div>
+        <button type="button" id="category-next" class="category-arrow" onclick="scrollCategories(1)" aria-label="Altre categorie" hidden>›</button>
       </div>
     </div>
 
@@ -334,8 +336,8 @@
   </footer>
 
   <div id="wifi-modal" class="modal-overlay" onclick="closeWifi(event)">
-    <div class="modal-content">
-      <div class="close-modal" onclick="closeWifi(event)">&times;</div>
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="wifi-title">
+      <button type="button" class="close-modal" onclick="closeWifi(event)" aria-label="Chiudi Wi-Fi">&times;</button>
 
       <svg
         class="wifi-icon-large"
@@ -353,7 +355,7 @@
         <line x1="12" y1="20" x2="12.01" y2="20"></line>
       </svg>
 
-      <h3>Wi-Fi Gratuito</h3>
+      <h3 id="wifi-title">Wi-Fi Gratuito</h3>
       <p>Connettiti alla rete "La Lucciola"</p>
       <div class="wifi-password-row">
         <div id="wifi-password" class="wifi-pass">Lucciola2025</div>
@@ -367,7 +369,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js?v=20261008-3"></script>
+  <script src="script.js?v=20261008-4"></script>
 </body>
 </html>
 
