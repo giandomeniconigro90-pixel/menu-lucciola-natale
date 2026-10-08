@@ -11,8 +11,7 @@ const allergenMap = {
   sedano: { icon: '🌿', label: 'Sedano' }
 };
 
-const SHEET_URL =
-  'https://docs.google.com/spreadsheets/d/e/2PACX-1vTMwXfLcc87HMAFbEutoPSsBdwKwUNlcNJNZNVcGjaYjF_OcMUG_GhIqkG3MCUMGZHHZc1OhwPS9tG0/pub?gid=277069676&single=true&output=csv';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRExPPk-MzxTcwfwRyQwfVlfSzTGOIYxxpBnKQkkDGasvrZqTaO7i58Ij2eRqrb4A/pub?gid=490698471&single=true&output=csv';
 
 // CSV ORARI (metti file locale "orari.csv" nella root del sito, oppure un Google Sheet pubblicato output=csv)
 const HOURS_CSV_URL =
