@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"rel="stylesheet"/>
   <link rel="preload" as="image" href="images/la-lucciola-neve.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="images/IMG_4459.png" />
-  <link rel="stylesheet" href="style.css?v=20261008-2">
+  <link rel="stylesheet" href="style.css?v=20261008-3">
   <script>
     if (new URLSearchParams(location.search).get('tema') === 'natale') {
       const theme = document.createElement('link');
@@ -355,12 +355,19 @@
 
       <h3>Wi-Fi Gratuito</h3>
       <p>Connettiti alla rete "La Lucciola"</p>
-      <div class="wifi-pass">Lucciola2025</div>
+      <div class="wifi-password-row">
+        <div id="wifi-password" class="wifi-pass">Lucciola2025</div>
+        <button type="button" class="wifi-copy-btn" onclick="copyWifiPassword()" aria-label="Copia la password Wi-Fi">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>
+          <span>Copia</span>
+        </button>
+      </div>
+      <p id="wifi-copy-status" role="status" aria-live="polite"></p>
     </div>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js?v=20261008-1"></script>
+  <script src="script.js?v=20261008-3"></script>
 </body>
 </html>
 
