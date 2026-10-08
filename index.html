@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, "/>
+    content="width=device-width, initial-scale=1.0"/>
   
   <title>Bar La Lucciola - Menù</title>
 
@@ -19,7 +19,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"rel="stylesheet"/>
   <link rel="preload" as="image" href="images/la-lucciola-neve.jpg" fetchpriority="high" />
   <link rel="preload" as="image" href="images/IMG_4459.png" />
-  <link rel="stylesheet" href="style.css?v=20261006-1">
+  <link rel="stylesheet" href="style.css?v=20261008-2">
   <script>
     if (new URLSearchParams(location.search).get('tema') === 'natale') {
       const theme = document.createElement('link');
@@ -100,9 +100,14 @@
     </div>
 
     <div class="header-content">
+      <div class="header-brand">
+        <img src="images/IMG_4459.png" alt="Logo La Lucciola" class="header-logo" width="64" height="64" />
+        <div>
       <h1>Bar La Lucciola</h1>
       <div class="subtitle">Laceno - Bagnoli Irpino</div>
 
+        </div>
+      </div>
       <div class="info-cluster">
         <div id="status-indicator" class="status-badge">
           <span class="status-dot"></span> ...
@@ -116,9 +121,6 @@
 
   <div class="sticky-nav-container">
     <div class="nav-cluster">
-      <div class="logo-circle">
-        <img src="images/IMG_4459.png" alt="Logo La Lucciola" class="nav-mini-logo" />
-      </div>
       <div class="nav-pill-wrapper">
         <div class="nav-scroll-area">
           <button class="tab-btn active tab-edge-left" data-cat="calde" onclick="showCategory('calde', this)">
@@ -218,7 +220,8 @@
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
           <input
-            type="text"
+            type="search"
+            autocomplete="off"
             id="menu-search"
             class="search-input"
             placeholder="Cerca nel menù..."
@@ -300,9 +303,10 @@
             d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
           ></path>
         </svg>
-        0827 68069
+        Chiama · 0827 68069
       </a>
 
+      <a class="footer-directions" href="https://www.google.com/maps/search/?api=1&amp;query=Bar+La+Lucciola+Laceno+Bagnoli+Irpino" target="_blank" rel="noopener">Indicazioni</a>
       <div class="footer-address footer-vat">P.IVA 611810647</div>
     </div>
 
