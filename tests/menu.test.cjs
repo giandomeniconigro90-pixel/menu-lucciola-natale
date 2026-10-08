@@ -75,3 +75,14 @@ test('refresh preserves search and ignores duplicate in-flight requests',()=>{
   assert.equal(els['menu-search'].value,'Caff');assert.match(els['menu-container'].innerHTML,/Risultati ricerca/);
   run('initDataFetch(false)');assert.equal(calls.length,2);
 });
+test('category arrows reflect both scroll boundaries',()=>{
+  const {ctx,run,els}=setup();const area={scrollWidth:900,clientWidth:300,scrollLeft:0};ctx.document.querySelector=s=>s==='.nav-scroll-area'?area:null;
+  run('updateCategoryArrows()');assert.equal(els['category-prev'].hidden,true);assert.equal(els['category-next'].hidden,false);
+  area.scrollLeft=300;run('updateCategoryArrows()');assert.equal(els['category-prev'].hidden,false);assert.equal(els['category-next'].hidden,false);
+  area.scrollLeft=600;run('updateCategoryArrows()');assert.equal(els['category-next'].hidden,true);
+  area.scrollWidth=300;area.scrollLeft=0;run('updateCategoryArrows()');assert.equal(els['category-prev'].hidden,true);assert.equal(els['category-next'].hidden,true);
+});
+test('Wi-Fi copy confirms success and explains denied clipboard access',async()=>{
+  const {ctx,run,els}=setup();run("document.getElementById('wifi-password').textContent='ExamplePass';document.getElementById('wifi-copy-status')");let copied='';ctx.navigator={clipboard:{async writeText(text){copied=text;}}};await run('copyWifiPassword()');assert.equal(copied,'ExamplePass');assert.equal(els['wifi-copy-status'].textContent,'Password copiata!');
+  ctx.navigator.clipboard.writeText=async()=>{throw Error('denied');};await run('copyWifiPassword()');assert.match(els['wifi-copy-status'].textContent,/Tieni premuta/);
+});
