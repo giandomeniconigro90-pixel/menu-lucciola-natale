@@ -8,9 +8,9 @@ function setup() {
   const node = () => ({innerHTML:'', textContent:'', value:'', style:{}, dataset:{}, hidden:true, classList:{contains:()=>false, add(){}, remove(){}, toggle(){}}});
   const els = {}; const btn = node(); btn.dataset.cat = 'calde';
   const calls = [];
-  const ctx = { console, Intl, Date, document:{body:node(), getElementById:id=>els[id]??=node(), querySelector:s=>s==='.tab-btn.active'?btn:node(), querySelectorAll:()=>[btn], addEventListener(){}}, window:{addEventListener(){},scrollTo(){}}, localStorage:{getItem(){throw Error('blocked')},setItem(){throw Error('blocked')},removeItem(){throw Error('blocked')}}, Papa:{parse(url, options){calls.push(options)}} };
+  const ctx = { console, Intl, Date, URLSearchParams, document:{body:node(), getElementById:id=>id==='seasonal-theme' ? (els[id] || null) : (els[id]??=node()), createElement:()=>node(), head:{appendChild(el){ els[el.id]=el; el.remove=()=>delete els[el.id]; }}, querySelector:s=>s==='.tab-btn.active'?btn:node(), querySelectorAll:()=>[btn], addEventListener(){}}, window:{location:{search:''},addEventListener(){},scrollTo(){}}, localStorage:{getItem(){throw Error('blocked')},setItem(){throw Error('blocked')},removeItem(){throw Error('blocked')}}, Papa:{parse(url, options){calls.push(options)}} };
   vm.createContext(ctx); vm.runInContext(source,ctx);
-  return {els, calls, run:s=>vm.runInContext(s,ctx)};
+  return {els, calls, ctx, run:s=>vm.runInContext(s,ctx)};
 }
 test('valid prices preserved; missing and malformed prices are not free',()=>{
   const {run,els}=setup();
@@ -45,4 +45,33 @@ test('opening hours validate times and handle midnight',()=>{
   assert.equal(run('isOpenNow(new Date(2026,9,5,23,0))'),true);
   assert.equal(run('isOpenNow(new Date(2026,9,6,1,0))'),true);
   assert.equal(run('isOpenNow(new Date(2026,9,6,2,0))'),false);
+});
+test('notice dates include boundaries, validate calendar and retain legacy rows',()=>{
+  const {run}=setup();
+  assert.equal(run("isScheduledRowActive({data_inizio:'01/12/2026',data_fine:'2026-12-31'},'2026-12-01')"),true);
+  assert.equal(run("isScheduledRowActive({data_inizio:'2026-12-01',data_fine:'2026-12-31'},'2026-12-31')"),true);
+  assert.equal(run("isScheduledRowActive({data_fine:'2026-12-31'},'2027-01-01')"),false);
+  assert.equal(run("isScheduledRowActive({data_inizio:'2026-02-30'},'2026-03-01')"),false);
+  assert.equal(run("isScheduledRowActive({data_inizio:'2026-12-31',data_fine:'2026-12-01'},'2026-12-15')"),false);
+  assert.equal(run("isScheduledRowActive({disponibile:'FALSE'},'2026-12-15')"),false);
+  assert.equal(run("isScheduledRowActive({},'2026-12-15')"),true);
+});
+test('expired cached notices hide and scheduled theme reverts to normal',()=>{
+  const {run,els}=setup();
+  run("transformCsvToMenu([{categoria:'AVVISO NATALE',nome:'Buone Feste',data_inizio:'2026-12-01',data_fine:'2026-12-31'},{categoria:'IMPOSTAZIONE',nome:'tema',descrizione:'natale',data_inizio:'2026-12-01',data_fine:'2026-12-31'}]);applyScheduledContent('2026-12-15')");
+  assert.equal(els['alert-banner'].textContent,'Buone Feste');assert.ok(els['seasonal-theme']);
+  run("applyScheduledContent('2027-01-01')");assert.equal(els['alert-banner'].style.display,'none');assert.equal(els['seasonal-theme'],undefined);
+  assert.equal(run('Object.keys(menuData).length'),0);
+});
+test('URL theme overrides sheet and venue date is Italian around midnight',()=>{
+  const {run,ctx,els}=setup();ctx.window.location.search='?tema=natale';run("applyScheduledContent('2026-10-08')");assert.ok(els['seasonal-theme']);
+  ctx.window.location.search='?tema=normale';run("applyScheduledContent('2026-12-15')");assert.equal(els['seasonal-theme'],undefined);
+  assert.equal(run("venueDateKey(new Date('2026-12-31T23:30:00Z'))"),'2027-01-01');
+});
+test('refresh preserves search and ignores duplicate in-flight requests',()=>{
+  const {run,calls,els}=setup();run("document.getElementById('menu-search');initDataFetch(false);initDataFetch(false)");assert.equal(calls.length,1);
+  els['menu-search'].value='Caff';
+  calls[0].complete({meta:{fields:['categoria','nome','prezzo']},errors:[],data:[{categoria:'Caffetteria',nome:'Caffè',prezzo:'1,20'}]});
+  assert.equal(els['menu-search'].value,'Caff');assert.match(els['menu-container'].innerHTML,/Risultati ricerca/);
+  run('initDataFetch(false)');assert.equal(calls.length,2);
 });

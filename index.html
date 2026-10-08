@@ -23,7 +23,7 @@
   <script>
     if (new URLSearchParams(location.search).get('tema') === 'natale') {
       const theme = document.createElement('link');
-      theme.rel = 'stylesheet'; theme.href = 'themes/natale.css';
+      theme.id = 'seasonal-theme'; theme.rel = 'stylesheet'; theme.href = 'themes/natale.css';
       document.head.appendChild(theme);
     }
   </script>
@@ -356,7 +356,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=20261008-1"></script>
 </body>
 </html>
 

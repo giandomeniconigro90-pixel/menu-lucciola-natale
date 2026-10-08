@@ -42,6 +42,10 @@ const PREFERRED_SUBCAT_ORDER = [
    STATO
    =========================== */
 let menuData = {};
+let scheduledNotices = [];
+let themeSettings = [];
+let menuFetchInProgress = false;
+let previousMenuRows = null;
 
 // {0..6: [{start,end,startMin,endMin}, ...]}
 let openingSchedule = {
@@ -257,26 +261,96 @@ function restoreMenuView() {
   const active = document.querySelector('.tab-btn.active');
   showCategory(getActiveCategoryFromOnclick(active) || 'calde', null);
 }
-function initDataFetch() {
-  try {
-    const cached = JSON.parse(storage.getItem('menuDataCacheV2:' + SHEET_URL));
-    if (validMenu(cached?.menu)) {
-      menuData = cached.menu;
-      const banner = document.getElementById('alert-banner');
-      if (banner && cached.notice) { banner.textContent = cached.notice; banner.style.display = 'inline-flex'; }
-      restoreMenuView();
-      menuNotice('Menù salvato: verifico gli aggiornamenti…');
-    }
-  } catch (_) {}
-  const failed = () => menuNotice(Object.keys(menuData).length ? 'Aggiornamento non disponibile. Stai consultando il menù salvato; prezzi e disponibilità potrebbero essere cambiati.' : 'Menù non disponibile. Riprova ricaricando la pagina.');
+// Date-only rules use the venue calendar (Europe/Rome), inclusive on both ends.
+function parseCalendarDate(value) {
+  const text = safeTrim(value);
+  if (!text) return '';
+  let year, month, day;
+  let match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) [, year, month, day] = match;
+  else {
+    match = text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (!match) return null;
+    [, day, month, year] = match;
+  }
+  year = Number(year); month = Number(month); day = Number(day);
+  if (year < 1900 || year > 9999) return null;
+  const date = new Date(Date.UTC(year, month - 1, day));
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
+  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+function venueDateKey(now = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Rome', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(now);
+  const fields = Object.fromEntries(parts.map(p => [p.type, p.value]));
+  return `${fields.year}-${fields.month}-${fields.day}`;
+}
+function isScheduledRowActive(row, today = venueDateKey()) {
+  if (isFalseLike(row.disponibile)) return false;
+  const start = parseCalendarDate(row.data_inizio);
+  const end = parseCalendarDate(row.data_fine);
+  if (start === null || end === null || (start && end && start > end)) return false;
+  return (!start || today >= start) && (!end || today <= end);
+}
+function themeForRows(rows, today = venueDateKey()) {
+  let theme = 'normale';
+  for (const row of rows) {
+    const value = safeTrim(row.descrizione).toLowerCase();
+    if (isScheduledRowActive(row, today) && ['normale', 'natale'].includes(value)) theme = value;
+  }
+  return theme;
+}
+function applyScheduledContent(today = venueDateKey()) {
+  const banner = document.getElementById('alert-banner');
+  if (banner) {
+    const notices = scheduledNotices.filter(row => isScheduledRowActive(row, today));
+    banner.textContent = notices.map(row => row.descrizione ? `${row.nome} - ${row.descrizione}` : row.nome).join(' • ');
+    banner.style.display = notices.length ? 'inline-flex' : 'none';
+    banner.classList.add('festive-badge');
+  }
+  // URL override remains available for testing either theme without changing Sheets.
+  const requested = new URLSearchParams(window.location?.search || '').get('tema');
+  const theme = ['normale', 'natale'].includes(requested) ? requested : themeForRows(themeSettings, today);
+  const existing = document.getElementById('seasonal-theme');
+  if (theme === 'natale' && !existing) {
+    const link = document.createElement('link');
+    link.id = 'seasonal-theme'; link.rel = 'stylesheet'; link.href = 'themes/natale.css';
+    document.head.appendChild(link);
+  } else if (theme === 'normale' && existing) existing.remove();
+}
+function initDataFetch(useCache = true) {
+  if (menuFetchInProgress) return;
+  if (useCache) {
+    try {
+      const cached = JSON.parse(storage.getItem('menuDataCacheV3:' + SHEET_URL));
+      if (Array.isArray(cached?.rows)) {
+        transformCsvToMenu(cached.rows);
+        previousMenuRows = JSON.stringify(cached.rows);
+        restoreMenuView();
+        menuNotice('Menù salvato: verifico gli aggiornamenti…');
+      }
+    } catch (_) {}
+  }
+  const failed = () => {
+    menuFetchInProgress = false;
+    menuNotice(Object.keys(menuData).length ? 'Aggiornamento non disponibile. Stai consultando il menù salvato; prezzi e disponibilità potrebbero essere cambiati.' : 'Menù non disponibile. Riprova ricaricando la pagina.');
+  };
   if (typeof Papa === 'undefined') { failed(); return; }
+  menuFetchInProgress = true;
   Papa.parse(SHEET_URL, {
     download: true, header: true, skipEmptyLines: true, transform: safeTrim,
     complete(results) {
-      try { validateMenuResults(results); } catch (e) { failed(); return; }
-      transformCsvToMenu(results.data);
-      storage.setItem('menuDataCacheV2:' + SHEET_URL, JSON.stringify({menu: menuData, notice: document.getElementById('alert-banner')?.textContent || ''}));
-      restoreMenuView(); menuNotice('');
+      try {
+        validateMenuResults(results);
+        const serialized = JSON.stringify(results.data);
+        if (serialized !== previousMenuRows) {
+          transformCsvToMenu(results.data);
+          restoreMenuView();
+          previousMenuRows = serialized;
+        } else applyScheduledContent();
+        storage.setItem('menuDataCacheV3:' + SHEET_URL, JSON.stringify({rows: results.data}));
+        menuFetchInProgress = false;
+        menuNotice('');
+      } catch (_) { failed(); }
     },
     error: failed
   });
@@ -284,27 +358,17 @@ function initDataFetch() {
 
 function transformCsvToMenu(csvData) {
   menuData = {};
-  const banner = document.getElementById('alert-banner');
-
-  // Reset badge avvisi (integrato nell'header)
-  if (banner) {
-    banner.style.display = 'none';
-    banner.textContent = '';
-    banner.classList.add('festive-badge');
-  }
-
+  scheduledNotices = [];
+  themeSettings = [];
   csvData.forEach((row) => {
     if (!row?.categoria || !row?.nome) return;
-
-    // LOGICA AVVISI
-    if (String(row.categoria).toUpperCase().includes('AVVISO')) {
-      if (isFalseLike(row.disponibile)) return;
-
-      const text = row.descrizione ? `${row.nome} - ${row.descrizione}` : row.nome;
-      if (banner) {
-        banner.textContent = text;
-        banner.style.display = 'inline-flex';
-      }
+    const category = safeTrim(row.categoria).toUpperCase();
+    if (category === 'IMPOSTAZIONE') {
+      if (safeTrim(row.nome).toLowerCase() === 'tema') themeSettings.push(row);
+      return;
+    }
+    if (category.includes('AVVISO')) {
+      scheduledNotices.push(row);
       return;
     }
 
@@ -338,6 +402,7 @@ function transformCsvToMenu(csvData) {
       soldOut: isSoldOutLike(row.disponibile)
     });
   });
+  applyScheduledContent();
 }
 
 function normalizeCategory(catString) {
@@ -744,7 +809,12 @@ window.syncSearchExpanded = syncSearchExpanded;
   initDataFetch();
 
   // Aggiorna badge aperto/chiuso ogni minuto (senza refresh)
-  setInterval(checkOpenStatus, 60 * 1000);
+  setInterval(() => { checkOpenStatus(); applyScheduledContent(); }, 60 * 1000);
+  // Refresh only in visible tabs, preserving the selected category and search.
+  setInterval(() => { if (!document.hidden) initDataFetch(false); }, 2 * 60 * 1000);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) { applyScheduledContent(); initDataFetch(false); }
+  });
 
   // Bottone lite: allinea l'icona allo stato reale del body
   const btn = document.getElementById('lite-switch');

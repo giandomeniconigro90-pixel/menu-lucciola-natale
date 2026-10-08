@@ -20,6 +20,37 @@ Cache disponibile dopo una visita riuscita; non è una PWA offline. Se il CSV no
 
 Partita IVA e allergeni richiedono verifica dei dati originali prima della pubblicazione; non sono stati ricostruiti automaticamente.
 
-## Stato della verifica
+## Gestione dal Google Fogli
 
-Cinque test automatici JavaScript superati. Verifica grafica browser e confronto con i CSV Google Sheets live da completare prima di pubblicare. Le modifiche sono proposte su un ramo separato.
+Nel foglio già pubblicato aggiungere I1 `data_inizio` e J1 `data_fine`. Non cambiare le otto intestazioni precedenti né il collegamento CSV. Queste date valgono solo per avvisi e impostazione del tema; i prodotti continuano a usare `disponibile`.
+
+Le date accettano `2026-12-01` oppure `01/12/2026`. Inizio e fine sono inclusi, nel fuso Europe/Rome. Una data vuota lascia aperto quel limite; date errate o invertite disattivano la riga.
+
+Per programmare l'avviso esistente impostare `disponibile` a TRUE e compilare le due date. Per nasconderlo usare FALSE. Le righe con categoria contenente AVVISO sono avvisi, non prodotti.
+
+Per il tema aggiungere una riga vuota in fondo:
+
+| Colonna | Valore di esempio |
+| --- | --- |
+| A categoria | IMPOSTAZIONE |
+| B nome | tema |
+| C prezzo | vuoto |
+| D descrizione | natale |
+| E allergeni | vuoto |
+| F tag | vuoto |
+| G disponibile | TRUE |
+| H tipo | vuoto |
+| I data_inizio | 2026-12-01 |
+| J data_fine | 2026-12-31 |
+
+Se la convalida della categoria impedisce di scrivere IMPOSTAZIONE, aggiungerla alle voci consentite per questa cella. Usare una sola riga tema: `normale` oppure `natale` in descrizione. Senza una riga attiva il tema è normale; quindi dopo il 31 dicembre dell'esempio torna normale automaticamente. Se esistono più righe tema attive, prevale l'ultima valida.
+
+Gli URL `?tema=natale` e `?tema=normale` forzano il tema per le prove, indipendentemente dal foglio. Rimuovere il parametro per seguire il foglio.
+
+Il sito rilegge il CSV ogni due minuti mentre la pagina è visibile e quando si torna alla pagina. Avvisi e tema vengono controllati ogni minuto anche sui dati salvati. La pubblicazione Google può aggiungere un ritardo. La ricerca corrente viene conservata durante gli aggiornamenti.
+
+## Pubblicazione e verifica
+
+Nove test automatici verificano parsing, ricerca, errori di rete, pillole, date, tema e aggiornamento. La nuova logica non modifica la disposizione grafica, ma va verificata sul tablet dopo il deploy.
+
+Per un sito Netlify caricato manualmente occorre caricare nuovamente i file del ramo `fix/menu-affidabile-tema-natale` in Deploys. Dopo questo aggiornamento del codice, le modifiche al foglio non richiedono altri caricamenti del sito.
