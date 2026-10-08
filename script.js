@@ -463,24 +463,48 @@ async function copyWifiPassword() {
   }
 }
 
+let wifiReturnFocus = null;
+let wifiCloseTimer = null;
 function openWifi() {
   const m = document.getElementById('wifi-modal');
   if (!m) return;
-
+  clearTimeout(wifiCloseTimer);
+  wifiReturnFocus = document.activeElement;
   const feedback = document.getElementById('wifi-copy-status');
   if (feedback) feedback.textContent = '';
   m.style.display = 'flex';
-  setTimeout(() => m.classList.add('active'), 10);
+  document.body.classList.add('wifi-open');
+  setTimeout(() => { m.classList.add('active'); m.querySelector('.close-modal')?.focus(); }, 10);
 }
-
 function closeWifi(e) {
   const m = document.getElementById('wifi-modal');
   if (!m) return;
-
-  if (e.target === m || e.target.classList.contains('close-modal')) {
-    m.classList.remove('active');
-    setTimeout(() => (m.style.display = 'none'), 300);
-  }
+  if (e && e.target !== m && !e.target.closest?.('.close-modal')) return;
+  m.classList.remove('active');
+  document.body.classList.remove('wifi-open');
+  wifiReturnFocus?.focus?.();
+  wifiCloseTimer = setTimeout(() => { m.style.display = 'none'; }, 220);
+}
+function updateCategoryArrows() {
+  const area = document.querySelector('.nav-scroll-area');
+  if (!area) return;
+  const max = Math.max(0, area.scrollWidth - area.clientWidth);
+  const prev = document.getElementById('category-prev');
+  const next = document.getElementById('category-next');
+  if (prev) prev.hidden = area.scrollLeft <= 2;
+  if (next) next.hidden = area.scrollLeft >= max - 2;
+}
+function scrollCategories(direction) {
+  const area = document.querySelector('.nav-scroll-area');
+  if (!area) return;
+  area.scrollBy({left: direction * area.clientWidth * .8, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+}
+function clearMenuSearch() {
+  const input = document.getElementById('menu-search');
+  if (!input) return;
+  input.value = '';
+  searchMenu();
+  input.focus();
 }
 
 /* ===========================
@@ -764,6 +788,10 @@ function searchMenu() {
   }
 
   container.innerHTML = `<h3>Risultati ricerca (${allMatches.length})</h3>`;
+  if (!allMatches.length) {
+    container.innerHTML += '<div class="search-empty"><p>Nessun prodotto trovato. Prova con un altro nome.</p><button type="button" onclick="clearMenuSearch()">Cancella ricerca</button></div>';
+    return;
+  }
   renderItems(allMatches, container, document.body.classList.contains('lite-mode'));
 }
 
@@ -826,6 +854,22 @@ if (searchInput && searchWrapper) {
 
 // se vuoi richiamarla anche da altre funzioni:
 window.syncSearchExpanded = syncSearchExpanded;
+  const categoryArea = document.querySelector('.nav-scroll-area');
+  categoryArea?.addEventListener('scroll', updateCategoryArrows, {passive: true});
+  window.addEventListener('resize', updateCategoryArrows);
+  if (categoryArea && typeof ResizeObserver !== 'undefined') new ResizeObserver(updateCategoryArrows).observe(categoryArea);
+  updateCategoryArrows();
+  document.addEventListener('keydown', event => {
+    const modal = document.getElementById('wifi-modal');
+    if (!modal?.classList.contains('active')) return;
+    if (event.key === 'Escape') { event.preventDefault(); closeWifi(); }
+    if (event.key === 'Tab') {
+      const controls = Array.from(modal.querySelectorAll('button, a[href], input'));
+      const first = controls[0], last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    }
+  });
   const userLite = storage.getItem('liteModeUser');
   if (userLite !== null) document.body.classList.toggle('lite-mode', userLite === 'true');
   // Orari + tabella + status (da CSV)
