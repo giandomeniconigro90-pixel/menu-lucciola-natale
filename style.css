@@ -1008,10 +1008,12 @@ body.lite-mode header {
 }
 
 body.lite-mode header::before { display: none; animation: none; }
+/* Lite has no photograph to darken: keep the brand unobscured. */
+body.lite-mode header::after { display: none; }
 body.lite-mode header .snow-container { display: none; }
 
 body.lite-mode .header-content {
-  position: static !important;
+  position: relative !important;
   transform: none !important;
   margin: 25px auto 0 auto !important;
   text-align: center !important;
