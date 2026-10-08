@@ -451,10 +451,24 @@ function normalizeCategory(catString) {
 /* ===========================
    UI: WIFI MODAL
    =========================== */
+async function copyWifiPassword() {
+  const password = document.getElementById('wifi-password')?.textContent.trim();
+  const feedback = document.getElementById('wifi-copy-status');
+  if (!password || !feedback) return;
+  try {
+    await navigator.clipboard.writeText(password);
+    feedback.textContent = 'Password copiata!';
+  } catch (_) {
+    feedback.textContent = 'Tieni premuta la password per selezionarla e copiarla.';
+  }
+}
+
 function openWifi() {
   const m = document.getElementById('wifi-modal');
   if (!m) return;
 
+  const feedback = document.getElementById('wifi-copy-status');
+  if (feedback) feedback.textContent = '';
   m.style.display = 'flex';
   setTimeout(() => m.classList.add('active'), 10);
 }
@@ -648,6 +662,19 @@ function revealCategoryButton(btn) {
   rail.scrollTo({ left, behavior: reduceMotion ? 'auto' : 'smooth' });
 }
 
+const CATEGORY_CAPTIONS = {
+  calde: 'Una pausa tra le montagne',
+  fredde: 'Un sorso di freschezza',
+  aperitivi: 'Il gusto di stare insieme',
+  alcolici: 'Da gustare con calma',
+  food: 'Qualcosa di buono per la tua pausa',
+  dolci: 'Il lato dolce della montagna'
+};
+function categoryHeading(title, category) {
+  const caption = CATEGORY_CAPTIONS[category];
+  return `<h3>${escapeHtml(title)}</h3>${caption ? `<p class="category-caption">${escapeHtml(caption)}</p>` : ''}`;
+}
+
 function showCategory(catId, btnElement) {
   const isLite = document.body.classList.contains('lite-mode');
   const searchInput = document.getElementById('menu-search');
@@ -679,11 +706,11 @@ function showCategory(catId, btnElement) {
 
   if (!container) return;
   if (!data || !data.items.length) {
-    container.innerHTML = `<h3>${escapeHtml(CATEGORY_TITLES[catId] || 'Menù')}</h3><p class="empty-menu">Nessun prodotto disponibile in questa categoria.</p>`;
+    container.innerHTML = categoryHeading(CATEGORY_TITLES[catId] || 'Menù', catId) + '<p class="empty-menu">Nessun prodotto disponibile in questa categoria.</p>';
     return;
   }
 
-  container.innerHTML = `<h3>${escapeHtml(data.title)}</h3>`;
+  container.innerHTML = categoryHeading(data.title, catId);
 
   const subcats = [...new Set(data.items.map((i) => i.subcategory))];
 
@@ -762,9 +789,10 @@ function renderItems(items, container, isLite) {
     }
 
     container.innerHTML += `
-      <div class="menu-item ${item.soldOut ? 'sold-out' : ''}" style="animation-delay: ${isLite ? 0 : index * 0.05}s">
+      <div class="menu-item ${item.soldOut ? 'sold-out' : ''}" style="animation-delay: ${isLite ? 0 : Math.min(index, 4) * 0.025}s">
         <div class="item-info">
           <h4>${escapeHtml(item.name)} ${tagHTML}</h4>
+          ${item.soldOut ? '<span class="availability-label">Terminato</span>' : ''}
           ${descHTML}
           ${allergensHTML}
         </div>
