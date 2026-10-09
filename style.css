@@ -1243,12 +1243,10 @@ body.lite-mode .info-cluster { justify-content: flex-start !important; }
 
 /* Scorrimento categorie e pannello Wi-Fi mobile. */
 .nav-pill-wrapper { position: relative; padding-inline: 8px; }
-/* Reserve space only on the side where a scroll arrow is visible. */
-.nav-pill-wrapper:has(#category-prev:not([hidden])) { padding-left: 30px; }
-.nav-pill-wrapper:has(#category-next:not([hidden])) { padding-right: 30px; }
+/* Arrow visibility must never resize the scroll viewport (Safari scroll-snap). */
 .category-arrow { position: absolute; top: 50%; transform: translateY(-50%); width: 28px; height: 44px; padding: 0; border: 0; border-radius: 14px; background: #fffaf2; color: var(--primary-color); font-size: 28px; line-height: 1; cursor: pointer; z-index: 2; }
-#category-prev { left: 1px; }
-#category-next { right: 1px; }
+#category-prev { left: -10px; }
+#category-next { right: -10px; }
 .category-arrow[hidden] { display: none; }
 .search-empty { grid-column: 1 / -1; padding: 24px; background: #fffaf2; border-radius: 18px; color: #625c54; }
 .search-empty p { margin: 0 0 16px; line-height: 1.5; }
